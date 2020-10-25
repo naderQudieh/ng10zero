@@ -1,3 +1,10 @@
+ 
+export const DEBUG_DIALOGS = false;
 export const environment = {
-  production: true
+  baseUrl: '/',
+  appName: 'ngAppZero',
+  envName: 'PROD',
+  production: true,
+  test: false,
+  i18nPrefix: '/ngAppZero' 
 };

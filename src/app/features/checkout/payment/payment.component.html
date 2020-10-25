@@ -1,0 +1,89 @@
+<div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h3 class="font-weight-bold mb-5">Your order</h3>
+                <div class="d-flex justify-content-between">
+                    <h5 class="font-weight-bold">Product</h5>
+                    <h5 class="font-weight-bold">Subtotal</h5>
+                </div>
+                <hr />
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <p class="text-muted">Variable Product <span class="text-dark ml-1"> x 1</span></p>
+                        <p class="text-muted">
+                            Color :BLlue <br />
+                            Shoe Size: 42
+                        </p>
+                    </div>
+                    <p class="text-muted">$66</p>
+                </div>
+                <hr />
+               
+                <div class="d-flex justify-content-between">
+                    <h5 class="font-weight-bold">Subtotal</h5>
+                    <div class="col-6">
+                        <p class="font-weight-bold price">$ {{cartManager.cartValues.value.total_price}}</p>
+                    </div>
+                     <!--<h5 class="font-weight-bold">$69</h5>-->
+                </div>
+                <hr />
+                <div class="d-flex justify-content-between">
+                    <h5 class="font-weight-bold">Shipping</h5>
+                    <mat-radio-group aria-label="Select an option">
+                        <mat-radio-button value="1">
+                            <!--Flat rate:$10-->
+                            <div class="col-6">
+                                <p class="font-weight-bold">
+                                    {{cartManager.cartValues.value.shipping_rate}} $
+                                </p>
+                            </div>
+                        </mat-radio-button>
+                        <br />
+                        <mat-radio-button value="2">
+                            <div class="col-6">
+                                <p class="font-weight-bold price">
+                                    {{cartManager.cartValues.value.shipping_rate}} $
+                                </p>
+                            </div>
+                        </mat-radio-button>
+                    </mat-radio-group>
+                </div>
+                <hr />
+    
+                <div class="d-flex justify-content-between">
+                    <h5 class="font-weight-bold">Total</h5>
+                    <div class="col-6" [ngClass]="localStorage.getLang() === 'en' ? 'text-right' : 'text-left'">
+                        <h4 class="font-weight-bold">{{cartManager.cartValues.value.final_total_price}} $</h4>
+                    </div>
+                </div>
+                <hr/>
+                <div>
+                    <mat-radio-group aria-label="Select an option">
+                        <mat-radio-button value="1">Direct bank transfer</mat-radio-button>
+                        <br />
+                        <p class="text-muted ml-4 mt-3">
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Excepturi, porro nihil eveniet temporibus libero, recusandae placeat odio neque animi aperiam ipsam adipisci dignissimos assumenda dicta tempore atque, eum rem
+                            totam?
+                        </p>
+    
+                        <hr />
+                        <mat-radio-button value="2">Check Payments</mat-radio-button>
+                        <br />
+                        <hr />
+                        <mat-radio-button (change)="paymentMethodChanged('CASH')" checked="checked" name="radio" value="3">Cash on delivery</mat-radio-button>
+    
+                       
+                        <br />
+                        <hr />
+                        <div class="d-flex justify-content-between pb-3">
+                            <mat-radio-button value="2">PayPal</mat-radio-button>
+                            <h6 class="paypal font-weight-bold">What is PayPal?</h6>
+                        </div>
+                    </mat-radio-group>
+                    <p class="text-muted">Your personal data will be used to process your order, support your experience throughout this website, and for other purpose described in our <a href="#" class="text-dark"> privacy policy</a></p>
+                    <mat-checkbox>I have read and agree to the website <a href="#" class="colorLink">Terms And Conditions</a></mat-checkbox>
+                    <button (click)="placeOrder()" class="w-100 px-5 py-4">place order</button>
+                </div>
+            </div>
+        </div>
+    </div>

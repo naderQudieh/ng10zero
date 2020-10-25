@@ -1,0 +1,25 @@
+<div  fxFlexFill style="margin-top:10px!important;" >
+ 
+  <div  fxFlexFill>
+ 
+    <div *ngIf="products" class="products_main"
+         fxLayout="row wrap" fxLayoutGap="5px grid">
+      <app-product fxFlex="20" fxFlex.md="30" fxFlex.sm="45" fxFlex.xs="98"
+                   *ngFor="let item  of  products  " [product]="item"></app-product>
+    </div>
+ 
+  </div>
+
+</div>
+
+
+
+    
+
+
+
+
+
+
+
+

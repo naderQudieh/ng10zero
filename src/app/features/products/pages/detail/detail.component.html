@@ -1,0 +1,19 @@
+<div class="container" *ngIf="product$ | async as product">
+    <div class="row">
+        <div class="column-sm-7">
+            <div class="detail__thumb">
+              <a href="{{this.assetsUrl + '/' + product.image}}"><img src="{{this.assetsUrl + '/' + product.image}}"/></a>
+            </div>
+        </div>
+        <div class="column-sm-5">
+            <div class="detail__info">
+                <div class="detail__info__item detail__info__title heading-2">{{product.title}}</div>
+                <div class="detail__info__item detail__info__description">{{product.description}}</div>
+                <div class="detail__info__item detail__info__price">{{product.price}} {{this.currency}}</div>
+                <div class="detail__info__item detail__info__action">
+                    <button class="button" (click)="addToCart(product, 1)">Добавить в корзину</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

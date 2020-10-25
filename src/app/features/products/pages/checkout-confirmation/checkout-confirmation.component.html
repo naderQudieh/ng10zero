@@ -1,0 +1,21 @@
+
+<h1 class="page-title">Confirmation de vente</h1>
+
+<div class="global">
+  <div class="module-container">
+      <div class="confirmation-container">
+      <p class="confirmation-message">
+        Merci d'avoir magasiner sur GTI525-vente2, le meilleur vendeur de billet en ligne.
+      </p>
+
+      <p>
+        Votre numéro de confirmation : <span class="confirmation-number">{{confirmation}}</span>
+      </p>
+
+      <div *ngIf="social; then thenBlock else elseBlock"></div>
+      <ng-template #thenBlock> Votre billet est disponible sur l'application mobile et sur le site web de Saucial</ng-template>
+      <ng-template #elseBlock> Vous pourrez récupérer votre billet le soir de l'événement à la porte.</ng-template>
+    </div>
+
+  </div>
+</div>  

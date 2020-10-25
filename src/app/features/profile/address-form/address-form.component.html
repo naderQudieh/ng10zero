@@ -1,0 +1,114 @@
+<section class="address mb-5">
+    <div *ngIf="loadForm">
+        <form [formGroup]="addressForm" name="addressForm" autocomplete="off">
+            <div class="row">
+                <div class="col-12">
+                    <div class="form-group">
+                        <label>{{'addressTitle'|translate}}</label>
+                        <input formControlName="address_title" type="text" class="form-control">
+                    </div>
+                </div>
+                <div class="col-md-6 col-12">
+                    <div class="form-group">
+                        <label>{{'city'|translate}}</label>
+                        <input type="text" placeholder="City" aria-label="Number" class="form-control"
+                            formControlName="district_id" [matAutocomplete]="autoCity">
+                        <mat-autocomplete #autoCity="matAutocomplete" (optionSelected)="selectedDistrict()">
+                            <mat-option *ngFor="let city of cities" [value]="city.name">
+                                {{city.name}}
+                            </mat-option>
+                        </mat-autocomplete>
+                        <div class="invalid-feedback my-2"
+                            [class.d-block]="addressForm?.controls?.district_id?.touched && addressForm?.controls?.district_id?.errors?.required">
+                            {{'cityIsRequired'|translate}}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-12">
+                    <div class="form-group">
+                        <label>{{'area'|translate}}</label>
+                        <input type="text" placeholder="Area" aria-label="text" class="form-control"
+                            formControlName="area" [matAutocomplete]="autoArea">
+                        <mat-autocomplete #autoArea="matAutocomplete" (optionSelected)="selectedArea()">
+                            <mat-option *ngFor="let area of areas" [value]="area.name">
+                                {{area.name}}
+                            </mat-option>
+                        </mat-autocomplete>
+                        <div class="invalid-feedback my-2"
+                            [class.d-block]="addressForm?.controls?.area?.touched && addressForm?.controls?.area?.errors?.required">
+                            {{'areaIsRequired'|translate}}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="form-group">
+                        <label>{{'street'|translate}}</label>
+                        <input formControlName="street" type="text" class="form-control">
+                        <ng-container *ngIf="addressForm?.controls?.street?.touched">
+                            <div class="invalid-feedback my-2"
+                                [class.d-block]="addressForm?.controls?.street?.errors?.required">
+                                {{'streetIsRequired'|translate}}
+                            </div>
+                            <div class="invalid-feedback my-2"
+                                [class.d-block]="addressForm?.controls?.street?.errors?.maxlength">
+                                {{'streetMustContain5_30Characters'|translate}
+                            </div>
+                        </ng-container>
+                    </div>
+                </div>
+                <div class="col-md-4 col-12">
+                    <div class="form-group">
+                        <label>{{'buildingNumber'|translate}}</label>
+                        <input formControlName="building_no" type="number" class="form-control" required>
+                        <div class="invalid-feedback my-2"
+                            [class.d-block]="addressForm?.controls?.building_no?.touched && addressForm?.controls?.building_no?.errors?.required">
+                            {{'buildingNumberIsRequired'|translate}}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 col-12">
+                    <div class="form-group">
+                        <label>{{'floorNumber'|translate}}</label>
+                        <input formControlName="floor_no" type="number" class="form-control">
+                        <div class="invalid-feedback my-2"
+                            [class.d-block]="addressForm?.controls?.floor_no?.touched && addressForm?.controls?.floor_no?.errors?.required">
+                            {{'floorNumberIsRequired'|translate}}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 col-12">
+                    <div class="form-group">
+                        <label>{{'appartmentNumber'|translate}}</label>
+                        <input formControlName="apartment_no" type="number" class="form-control" required>
+                        <div class="invalid-feedback my-2"
+                            [class.d-block]="addressForm?.controls?.apartment_no?.touched && addressForm?.controls?.apartment_no?.errors?.required">
+                            {{'appartmentNumberIsRequired'|translate}}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="form-group">
+                        <label>{{'nearestLandmark_optional'|translate}}</label>
+                        <input formControlName="nearest_landmark" type="text" class="form-control">
+                        <ng-container *ngIf="addressForm?.controls?.nearest_landmark?.touched">
+                           <!-- <div class="invalid-feedback my-2"
+                                [class.d-block]="addressForm?.controls?.nearest_landmark?.errors?.required">
+                                Nearest Landmark is required.
+                            </div>
+                            <div class="invalid-feedback my-2"
+                                [class.d-block]="addressForm?.controls?.nearest_landmark?.errors?.maxlength">
+                                Nearest Landmark can't be longer than 50 characters.
+                            </div>-->
+                        </ng-container>
+                    </div>
+                </div>
+            </div>
+            <div class="row text-right">
+                <div class="col-12">
+                    <button mat-button class="secondary" type="button" (click)="save()"
+                        [disabled]="!addressForm?.valid">{{'save'|translate}}</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>

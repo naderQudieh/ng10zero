@@ -1,0 +1,53 @@
+<div class="container mb-5">
+        <div class="row">
+            <div class="col-12">
+                 <h2 class="font-weight-bold my-5">{{"cart" | translate}}</h2>
+            </div>
+
+        </div>
+        <mat-divider class="mb-5 mt-2"></mat-divider>
+        <div class="row">
+            <div class="col-lg-8">
+                <ng-container *ngFor="let item of cartManager.cartItems.value">
+                    <app-cart-item [item]="item"></app-cart-item>
+                    <mat-divider class="my-5"></mat-divider>
+                </ng-container>
+            </div>
+            <div class="offset-lg-1 col-lg-3">
+                    <h3 class="font-weight-bold mb-5">{{"Cart_totals" | translate}}</h3>
+                    <div class="d-flex justify-content-between w-75">
+                        <h4 class="font-weight-bold mb-2">{{"Subtotal" | translate}}</h4>
+                        <h4 class="font-weight-bold mb-2">$ {{cartManager.cartValues.value.total_price}} </h4>
+                    </div>
+                    <hr />
+                    <div class="d-flex justify-content-between w-100">
+                        <h4 class="font-weight-bold mb-2 mr-4">{{"Shipping" | translate}}</h4>
+                        <div>
+                            <mat-radio-group aria-label="Select an option">
+                                <mat-radio-button value="1">Flat rate:$10</mat-radio-button>
+                                <br />
+                                <mat-radio-button value="2">Local pickup</mat-radio-button>
+                            </mat-radio-group>
+                            <p class="my-3">
+                               {{" Shipping_option_will_be_updated_during_checkout | translate"}}
+                            </p>
+                            <p class="font-weight-bold">{{"Calculate_Shipping" | translate}}</p>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="d-flex justify-content-between w-75">
+                        <h4 class="font-weight-bold mb-2">total</h4>
+                        <h4 class="font-weight-bold mb-2"> $ {{cartManager.cartValues.value.final_total_price}} </h4>
+                    </div>
+                    <button class="my-5 px-5 py-4 w-100" (click)="router.navigateByUrl('payment')">{{"Proceed_To_Checkout" | translate}}</button>
+                    <a href="#" class="font-weight-bold my-3"  routerLink="/">{{"Continue Shopping " | translate}}</a>
+        
+                   
+                </div>
+        </div>
+      
+      </div>
+
+      <app-four-part></app-four-part>
+
+ 

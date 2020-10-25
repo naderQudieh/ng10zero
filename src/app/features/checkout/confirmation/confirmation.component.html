@@ -1,0 +1,337 @@
+<div class="container">
+        <div class="row">
+            <div class="col-lg-6">
+                <h2 class="text-dark font-weight-bold mb-5">{{"Billing_details" | translate}}</h2>
+                <!--start contact info-->
+                <form [formGroup]="contactForm">
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="form-group py-3">
+                                <label for="" class="font-weight-bold"> {{"first_name"| translate}}</label>
+                                <input formControlName="firstName" type="text" class="form-control" />
+                                <div class="invalid-feedback my-2" [class.d-block]="contactForm.controls?.firstName.touched && contactForm.controls?.firstName?.errors?.required">
+                               
+                                    {{"first_name_is_required"| translate}}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-group py-3">
+                                <label for="" class="font-weight-bold"> {{"last_name" | translate}}</label>
+                                <input formControlName="lastName" type="text" class="form-control" />
+                                <div class="invalid-feedback my-2" [class.d-block]="contactForm.controls?.lastName?.touched && contactForm.controls?.lastName?.errors?.required">
+                                  
+                                    {{"last_name_is_required"| translate}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="form-group py-3">
+                                <label for="" class="font-weight-bold">{{"phone_number"| translate}}</label>
+                                <input formControlName="phone" type="string" class="form-control" />
+                                <ng-container *ngIf="contactForm?.controls?.phone?.touched">
+                                    <div [class.d-block]="contactForm.controls?.phone?.errors?.required" class="invalid-feedback my-2">
+                                      
+                                        {{"phone_is_required"| translate}}
+                                    </div>
+                                    <div [class.d-block]="contactForm?.controls?.phone?.errors?.minlength || contactForm?.controls?.phone?.errors?.maxlength" class="invalid-feedback my-2">
+                                     
+                                        {{"phone_must_contain_8_15_characters"| translate}}
+                                    </div>
+                                    <div [class.d-block]="contactForm?.controls?.phone?.errors?.pattern" class="invalid-feedback my-2">
+                                       
+                                        {{"please_enter_a_valid_phone_number"| translate}}
+                                    </div>
+                                </ng-container>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="form-group py-3">
+                                <label for="" class="font-weight-bold"> {{"email_address"| translate}}</label>
+                                <input formControlName="email" type="email" class="form-control" />
+                                <ng-container *ngIf="contactForm.controls?.email.touched">
+                                    <div class="invalid-feedback my-2" [class.d-block]="contactForm.controls?.email?.errors?.required">
+                                        {{"email_is_required"| translate}}
+                                    </div>
+                                    <div class="invalid-feedback my-2" [class.d-block]="contactForm.controls?.email?.errors?.email || contactForm.controls?.email?.errors?.pattern">
+                                         {{"please_enter_a_valid_email_address"| translate}}
+                                    </div>
+                                </ng-container>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="form-group py-3">
+                                <label for="" class="font-weight-bold"> {{"Company_name_(optional)"| translate}}</label>
+                                <input type="text" class="form-control" />
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <!--end contact info-->
+                <div class="row py-2 pt-4 pt-md-0 my-4">
+                        <div class="col-8">
+                            <h4 class="text-dark font-weight-bold">{{"shipping_address" | translate}}</h4>
+                        </div>
+                        <div class="col-4">
+                            <h5 *ngIf="userAddressess" (click)="willAddNewAddress = true" [ngClass]="localStorage.getLang() === 'en' ? 'float-right' : 'float-left'">
+                                <a id="addAddress" class="text-dark font-weight-bold">
+                                   {{ "addNewAddress" | translate}}
+                                </a>
+                            </h5>
+                        </div>
+                    </div>
+                    <!-- User Address Dropdown -->
+                    <form *ngIf="userAddressess.length && !willAddNewAddress" [formGroup]="addressesForm">
+                        <div class="row">
+                            <div *ngIf="userAddressess.length" class="col-12 dropdown-wrapper">
+                                <div class="dropdown">
+                                    <button (blur)="addressTouched = true"
+                                        class="btn btn-secondary dropdown-toggle d-flex justify-content-between align-items-center"
+                                        type="button" [class.invalid]="addressTouched && addressesForm?.controls?.address_id?.errors"
+                                        [class.focused]="currentAddress" data-toggle="dropdown">
+                                       <!-- <span>{{currentAddress ? currentAddress?.building_no + ',' + currentAddress?.street + ',' + currentAddress?.district_name : address }}</span>
+                                -->
+                                        <span class="material-icons">
+                                            expand_more
+                                        </span>
+                                    </button>
+                                    <div class="dropdown-menu" style="text-align: initial;">
+                                        <a *ngFor="let address of userAddressess" (click)="addressChanged(address)" class="dropdown-item">
+                                            {{address.building_no}},{{address.street}},{{address.district_name}}
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="invalid-feedback my-2"
+                                    [class.d-block]="addressTouched && addressesForm?.controls?.address_id?.errors?.required">
+                                    {{ "address_is_required" | translate}}
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <!-- Add New Address Form -->
+                    <form *ngIf="!userAddressess.length || willAddNewAddress" [formGroup]="addressForm">
+                        <div class="row">
+                                <div class="col-6">
+                                        <div class="form-group py-3">
+                                            <label for="" class="font-weight-bold"> {{"title" | translate }}</label>
+                                            <input formControlName="address_title" type="text" class="form-control" />
+                                            <div class="invalid-feedback my-2" [class.d-block]="addressForm?.controls?.address_title.touched && addressForm?.controls?.address_title?.errors?.maxlength">
+                                                {{'addressTitleisRequired'|translate}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                            <div class="form-group py-3">
+                                                <label for="" class="font-weight-bold"> {{"street"|translate}}</label>
+                                                <input formControlName="street" type="text" class="form-control" />
+                                                <ng-container *ngIf="addressForm?.controls?.street?.touched">
+                                                    <div class="invalid-feedback my-2" [class.d-block]="addressForm?.controls?.street?.errors?.required">
+                                                        {{"streetIsRequired"|translate}}
+                                                    </div>
+                                                    <div class="invalid-feedback my-2" [class.d-block]="addressForm?.controls?.street?.errors?.maxlength">
+                                                        {{"streetMustContain5_30Characters"|translate}}
+                                                    </div>
+                                                </ng-container>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex">
+                                                <div class="col-4">
+                                                    <div class="form-group py-3">
+                                                        <label for="" class="font-weight-bold"> {{'buildingNumber'|translate}}</label>
+                                                        <input formControlName="building_no" type="text" class="form-control" />
+                                                        <div class="invalid-feedback my-2" [class.d-block]="addressForm?.controls?.building_no?.touched && addressForm?.controls?.building_no?.errors?.required">
+                                                            {{"buildingNumberIsRequired"|translate}}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-4">
+                                                    <div class="form-group py-3">
+                                                        <label for="" class="font-weight-bold">{{'floorNumber'|translate}}</label>
+                                                        <input formControlName="floor_no" type="number" min="0" class="form-control" />
+                                                        <div class="invalid-feedback my-2" [class.d-block]="addressForm?.controls?.floor_no?.touched && addressForm?.controls?.floor_no?.errors?.required">
+                                                            {{"floorNumberIsRequired"|translate}}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-4">
+                                                    <div class="form-group py-3">
+                                                        <label for="" class="font-weight-bold">   {{ "apartmentNo" | translate}}</label>
+                                                        <input formControlName="apartment_no" type="text" class="form-control" />
+                                                        <div class="invalid-feedback my-2" [class.d-block]="addressForm?.controls?.apartment_no?.touched && addressForm?.controls?.apartment_no?.errors?.required">
+                                                           {{ "apartmentNoIsRequired" | translate}}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-6 dropdown-wrapper">
+                                                    <div class="form-group py-3">
+                                                        <label for="" class="font-weight-bold"> {{"District" | translate}}</label>
+                                                        <div class="dropdown py-3">
+                                                            <button
+                                                                (blur)="districtTouched = true"
+                                                                class="btn btn-secondary dropdown-toggle d-flex justify-content-between align-items-center"
+                                                                type="button"
+                                                                id="dropdownMenuButton"
+                                                                data-toggle="dropdown"
+                                                                [class.invalid]="districtTouched && addressForm?.controls?.district_id?.errors"
+                                                                [class.focused]="currentDistrict"
+                                                            >
+                                                            <span>{{currentDistrict?.name || ('district'|translate)}}</span>
+                                                                <span class="material-icons">
+                                                                    expand_more
+                                                                </span>
+                                                            </button>
+                                                            <div class="dropdown-menu">
+                                                                <a *ngFor="let district of districts" (click)="onDistrictChanged(district)" class="dropdown-item">{{district?.name}}</a>
+                                                            </div>
+                                                        </div>
+                                                        <div class="invalid-feedback my-2" [class.d-block]="districtTouched && addressForm?.controls?.district_id?.errors?.required">
+                                                           {{ "cityIsRequired" | translate}}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div *ngIf="areas.length" class="col-lg-6 dropdown-wrapper">
+                                                    <div class="dropdown">
+                                                        <button class="btn btn-secondary dropdown-toggle d-flex justify-content-between align-items-center" type="button" id="dropdownMenuButton" data-toggle="dropdown" [class.focused]="currentArea">
+                                                            <span>{{currentArea?.name || ('area' | translate)}}</span>
+                                                            <span class="material-icons">
+                                                                expand_more
+                                                            </span>
+                                                        </button>
+                                                        <div class="dropdown-menu">
+                                                            <a *ngFor="let area of areas" (click)="onAreaChanged(area)" class="dropdown-item">{{area?.name}}</a>
+                                                        </div>
+                                                    </div>
+                                                  
+                                                </div>
+                                            
+                                            <button type="button" *ngIf="willAddNewAddress || !userAddressess.length; else proceed"
+                                             [disabled]="!addressForm?.valid" (click)="saveAddress()" 
+                                            class="savee float-right w-25">
+                                          {{" save" | translate }}
+                                            </button>
+                                           <ng-template #proceed>
+                                               <button type="button" [disabled]="!addressesForm?.valid || (contactForm && !contactForm?.valid)" (click)="proceedToPayment()" mat-button
+                                                    class="">
+                                                  
+                                               </button>
+                                           </ng-template>
+                                        </div>
+                                        
+                    </form>
+                
+                
+                <div class="row">
+                    <div class="col-12">
+                        
+                     
+                        <mat-checkbox class="py-2">{{"Create_an_account?" | translate}} </mat-checkbox>
+                    </div>
+                </div>
+                <div class="row mt-5">
+                    <div class="col-12">
+                        <mat-checkbox class="py-5"> {{"Skip_to_a_diffrent_address?" | translate}}</mat-checkbox>
+                        <div class="py-3">
+                            <label for="" class="font-weight-bold">
+                                    {{"Order_notes_(optional)" | translate}}
+                            </label>
+                            <textarea class="w-100 mb-5" name="" id="" cols="30" rows="3"
+                             placeholder="{{'Notes_about_your_order_e.g_special_notes_to_delivery' | translate}}"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+          <!--new pay-->
+          <div class="col-lg-6">
+                <h3 class="font-weight-bold mb-5">{{"Your_order" | translate}}</h3>
+                <div class="d-flex justify-content-between">
+                    <h5 class="font-weight-bold">{{"Product"  | translate}}</h5>
+                    <h5 class="font-weight-bold">{{"Subtotal " | translate}}</h5>
+                </div>
+                <hr />
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <p class="text-muted">{{"Product"  | translate}} <span class="text-dark ml-1"> x 1</span></p>
+                        <p class="text-muted">
+                                {{"color"  | translate}} :BLlue <br />
+                                {{"size"  | translate}}: 42
+                        </p>
+                    </div>
+                    <p class="text-muted">$66</p>
+                </div>
+                <hr />
+               
+                <div class="d-flex justify-content-between">
+                    <h5 class="font-weight-bold">{{"Subtotal"  | translate}}</h5>
+                    <div class="col-6" [ngClass]="localStorage.getLang() === 'en' ? 'text-right' : 'text-left'">
+                        <p class="font-weight-bold ">$ {{cartManager.cartValues.value.total_price}}</p>
+                    </div>
+                     <!--<h5 class="font-weight-bold">$69</h5>-->
+                </div>
+                <hr />
+                <div class="d-flex justify-content-between">
+                    <h5 class="font-weight-bold">{{"Shipping" | translate}}</h5>
+                    <mat-radio-group aria-label="Select an option">
+                        <mat-radio-button value="1">
+                            <!--Flat rate:$10-->
+                            <div class="col-6">
+                                <p class="font-weight-bold">
+                                    {{cartManager.cartValues.value.shipping_rate}} $
+                                </p>
+                            </div>
+                        </mat-radio-button>
+                        <br />
+                        <mat-radio-button value="2">
+                            <div class="col-6">
+                                <p class="font-weight-bold price">
+                                    {{cartManager.cartValues.value.shipping_rate}} $
+                                </p>
+                            </div>
+                        </mat-radio-button>
+                    </mat-radio-group>
+                </div>
+                <hr />
+    
+                <div class="d-flex justify-content-between">
+                    <h5 class="font-weight-bold">{{"Total" | translate}}</h5>
+                    <div class="col-6" [ngClass]="localStorage.getLang() === 'en' ? 'text-right' : 'text-left'">
+                        <h4 class="font-weight-bold">{{cartManager.cartValues.value.final_total_price}} $</h4>
+                    </div>
+                </div>
+                <hr/>
+                <div>
+                    <mat-radio-group aria-label="Select an option">
+                        <mat-radio-button value="1">{{"Direct_bank_transfer" | translate}}</mat-radio-button>
+                        <br />
+                        <p class="text-muted ml-4 mt-3">
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                        </p>
+    
+                        <hr />
+                        <mat-radio-button value="2">{{"Check_Payments" | translate}}</mat-radio-button>
+                        <br />
+                        <hr />
+                        <mat-radio-button (change)="paymentMethodChanged('CASH')" checked="checked" name="radio" value="3">Cash on delivery</mat-radio-button>
+    
+                      
+                        <br />
+                        <hr />
+                        <div class="d-flex justify-content-between pb-3">
+                            <mat-radio-button value="2">{{"PayPal" | translate}}</mat-radio-button>
+                            <h6 class="paypal font-weight-bold">{{"what_is_PayPal" | translate}}?</h6>
+                        </div>
+                    </mat-radio-group>
+                    <p class="text-muted">Your personal data will be used to process your order, support your experience throughout this website, and for other purpose described in our <a href="#" class="text-dark"> privacy policy</a></p>
+                    <mat-checkbox>{{ "I_have_read_and_agree_to_the_website" | translate}} <a href="#" class="colorLink">{{"Terms_And_Conditions" | translate}}</a></mat-checkbox>
+                    <button (click)="placeOrder()" class="w-100 px-5 py-4">{{ "place_order" | translate}}</button>
+                </div>
+            </div>
+          <!--end pay-->
+        </div>
+    </div>

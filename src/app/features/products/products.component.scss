@@ -1,0 +1,237 @@
+@import '../../../styles-variables';
+
+ 
+ 
+cdk-virtual-scroll-viewport {
+  overflow: visible;
+  contain: initial !important;
+  display: initial;
+  position: initial;
+}
+
+dk-virtual-scroll-viewport .cdk-virtual-scroll-content-wrapper {
+  contain: inherit!important;
+}
+.product-list {
+    padding: 10px 0;
+    margin-top: 30px;
+    display: flex;
+    flex-wrap: wrap;
+}
+.product-card {
+  .mat-icon {
+    color: #141313;
+    margin: 0 0;
+    padding: 0 0;
+    font-size: 22px;
+  }
+
+  .circle {
+    border-radius: 50% !important;
+    width: 40px !important;
+    height: 40px !important;
+    background-color: #FFFFFF !important;
+  }
+}
+.product-details {
+  line-height: 40px;
+
+  
+
+  .productcart {
+    color: #373131;
+    font-size: 15px;
+    float: left;
+    font-weight: bolder;
+    width: 70%;
+    display: inline-block;
+  }
+
+  .price {
+    text-align: center;
+    width: 25%;
+    float: right;
+    font-weight: 600;
+    color: #88C058;
+    font-size: 15px;
+    letter-spacing: 1px;
+    display: inline-block;
+  }
+}
+
+.material-icons.color_white {
+  color: #FFFFFF;
+}
+
+mat-icon, mat-icon-button {
+  margin-right: 10px !important;
+  vertical-align: middle;
+}
+
+.mat-card {
+  border-top-right-radius: 5px;
+  border-top-left-radius: 5px;
+  padding: 5px 5px !important;
+  text-align: left;
+
+  &:hover {
+    opacity: 0.8;
+  
+    .product-actions {
+      display: flex !important;
+    }
+  }
+}
+
+img.mat-card-image {
+  width: 100%; 
+  margin: 0 0;
+  border-top-right-radius: 5px;
+  border-top-left-radius: 5px;
+  object-fit: cover;
+}
+
+.mini-cart {
+  mat-card {
+    margin: 4px;
+    height: 150px;
+    box-shadow: none;
+    border: 1px solid #FFFFFF;
+  }
+
+  .view-cart-btn {
+    border: 1px solid #ccc;
+  }
+
+  .card-desc {
+    height: 100%;
+
+    div, select {
+      margin: 6px;
+    }
+  }
+
+  .image-mage {
+    max-width: 150px;
+    max-height:130px;
+    margin: 0 0;
+    border-top-right-radius: 5px;
+    border-top-left-radius: 5px;
+    object-fit: cover;
+  }
+
+
+
+  .empty-cart-title {
+    color: var(--subtitle);
+    width: 100%;
+    text-align: center;
+    margin-top: 24px;
+  }
+
+  .cart-button {
+    width: 97%;
+    margin: 0 auto;
+  }
+
+  .mini-product-card {
+    box-shadow: none !important;
+    border-radius: 10px;
+  }
+
+
+
+
+  .mini-cart-amount {
+    text-align: end;
+    width: 100%;
+    margin: 10px;
+  }
+
+  .mini-cart-amount-title {
+    margin: 10px;
+  }
+
+  .delete-cart {
+    color: red;
+  }
+}
+.pagetoolbar {
+  margin-top: 20px; 
+  .mat-tab-link {
+    min-width: 120px;
+    padding: 0 15px;
+  }
+
+
+  .vertical-form {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+      }
+
+      .vertical-form > h1 {
+          margin-top: 16px;
+      }
+       
+
+      .price-quantity {
+          display: flex;
+          justify-content: space-around;
+          align-items: center;
+      }
+
+      .order-review-table th, td {
+          padding-right: 20px;
+      }
+
+      tr.mat-footer-row {
+          font-weight: bold;
+      }
+
+      .title {
+          display: flex;
+          justify-content: space-between;
+          align-items: flex-start;
+      }
+
+      .title button {
+          width: unset;
+      }
+
+      .input-group {
+          display: flex;
+          align-items: center;
+      }
+
+      .input-group > button {
+          width: unset;
+      }
+
+      .input-group .material-icons {
+          font-size: 21px;
+      }
+
+      /* Hide Up Down Buttons on Number Input */
+      /* Chrome, Safari, Edge, Opera */
+      input::-webkit-outer-spin-button,
+      input::-webkit-inner-spin-button {
+          -webkit-appearance: none;
+          margin: 0;
+      }
+
+      /* Firefox */
+      input[type=number] {
+          -moz-appearance: textfield;
+      }
+
+      .cursor-pointer {
+          cursor: pointer;
+      }
+  @media (max-width: map-get($grid-breakpoints, md)) {
+    .mat-tab-link {
+      min-width: 0;
+    }
+  }
+}

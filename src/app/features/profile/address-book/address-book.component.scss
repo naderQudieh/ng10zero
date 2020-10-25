@@ -1,0 +1,38 @@
+ .a1color {
+     text-decoration: none;
+     color: var(--light-green) !important;
+
+ }
+
+ .a1color::after {
+     content: "";
+     position: relative;
+     top: 0px;
+     right: 0px;
+     width: 5px;
+     height: 5px;
+     border: 1px solid #ced4daa1;
+     margin: 0px 40px;
+
+ }
+
+
+ .a2color {
+     text-decoration: none;
+     color: red !important;
+ }
+
+ p {
+     font-size: 1.2rem;
+ }
+
+ a {
+     cursor: pointer;
+ }
+
+ button {
+     background-color: burlywood;
+     width: 13rem;
+     color: #fff;
+     font-size: 1.25rem;
+ }

@@ -1,0 +1,22 @@
+.card {
+    width: 90%;
+    height: 400px;
+    background-image: url("src/assets/hankasset/c1.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    cursor:pointer;
+}
+.card:hover {
+    background-image: url("src/assets/hankasset/c2.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+span {
+    background-color: burlywood;
+    color: #fff;
+    width: 45px;
+    padding: 2px;
+    margin: 20px;
+    text-align: center;
+    border-radius: 5px;
+}

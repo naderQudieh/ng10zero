@@ -1,0 +1,39 @@
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <h3 class="text-dark font-weight-bold mb-4">{{'Recent_Orders' | translate}}</h3>
+        </div>
+    </div>
+    <div *ngIf="ordersList?.length; else placeholder" class="row">
+        <div class="col-12">
+            <table class="table text-center">
+                <thead>
+                    <th>{{"orderNo"|translate}}</th>
+                    <th>{{"date"|translate}}</th>
+                    <th>{{"total"|translate}}</th>
+                    <th>{{"status"|translate}}</th>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of ordersList" class="border-bottom">
+                        <td>{{item.address_id}}</td>
+                        <td>{{item.date | date: 'dd/MM/yyyy'}}</td>
+                        <td>{{item.final_total_price}} {{"LE"|translate}} </td>
+                        <td class="color">{{item.status}}</td>
+                        <td href="#">
+                            <a [routerLink]="item.order_id">{{"orderDetails"|translate}}</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <ng-template #placeholder>
+        <div class="row">
+            <div class="col-12">
+                <h4 class="text_dark font-weight-bold mt-3">{{"YouHaveNotOrderedAnythingRecently"|translate}}</h4>
+                <!-- <p class="mb-4">Continue Shopping to make your first order.</p> -->
+                <button type="button"  mat-button>{{"shopNow"|translate}}</button>
+            </div>
+        </div>
+    </ng-template>
+</div>

@@ -1,0 +1,31 @@
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <h3 class="text-dark font-weight-bold mb-4">{{'your_address'|translate}}</h3>
+            <hr>
+        </div>
+    </div>
+    <div *ngIf="userAddressess?.length; else placeholder" class="row">
+        <div *ngFor="let address of userAddressess" class="col-12 mb-4">
+            <div class="border rounded p-4">
+                <h4>{{address.address_title}}</h4>
+                <p>{{address.building_no}}, {{address.street}}, {{address.district_name}}, {{address.city}}</p>
+                <p>{{address.floor_no}} {{'floor'|translate}}, {{'apartment'|translate}} {{address.apartment_no}}</p>
+                <div>
+                    <a [routerLink]="address.address_id" 
+                    [state]="{ addresses: userAddressess }"
+                    class="a1color">{{'editDetails'|translate}} </a>
+                    <a (click)="deleteAddress(address.address_id)" class="a2color">{{'deleteAddress'|translate}} </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <ng-template #placeholder>
+        <div class="row">
+            <div class="col-12">
+                <p class="light my-5">{{'you_haven_added_any_addresses'|translate}}.</p>
+            </div>
+        </div>
+    </ng-template>
+    <button routerLink="/profile/address/add" type="button" class="float-right" mat-button>{{'addNewAddress'|translate}}</button>
+</div>

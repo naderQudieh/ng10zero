@@ -1,0 +1,11 @@
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <div class="cont d-flex px-2">
+                <input [value]="promoCode" (change)="promoCode = $event.target.value" type="text" class="w-75 form-control" placeholder="add promo code">
+                <button type="button" (click)="validatePromoCode()" class="ml-2 text-white flex-grow-1" > {{"Add" | translate}}</button>
+            </div>
+            
+        </div>
+    </div>
+</div>

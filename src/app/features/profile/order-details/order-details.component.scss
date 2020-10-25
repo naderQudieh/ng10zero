@@ -1,0 +1,41 @@
+button {
+    background-color: burlywood;
+    border-radius: 0.5rem;
+    border: 1px solid transparent;
+    padding-left: 30px;
+    padding-right: 30px;
+    width: 100%;
+}
+
+tbody, tfoot {
+    font-size: 1.25rem;
+}
+
+tbody, tfoot {
+    color: #707070;
+}
+
+thead, .small {
+    font-size: 1rem;
+}
+
+.p1 {
+    color: var(--light-grey);
+}
+
+.table td {
+    border: none;
+}
+
+th, td {
+    text-align: center;
+    width: 25%;
+}
+
+td:first-child {
+    text-align: left;
+}
+
+#total td {
+    font-size: 1.5rem;
+}

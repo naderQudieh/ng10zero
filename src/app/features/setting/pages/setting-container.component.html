@@ -1,0 +1,41 @@
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12">
+            <h1>{{ 'Setting_Setting' | translate }}</h1>
+        </div>
+    </div> 
+    <ng-container>
+
+
+        <div class="row">
+            <div class="col-md-6" [ngClass]="routeAnimationsElements">
+                <mat-icon mat-list-icon>
+                    format_color_fill
+                </mat-icon>
+
+                <mat-form-field style="width:300px; display: inline-block; margin-right: 40px;">
+                    <mat-select [(ngModel)]="selectedTheme" (selectionChange)="onSelectTheme()">
+                        <mat-option *ngFor="let theme of themes" [value]="theme">
+                            {{ 'anms.setting.themes.' + theme.label | translate }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div> 
+
+        <div class="row">
+            <div class="col-md-6" [ngClass]="routeAnimationsElements">
+                <mat-icon mat-list-icon>
+                    language
+                </mat-icon>
+
+                <mat-form-field style="width:300px; display: inline-block; margin-right: 40px;">
+                    <mat-select [(ngModel)]="selectedLanguage" (selectionChange)="onLanguageSelect()">
+                        <mat-option *ngFor="let language of languages" [value]="language">{{language.label}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div> 
+
+    </ng-container>
+</div>

@@ -1,0 +1,116 @@
+::placeholder{color:lightgray; padding:0.5rem;}
+h2 {
+    font-size: 26px;
+    margin: 7px 0px 10px;
+    color: var(--marine-blue);
+}
+
+h4 {
+    color: var(--marine-blue);
+}
+
+
+.form-control {
+    border-width: 2px;
+
+    input {
+        color: var(--black);
+        font-size: 1.2rem;
+    }
+}
+
+#addAddress {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+    color: var(--marine-blue);
+    cursor: pointer;
+    font-size: 1.2rem;
+}
+
+::placeholder,
+button.btn.btn-secondary.dropdown-toggle span,
+.dropdown-menu.show a {
+    color: rgb(220, 220, 220);
+    font-size: 1.2rem;
+}
+
+.dropdown-wrapper {
+    margin-bottom: 1rem;
+}
+
+.dropdown-menu {
+    max-height: 10.625rem;
+    overflow: auto;
+}
+
+.dropdown-menu.show a {
+    color: var(--black);
+    height: 2rem;
+    line-height: 2rem;
+}
+
+button :not(.dropdown-toggle),
+.submit {
+    background-color: var(--marine-blue);
+    border-radius: 0.5rem;
+    border: 1px solid transparent;
+    font-size: 1.4rem;
+    padding: 0 1rem;
+}
+
+button.btn.btn-secondary.dropdown-toggle,
+button.dropdown-toggle {
+    background-color: transparent;
+    border-radius: 0.5rem;
+    border-width: 2px;
+    border-color: gainsboro;
+    color: rgb(220, 220, 220);
+
+    &.focused span {
+        color: var(--black);
+    }
+
+    &:focus {
+        box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, .25);
+        border-color: #80bdff;
+    }
+
+    span {
+        padding: 0;
+        background-color: unset;
+    }
+}
+
+.back {
+    cursor: pointer;
+    font-size: 1.4rem;
+
+    img {
+        width: 2rem;
+    }
+}
+.savee{height: 5px;
+    margin-top: 54px;
+    border-radius: 10px;}
+button , .savee{color:#fff; background-color: black; border:1px solid transparent;}
+button:hover , .savee:hover {background-color:burlywood}
+.colorLink{color:burlywood;
+text-decoration: underline;}
+.paypal{text-decoration: underline;}
+
+@media (max-width: 575px) {
+    .buttons {
+        margin-top: 2rem;
+        flex-direction: column;
+
+        .back,
+        button {
+            width: 100%;
+        }
+
+        button {
+            margin-top: 1rem;
+        }
+    }
+}
