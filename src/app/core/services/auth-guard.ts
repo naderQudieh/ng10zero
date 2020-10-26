@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { CanActivate, ActivatedRouteSnapshot, NavigationExtras, RouterStateSnapshot, CanLoad, Route , UrlTree, Router } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 import { Observable, of } from 'rxjs';
-import { GlobalService } from './globalService';
+import { EventService } from './event.service';
 import { AuthService } from './auth.service';
 import { mergeMap, take, map } from 'rxjs/operators';
 import { log } from 'util';
@@ -11,7 +11,7 @@ import { log } from 'util';
 })
 export class AuthGuard  implements CanActivate {
     isAuthenticated: boolean;
-    constructor(private authService: AuthService, private router: Router , private globalVarSrv: GlobalService,) {
+    constructor(private authService: AuthService, private router: Router , private evnService: EventService,) {
       
        // this.store.pipe(select(selectAuthState), take(1))
        //             .subscribe((auth) => {
@@ -24,7 +24,7 @@ export class AuthGuard  implements CanActivate {
   
     canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree { 
         const returnurl: string = state.url;
-        this.globalVarSrv.isAuthenticated.subscribe((isAuth) => {
+        this.evnService.isAuthenticated.subscribe((isAuth) => {
             if (!isAuth) {
                 console.log(isAuth);
                // this.router.navigate(['login'])

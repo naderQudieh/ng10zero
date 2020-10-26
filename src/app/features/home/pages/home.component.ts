@@ -5,7 +5,7 @@ import { of, timer, combineLatest,BehaviorSubject, Observable } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { LanguageService } from '../../../shared/services/language.service';
 import { CanActivate, ActivatedRoute, ActivatedRouteSnapshot, RouterStateSnapshot, CanLoad, Route, UrlTree, Router } from '@angular/router';
-import { SnackbarService, GlobalService } from 'src/app/core/services';
+import { SnackbarService, EventService } from 'src/app/core/services';
 import { HomeService } from '../home.service';
 
 @Component({
@@ -20,7 +20,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     limit = 20;
     page = 1;
   constructor(private route: ActivatedRoute,  translate: TranslateService,
-    private gService: GlobalService, private snackbarService: SnackbarService,
+    private evnService: EventService, private snackbarService: SnackbarService,
     private homeService: HomeService, 
         private router: Router) { 
     }
@@ -63,14 +63,14 @@ export class HomeComponent implements OnInit, OnDestroy {
     }
     goToBar() {
         
-        this.gService.showBar();
+        this.evnService.showBar();
     }
     goToShowSpinner() {
-        this.gService.showSpinner();
-        //this.gService.getSpinnerValue().subscribe(lang => {
+        this.evnService.showSpinner();
+        //this.evnService.getSpinnerValue().subscribe(lang => {
         //    of('dummy').pipe(delay(50)).subscribe(val => {
         //        //alert('dummy');
-        //       // this.gService.hideBar();
+        //       // this.evnService.hideBar();
         //    });
         //}) 
     }

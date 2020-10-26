@@ -5,7 +5,7 @@ import { CreditCard } from "../../credit-card";
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { User } from '../../user';
 import { CreditCardValidators } from 'angular-cc-library';
-import { GlobalService } from '../../../../core/services';
+import { EventService } from '../../../../core/services';
 import { Observable, of, Subscription } from 'rxjs';
 import { filter, delay,map, catchError, switchMap, debounceTime,   take } from 'rxjs/operators';
 @Component({
@@ -27,10 +27,10 @@ export class CheckoutCreditComponent implements OnInit {
   constructor(
     public checkoutPassService: CheckoutPassService,
     private router: Router,
-    private formBuilder: FormBuilder, private globalService: GlobalService,
+    private formBuilder: FormBuilder, private eventService: EventService,
   ) {
 
-    globalService.getSpinnerValue().subscribe((e) => {
+    eventService.getSpinnerValue().subscribe((e) => {
       this.showSpinner$ = of(e);
     });
     this.creditCardFormGroup = this.formBuilder.group({
@@ -75,12 +75,12 @@ export class CheckoutCreditComponent implements OnInit {
     }
  
     if (this.creditCardFormGroup.valid) {
-      this.globalService.showSpinner();
+      this.eventService.showSpinner();
       var tmpCreditCard = new CreditCard(this.creditCardFormGroup.value);
 
       this.checkoutPassService.preauthCredit(tmpCreditCard).pipe(
         map((res) => {
-          this.globalService.hideSpinner();
+          this.eventService.hideSpinner();
           console.log("response data from credit : ", res.data);
           if (res.data.result != "ACCEPTED") {
             this.errorMessage = res.data.result;
@@ -95,7 +95,7 @@ export class CheckoutCreditComponent implements OnInit {
           }
         }),
         catchError((err: any) => {
-          this.globalService.hideSpinner();
+          this.eventService.hideSpinner();
           if (err.response) {
             if (err.response.status == 400) {
               console.log("error : ", err.response);

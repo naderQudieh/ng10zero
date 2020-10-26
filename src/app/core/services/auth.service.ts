@@ -7,7 +7,7 @@ import { catchError, delay, tap, map } from 'rxjs/operators';
 import { Observable, throwError, Subscription, Subject, BehaviorSubject, of } from 'rxjs';
 import { LocalStorageService } from './local-storage.service';
 import { UserInfo, AuthToken, UserClaims, AuthState } from '../auth.model';
-import { GlobalService } from './globalService';
+import { EventService } from './event.service';
  
 
  
@@ -27,7 +27,7 @@ export class AuthService {
     // store the URL so we can redirect after logging in
     redirectUrl: string = "";
 
-    constructor( private gStoreService: GlobalService, protected http: HttpClient, public jwtHelper: JwtHelperService,
+    constructor( private gStoreService: EventService, protected http: HttpClient, public jwtHelper: JwtHelperService,
         protected storageService: LocalStorageService) {
         this.redirectUrl = "";
         const savedCredentials = sessionStorage.getItem(TOKEN_INFO) || localStorage.getItem(TOKEN_INFO);

@@ -4,7 +4,7 @@ import { map, catchError } from 'rxjs/operators';
 import { Observable, throwError } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import { checkoutServiceConstants } from '../../../core/constants/api.constants';
-import { Category, Checkout, Order, Cart, Product } from '../product.model';
+import { Category, Checkout, Order, CartItem, Product } from '../product.model';
 import { CreditCard } from "../credit-card";
 import { Transaction } from "../transaction";
 import { User } from "../user";
@@ -24,7 +24,7 @@ export class CheckoutPassService {
   public user: User;
   //private because must be set through setUserSocial
   private userSocial: any;
-  public cart: Cart = new Cart();
+  public cart: CartItem = new CartItem();
   private preAuthCredit: any;
   transaction: Transaction;
 

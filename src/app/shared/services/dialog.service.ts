@@ -10,7 +10,7 @@ enum ConfirmTextCode {
 @Injectable({
   providedIn: 'root',
 })
-export class DialogService {
+export class DialoevnService {
   dialogReff: any;
   constructor(public dialog: MatDialog) {}
 

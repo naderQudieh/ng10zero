@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
 import { ROUTE_ANIMATIONS_ELEMENTS, routeAnimations } from '../../../../core/core.module';
-import { Product,Cart } from '../../product.model';
+import { Product, CartItem } from '../../product.model';
 import {
   AddToCart, GetProducts, RemoveFromCart, ProductsState, CartState, selectProducts 
 } from '../../store';
@@ -23,11 +23,11 @@ export class ProductComponent implements OnInit {
 
   addToCart(product: Product) {
     let count = 1;
-    let _price = product.price; 
-    const cart : Cart = {
+    let _price = product.unit_price; 
+    const cart: CartItem = {
       product: product,
       count: count,
-      total_value: product.price * count
+      total_value: product.unit_price * count
     };
     
     this.store.dispatch(new AddToCart(cart));

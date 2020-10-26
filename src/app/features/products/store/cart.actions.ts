@@ -1,5 +1,5 @@
 import {Action} from '@ngrx/store';
-import { Cart } from '../product.model';
+import { CartItem } from '../product.model';
 
 export enum ECartActions {
     GetCart = '[Cart] Get cart',

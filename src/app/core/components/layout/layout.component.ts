@@ -5,7 +5,7 @@ import { Subscription } from 'rxjs';
 
 import { environment } from '../../../../environments/environment';
 import { AuthService } from '../../services/auth.service';
-import { GlobalService } from '../../services/globalservice';
+import { EventService } from '.../../services/EventService;
 import { AuthGuard } from 'src/app/core/services/auth-guard';
 
 @Component({
@@ -25,7 +25,7 @@ export class LayoutComponent implements OnInit, OnDestroy, AfterViewInit {
 
     constructor(private changeDetectorRef: ChangeDetectorRef,
         private media: MediaMatcher,
-        public globalService: GlobalService,
+        public eventService: EventService,
         private authService: AuthService,
         private authGuard: AuthGuard) {
 

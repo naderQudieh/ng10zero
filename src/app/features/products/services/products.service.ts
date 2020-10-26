@@ -4,7 +4,7 @@ import {HttpClient, HttpHeaders, HttpErrorResponse} from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Observable, throwError } from 'rxjs';
 import { tap, retry , catchError, map } from 'rxjs/operators';
-import { Cart, Product, apsResponse } from '../product.model';
+import { CartItem, Product, apsResponse } from '../product.model';
 import { PRODUCT_URL } from '../../../core/constants/api.constants';
 
 @Injectable()
@@ -31,7 +31,7 @@ export class ProductService {
     );
   }
   getProducts(page = 1, limit = 20): Observable<apsResponse> {
-    const url = `${this.BASE_URL}`;
+    const url = `${this.BASE_URL}/all`;
     return this.http.get<apsResponse>(url, {headers: this.headers}).pipe(
       catchError(this.errorMgmt)
     );

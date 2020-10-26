@@ -36,7 +36,7 @@ export class ConfirmationComponent implements OnInit {
   promoCode = '';
   paymentMethod = 'CASH';
 
-  constructor(  private configService: ConfigurationsService,
+  constructor(  private confievnService: ConfigurationsService,
     private formBuilder: FormBuilder,
     private userManager: UserManager,
     public cartManager: CartManager,
@@ -109,7 +109,7 @@ export class ConfirmationComponent implements OnInit {
     }
   
     getDistricts() {
-      this.configService.getDistrictsTree().subscribe(res => {
+      this.confievnService.getDistrictsTree().subscribe(res => {
         this.districts = res;
       });
     }

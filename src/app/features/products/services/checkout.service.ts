@@ -4,7 +4,7 @@ import { map,catchError } from 'rxjs/operators';
 import { Observable, throwError } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import { checkoutServiceConstants } from '../../../core/constants/api.constants';
-import { Category, Checkout, Order, PaymentDetail, Cart, Product } from '../product.model';
+import { Category, Checkout, Order, PaymentDetail, CartItem, Product } from '../product.model';
 import { ORDER_URLS } from '../../../core/constants/api.constants';
  
 const httpOptions = {
@@ -84,7 +84,22 @@ export class CheckoutService {
     console.log(`${this.apiUrl}mail/send`);
     return this.http.post('http://localhost:4000/api/mail/send', data).subscribe();
   }
+  chargeCard(token: string) {
+    const headers = new Headers({ token: token, amount: this.getTotal() });
+    this.http
+      .post(
+        "http://13.126.207.114:9088/payment/charge",
+        {},
+        { headers: headers }
+      )
+      .subscribe(resp => { });
+  }
 
+  refundCard() {
+    this.http
+      .post("http://13.126.207.114:9088/payment/refund", {})
+      .subscribe(res => { });
+  }
   postPaymentDetail() {
     return this.http.post(this.apiUrl + 'api/PaymentDetail', this.formData);
   }

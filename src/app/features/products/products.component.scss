@@ -13,10 +13,17 @@ dk-virtual-scroll-viewport .cdk-virtual-scroll-content-wrapper {
   contain: inherit!important;
 }
 .product-list {
-    padding: 10px 0;
+    padding: 0 0;
     margin-top: 30px;
     display: flex;
     flex-wrap: wrap;
+}
+
+.checkout-card {
+  max-width: 600px !important;
+  margin: auto;
+
+ 
 }
 .product-card {
   .mat-icon {
@@ -33,31 +40,7 @@ dk-virtual-scroll-viewport .cdk-virtual-scroll-content-wrapper {
     background-color: #FFFFFF !important;
   }
 }
-.product-details {
-  line-height: 40px;
-
-  
-
-  .productcart {
-    color: #373131;
-    font-size: 15px;
-    float: left;
-    font-weight: bolder;
-    width: 70%;
-    display: inline-block;
-  }
-
-  .price {
-    text-align: center;
-    width: 25%;
-    float: right;
-    font-weight: 600;
-    color: #88C058;
-    font-size: 15px;
-    letter-spacing: 1px;
-    display: inline-block;
-  }
-}
+ 
 
 .material-icons.color_white {
   color: #FFFFFF;
@@ -66,12 +49,13 @@ dk-virtual-scroll-viewport .cdk-virtual-scroll-content-wrapper {
 mat-icon, mat-icon-button {
   margin-right: 10px !important;
   vertical-align: middle;
+  margin: auto
 }
 
 .mat-card {
   border-top-right-radius: 5px;
   border-top-left-radius: 5px;
-  padding: 5px 5px !important;
+  padding: 15px 5px !important;
   text-align: left;
 
   &:hover {
@@ -134,13 +118,7 @@ img.mat-card-image {
     margin: 0 auto;
   }
 
-  .mini-product-card {
-    box-shadow: none !important;
-    border-radius: 10px;
-  }
-
-
-
+ 
 
   .mini-cart-amount {
     text-align: end;

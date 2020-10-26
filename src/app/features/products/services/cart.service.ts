@@ -7,12 +7,21 @@ import { environment } from '../../../../environments/environment';
 import { catchError, delay, tap, map } from 'rxjs/operators';
 import { Observable, throwError, Subscription, Subject, BehaviorSubject, of } from 'rxjs';
 import { AppState } from '../../../core/app.state';
-import { Cart, Product } from '../product.model';
+import { CartItem, CartSummary, Product } from '../product.model';
 import { cartServiceConstants } from '../../../core/constants/api.constants';
 
 @Injectable()
 export class CartService {
-  public CartItemsCount = new BehaviorSubject<number>(this.CurrentCartTotalCount()); 
+
+  cartSummary: CartSummary = {
+    cart_qty: 0,
+    cart_total: 0,
+    total_payable: 0,
+    discount: 0,
+    cartItems: []
+  }
+
+  public CartItemsCount = new BehaviorSubject<CartSummary>(this.CurrentCartSummary()); 
   
   constructor( private http: HttpClient,) { 
    
@@ -29,15 +38,15 @@ export class CartService {
     return this.http.post(cartServiceConstants.getCartCalculations, data);
   }
 
-  addToCart(item: Cart): Observable<Cart> {
-    console.log(item);
-    let localitems: Cart[] = this.getCartItems();
-    console.log(localitems);
+  addToCart(item: CartItem): Observable<CartItem> {
+   
+    let localitems: CartItem[] = this.getCartItems();
+  
     var _itemsfound = localitems.filter(function (cartItem) {
-      console.log(cartItem);
+     
       return cartItem.product.product_Id ==  item.product.product_Id;
     });
-    console.log(_itemsfound);
+ 
     if (_itemsfound == null || _itemsfound.length == 0) {
      
       localitems.push(item)
@@ -48,8 +57,8 @@ export class CartService {
     return of(item);
   }
 
-  getCart(): Observable<Cart[]> {
-    let localitems: Cart[] = this.getCartItems(); 
+  getCart(): Observable<CartItem[]> {
+    let localitems: CartItem[] = this.getCartItems(); 
     return of(localitems);
   }
 
@@ -58,17 +67,17 @@ export class CartService {
   }
  
 
-  removeFromCart(id: number): Observable<Cart[]> {
-    let cart: Cart[] = this.getCartItems();
+  removeFromCart(id: number): Observable<CartItem[]> {
+    let cart: CartItem[] = this.getCartItems();
     const newCart = cart.splice(id, 1);
     this.setCartTotalCount(cart);
     return of(newCart);
   }
 
   removeItem(id: number): void {
-    let cart: Cart[] = this.getCartItems();
+    let cart: CartItem[] = this.getCartItems();
     for (let i = 0; i < cart.length; i++) {
-      let item: Cart =  cart[i] ;
+      let item: CartItem =  cart[i] ;
       if (item.product.product_Id   === id) {
         cart.splice(i, 1);
         break;
@@ -77,23 +86,34 @@ export class CartService {
     this.setCartTotalCount(cart);
   }
 
-  private CurrentCartTotalCount(): number {
-    let cart: Cart[] = this.getCartItems();
-    let sum: number = 0;
-    let _count = 0;
-    cart.forEach(a => {
+  private CurrentCartSummary(): CartSummary {
+    let cartitems: CartItem[] = this.getCartItems();
+    let cart_qty: number = 0;
+    let cart_total: number = 0;
+    let _count = 0, _price = 0;
+    cartitems.forEach(a => {
       if (typeof (a.count) === 'string') {
         _count = parseInt(a.count);
       } else {
         _count = a.count
       }
 
-      sum += _count;
+      if (typeof (a.product.unit_price) === 'string') {
+        _price = parseInt(a.product.unit_price);
+      } else {
+        _price = a.product.unit_price
+      }
+
+      cart_total += _price;
+      cart_qty += _count;
     });
-    return sum || 0; 
+    this.cartSummary.cartItems = cartitems;
+    this.cartSummary.cart_total = cart_total;
+    this.cartSummary.cart_qty = cart_qty;
+    return this.cartSummary;
   }
 
-  private getCartItems(): Cart[] {
+  private getCartItems(): CartItem[] {
     try {
       let cart: any[] = JSON.parse(localStorage.getItem('cart'))
       return cart|| [];
@@ -101,30 +121,41 @@ export class CartService {
       return [];
     }
   }
-  setCartTotalCount(cart: Cart[]): void { 
-    localStorage.setItem('cart', JSON.stringify(cart));
-    let sum: number = 0;
-    let _count = 0;
-    cart.forEach(a => {
+  setCartTotalCount(cartitems: CartItem[]): void { 
+    localStorage.setItem('cart', JSON.stringify(cartitems)); 
+    let cart_qty: number = 0;
+    let cart_total: number = 0;
+    let _count = 0, _price = 0;
+    cartitems.forEach(a => {
       if (typeof (a.count) === 'string') {
         _count = parseInt(a.count);
       } else {
         _count = a.count
       }
-     
-      sum += _count;
+
+      if (typeof (a.product.unit_price) === 'string') {
+        _price = parseInt(a.product.unit_price);
+      } else {
+        _price = a.product.unit_price
+      }
+
+      cart_total += _price;
+      cart_qty += _count;
     });
+    this.cartSummary.cartItems = cartitems;
+    this.cartSummary.cart_total = cart_total;
+    this.cartSummary.cart_qty = cart_qty;
    
-    this.CartItemsCount.next(sum);
+    this.CartItemsCount.next(this.cartSummary);
   }
 
 
-  getCartTotalItems(): Observable<number> { 
+  getCartTotalItems(): Observable<CartSummary> { 
     return this.CartItemsCount.asObservable();
   }
 
   increaseQuatity(productid) {
-    let cart: Cart[] = this.getCartItems();
+    let cart: CartItem[] = this.getCartItems();
     let position = cart.findIndex(x => x.product.product_Id == productid);
     if (position != -1) {
       cart[position].count++;
@@ -135,7 +166,7 @@ export class CartService {
   }
 
   updateCart(productid, qty): Observable<boolean> { 
-    let cart: Cart[] = this.getCartItems();
+    let cart: CartItem[] = this.getCartItems();
   
     let position = cart.findIndex(x => x.product.product_Id == productid);
     if (position != -1) {
@@ -148,7 +179,7 @@ export class CartService {
     return of(true);
   }
   decreaseQuantity(productid) {
-    let cart: Cart[] = this.getCartItems();
+    let cart: CartItem[] = this.getCartItems();
     let position = cart.findIndex(x => x.product.product_Id == productid);
 
     if (position != -1) {

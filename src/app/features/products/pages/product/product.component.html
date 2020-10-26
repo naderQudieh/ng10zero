@@ -1,11 +1,11 @@
-<div class="product-card" fxFlex="100"   > 
-  <mat-card class="mat-elevation-z4"> 
+<div  fxFlex="100"   > 
+  <mat-card  > 
   
     <img mat-card-image routerLink="/product-detail" [alt]="product.name" [src]="product.imge_url">
     <mat-card-content>
       <div class="product-details">
         <span class="name">{{product.name}}</span>
-        <span class="price">${{product.price }}</span>
+        <span class="price">${{product.unit_price }}</span>
       </div>
       <div class="product-description">
         <p>{{ product.description }}</p>

@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
 import { Observable,  of, Subscription } from 'rxjs';
 import { filter, delay, debounceTime, map, take } from 'rxjs/operators';
 import { environment as env } from '../../environments/environment';
-import { GlobalService } from '../core/services';
+import { EventService } from '../core/services';
 import { routeAnimations  } from '../core/core.module';
 import { BidiModule, Directionality, Direction } from '@angular/cdk/bidi'
 import { OverlayContainer } from '@angular/cdk/overlay';
@@ -64,7 +64,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
 
     constructor(dir: Directionality, private cdRef: ChangeDetectorRef,
         private media: MediaMatcher,
-        @Inject(DOCUMENT) private document: Document, private globalService: GlobalService,
+        @Inject(DOCUMENT) private document: Document, private eventService: EventService,
         private overlayContainer: OverlayContainer, private router: Router ) {
 
         this.mobileQuery = this.media.matchMedia('(max-width: 1000px)');
@@ -73,9 +73,9 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
         this.mobileQuery.addListener(this._mobileQueryListener);
 
         // this.router.navigate([''])
-        this.showLoadingBar$ = globalService.getBarValue().pipe(delay(30));
+        this.showLoadingBar$ = eventService.getBarValue().pipe(delay(30));
 
-        globalService.getSpinnerValue().subscribe((e) => { 
+        eventService.getSpinnerValue().subscribe((e) => { 
             this.showSpinner$ = of(e); 
          });
        
@@ -86,9 +86,9 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
         //    console.log('dir changed');
         //    this.isRtl2 = drc;
         //});
-        this.isAuthenticated$ = this.globalService.getIsAuthenticated(); 
-        this.languages = this.globalService.getLanguageList();
-        this.themes = this.globalService.getThemeList();
+        this.isAuthenticated$ = this.eventService.getIsAuthenticated(); 
+        this.languages = this.eventService.getLanguageList();
+        this.themes = this.eventService.getThemeList();
          
          
     }
@@ -99,18 +99,18 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
 
     
     ngOnInit(): void {
-        this.globalService.getIsAuthenticated().subscribe(auth => {
+        this.eventService.getIsAuthenticated().subscribe(auth => {
             this.isLoggedIn = auth;
         })
 
-        this.globalService.UserLanguage.subscribe(lang => { 
+        this.eventService.UserLanguage.subscribe(lang => { 
             let applang = this.languages.filter(item => {
                 return item.value  == lang ;
             }); 
             this.selectedLanguage = applang[0]; 
         }) 
 
-        this.globalService.Userthemes.subscribe(theme => { 
+        this.eventService.Userthemes.subscribe(theme => { 
             let apptheme = this.themes.filter(item => { 
                 return item.value == theme.value;
             }); 
@@ -130,13 +130,13 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     }
     onSelectTheme() {
         this.cdRef.detectChanges();
-        this.globalService.setTheme(this.selectedTheme );
+        this.eventService.setTheme(this.selectedTheme );
     } 
     
 
     onLanguageSelect() {
         this.cdRef.detectChanges();
-        this.globalService.setLanguage(this.selectedLanguage['value']); 
+        this.eventService.setLanguage(this.selectedLanguage['value']); 
     }
 
    
@@ -146,7 +146,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
     onLogoutClick() {
-         this.globalService.setAuthenticated(false);
+         this.eventService.setAuthenticated(false);
          //this.store.dispatch(new fromActions.LogOut());
     }
 

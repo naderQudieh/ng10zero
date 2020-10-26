@@ -11,7 +11,7 @@
           <select style="margin-right:20px" id="cars" (ngModelChange)="updateCart($event,cart)" [(ngModel)]="cart.count">
             <option *ngFor="let opt of cartQtyNumber" [value]="opt">{{opt}}</option>
           </select> 
-          <span style="margin-right:10px">$ {{cart.product.price}}</span>
+          <span style="margin-right:10px">$ {{cart.product.unit_price}}</span>
           <a style="margin-right:20px" mat-icon-button (click)="removeFromCart($event, cart)" color="warn">
             Delete
           </a>
@@ -22,7 +22,7 @@
        
       </div>
       <div fxFlex="10">
-        <div style="font-weight:bolder">$ {{cart.count * cart.product.price}}</div>
+        <div style="font-weight:bolder">$ {{cart.count * cart.product.unit_price}}</div>
       </div>
     </mat-card>
     <div fxLayout="row">

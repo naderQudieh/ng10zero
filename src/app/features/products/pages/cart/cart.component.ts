@@ -20,7 +20,7 @@ import {
   CleanCart, GetCart, getCartState,
   AddToCart, GetProducts, ProductsState, CartState, selectProducts 
 } from '../../store';
-import { Product, Cart } from '../../product.model';
+import { Product, CartItem } from '../../product.model';
 import { CartService, CheckoutService, ProductService } from '../../services';
 
 @Component({
@@ -39,23 +39,19 @@ import { CartService, CheckoutService, ProductService } from '../../services';
 })
 export class CartComponent implements OnInit, OnDestroy {
   cartQtyNumber = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-  cartsList: Cart[];
+  cartsList: CartItem[];
   cartQty: number;
   cartValue: number;
   constructor(private cartService: CartService, private formBuilder: FormBuilder) { }
 
   ngOnInit(): void {  
-    this.cartService.getCart().subscribe(cartitems => {
-      console.log(cartitems);
-      this.cartsList = cartitems; 
-      this.cartQty = this.CurrentCartQty();
-      this.cartValue = this.CurrentCartValue();
+    this.cartService.getCart().subscribe(cartitems => { 
+      this.cartsList = cartitems;  
     })
     
-    this.cartService.CartItemsCount.subscribe(total => {
-      console.log(total);
-      this.cartQty = this.CurrentCartQty();
-      this.cartValue = this.CurrentCartValue();
+    this.cartService.CartItemsCount.subscribe(cartsummary => { 
+      this.cartValue = cartsummary.cart_total
+      this.cartQty = cartsummary.cart_qty 
     })
   }
 
@@ -72,7 +68,7 @@ export class CartComponent implements OnInit, OnDestroy {
 
   }
 
-  updateCart(qty: any, cart: Cart) { 
+  updateCart(qty: any, cart: CartItem) { 
     let productid = cart.product.product_Id;
     let idxUpdate = -1;
     for (let i = 0; i < this.cartsList.length; i++) {
@@ -83,13 +79,13 @@ export class CartComponent implements OnInit, OnDestroy {
       }
     }
     if (idxUpdate > -1) {
-      this.cartService.updateCart(productid, qty)
-      this.cartQty = this.CurrentCartQty();
-      this.cartValue = this.CurrentCartValue();
+      this.cartService.updateCart(productid, qty) 
     } 
-   
+    let cartNow = this.CurrentCartValueQty();
+    this.cartValue = cartNow[0];
+    this.cartQty = cartNow[1];
   }
-  removeFromCart(event, cart: Cart) { 
+  removeFromCart(event, cart: CartItem) { 
     let idxRemove = -1;
     for (let i = 0; i < this.cartsList.length; i++) {
       if (this.cartsList[i].product.product_Id === cart.product.product_Id) {
@@ -100,20 +96,21 @@ export class CartComponent implements OnInit, OnDestroy {
     if (idxRemove > -1) {
       this.cartService.removeItem(cart.product.product_Id);
       this.cartsList.splice(idxRemove, 1);
-      this.cartQty = this.CurrentCartQty();
-      this.cartValue = this.CurrentCartValue();
+      let cartNow = this.CurrentCartValueQty(); 
+      this.cartValue = cartNow[0];
+      this.cartQty = cartNow[1];
     }  
   }
 
-  private CurrentCartQty(): number {
-    let sumValue: number = 0;
-    this.cartsList.forEach(a => sumValue += (a.count));
-    return sumValue || 0;
-  }
+  
  
-  private CurrentCartValue(): number { 
+  private CurrentCartValueQty()  { 
     let sumValue: number = 0;
-    this.cartsList.forEach(a => sumValue += (a.count*a.product.price) );
-    return sumValue || 0;
+    let sumQty: number = 0;
+    this.cartsList.forEach(a => {
+      sumQty += a.count; 
+      sumValue += (a.count * a.product.unit_price); 
+    });
+    return [sumValue || 0, sumQty || 0];
   }
 }

@@ -1,50 +1,141 @@
 
-<div fxLayoutAlign="center center"> 
-  <mat-card fxFlex="400px">
-    <form fxLayout="column" [formGroup]="mainform" autocomplete="off">
+<div class="checkout-card" fxLayoutAlign="center center"  >
+  <mat-card  fxLayoutAlign="center center" fxFlex="90" fxFlex.md="80" fxFlex.sm="95" fxFlex.xs="95">
+    <form fxFlex="90" fxLayout="column" [formGroup]="mainform" autocomplete="off">
+      <div fxFlex="45" [fxFlex.xs]="95" [fxFlex.sm]="75" [fxFlex.lg]="20">
+        <mat-card-header> 
+          <mat-card-title> <h3>Card Information</h3></mat-card-title>
+        </mat-card-header>
+        <div formGroupName="creditCard" class="form-area">
+          <div fxLayout="row" fxLayoutGap="20px">
+            <mat-form-field fxFlex="100">
+              <mat-icon matPrefix>person</mat-icon>
+              <input required matInput formControlName="card_holder_name" placeholder="Name on card">
+              <mat-error *ngIf="mainform.get('creditCard.card_holder_name').hasError('required')">
+                required
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div fxLayout="row" fxLayoutGap="20px">
+            <mat-form-field fxFlex="100">
+              <mat-icon matPrefix>credit_card</mat-icon>
+              <input required matInput formControlName="card_number" placeholder="Card Number">
+              <mat-error *ngIf="mainform.get('creditCard.card_number').hasError('required')">
+                required
+              </mat-error>
+            </mat-form-field>
+          </div>
 
-      <div fxLayout="row" fxLayoutGap="20px">
-        <mat-form-field fxFlex="100" >
-          <mat-icon matPrefix>person</mat-icon>
-          <input required matInput formControlName="cardOwner" placeholder="Name on card">
-        </mat-form-field>
-      </div>
-      <div fxLayout="row" fxLayoutGap="20px">
-        <mat-form-field fxFlex="100"  >
-          <mat-icon matPrefix>credit_card</mat-icon>
-          <input required matInput formControlName="cardNumber" placeholder="Card Number">
-        </mat-form-field>
-      </div>
-      <div fxLayout="row" fxLayoutGap="20px">
-        <mat-form-field fxFlex="50">
-          <mat-label>Month</mat-label>
-          <mat-select formControlName="expDateMM" placeholder="Expires Month">
-            <mat-option *ngFor="let number of [1,2,3,4,5,6,7,8,9,10,11,12]" [value]="number">
-              {{ number }}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-        <mat-form-field fxFlex="50">
-          <mat-label>Year</mat-label>
-          <mat-select formControlName="expDateYY" placeholder="Expires Years">
-            <mat-option *ngFor="let number of [2020,2021,2022,2023,2024,2025]" [value]="number">
-              {{ number }}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
+          <div fxLayout="row" fxLayoutGap="10px">
+            <mat-form-field fxFlex="50">
+              <mat-label>Month</mat-label>
+              <span matPrefix style="margin-right: 8px;"><mat-icon>calendar_today</mat-icon></span>
+              <mat-select formControlName="card_exp_mm" placeholder="Expires Month">
+                <mat-option *ngFor="let number of  creditCardMonths " [value]="number">
+                  {{ number }}
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="mainform.get('creditCard.card_exp_mm').hasError('required')">
+                required
+              </mat-error>
+            </mat-form-field>
+            <mat-form-field fxFlex="50">
+              <mat-label>Year</mat-label>
+              <span matPrefix style="margin-right: 8px;"><mat-icon>calendar_today</mat-icon></span>
+              <mat-select formControlName="card_exp_yy" placeholder="Expires Years">
+                <mat-option *ngFor="let number of  creditCardyears" [value]="number">
+                  {{ number }}
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="mainform.get('creditCard.card_exp_yy').hasError('required')">
+                required
+              </mat-error>
+            </mat-form-field>
+          </div>
+ 
+          <div fxLayout="row" fxLayoutGap="20px">
+            <mat-form-field fxFlex="100">
+              <mat-icon matPrefix>vpn_key</mat-icon>
+              <input required matInput formControlName="card_cvv" placeholder="CVV">
+              <mat-error *ngIf="mainform.get('creditCard.card_cvv').hasError('required')">
+                required
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+        </div>
+
+      <div fxFlex="45" [fxFlex.xs]="95" [fxFlex.sm]="75" [fxFlex.lg]="20">
+        <mat-card-header>
+          
+          <mat-card-title> <h3>Billing Address</h3></mat-card-title>
+        </mat-card-header>
+        <div formGroupName="billingAddress" class="form-area">
+          <div fxLayout="row" fxLayoutGap="20px">
+            <mat-form-field fxFlex="100">
+              <mat-icon matPrefix>star_border</mat-icon>
+              <input required matInput formControlName="address1" placeholder="address1">
+
+               <mat-error *ngIf="mainform.get('billingAddress.address1').hasError('required')">
+                required
+              </mat-error>
+            
+            </mat-form-field>
+            
+          </div>
+          <div fxLayout="row" fxLayoutGap="20px">
+            <mat-form-field fxFlex="100">
+              <mat-icon matPrefix>star_border</mat-icon>
+              <input required matInput formControlName="address2" placeholder="address2">
+              <mat-error *ngIf="mainform.get('billingAddress.address2').hasError('required')">
+                required
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div fxLayout="row" fxLayoutGap="20px">
+            <mat-form-field fxFlex="100">
+              <mat-icon matPrefix>star_border</mat-icon>
+              <input required matInput formControlName="city" placeholder="city">
+              <mat-error *ngIf="mainform.get('billingAddress.city').hasError('required')">
+                required
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div fxLayout="row" fxLayoutGap="20px"> 
+            <mat-form-field fxFlex="100">
+              <span matPrefix style="margin-right: 8px;"><mat-icon>star_border</mat-icon></span>
+              <mat-select formControlName="state" placeholder="State"> 
+                <mat-option *ngFor="let state of  billingAddressStates " [value]="state.code">
+                  {{ state.value }}
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="mainform.get('billingAddress.state').hasError('required')">
+                required
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div fxLayout="row" fxLayoutGap="20px">
+            <mat-form-field fxFlex="100">
+              <mat-icon matPrefix>star_border</mat-icon>
+              <input required matInput placeholder="Zip Code" formControlName="zip" maxlength="4" minlength="4">
+              <mat-error *ngIf="mainform.get('billingAddress.zip').hasError('required')">
+                required
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+
+        </div>
       </div>
 
-      <div fxLayout="row" fxLayoutGap="20px">
-        <mat-form-field fxFlex="100"  >
-          <mat-icon matPrefix>vpn_key</mat-icon>
-          <input required matInput placeholder="CVV" formControlName="cvv" maxlength="3" minlength="3">
-        </mat-form-field>
-      </div>
+      
 
-      <mat-card-actions fxLayout="column" fxFlex.xl="100" fxLayoutAlign="end space-between">
-        <button color="primary" (click)="SubmitForm(mainform);" mat-flat-button>Submit</button>
-      </mat-card-actions>
-    </form>
+        <mat-card-actions fxLayout="column" fxFlex.xl="100" fxLayoutAlign="end space-between">
+          <button color="primary" (click)="SubmitForm(mainform);" mat-flat-button>Submit</button>
+        </mat-card-actions>
+
+
+</form>
   </mat-card>
 </div>
 

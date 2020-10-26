@@ -28,10 +28,10 @@ import { AppState } from 'src/app/core/app.state';
 import { appReducers, reducerProvider, REDUCERS_TOKEN } from 'src/app/core/app.state';
 
 import {
-    AuthService, SnackbarService, GlobalService, //AppErrorHandler,
+    AuthService, SnackbarService, EventService, //AppErrorHandler,
     LocalStorageService, AnimationsService, AuthGuard  } from './services';
  
-const SHARED_SERVICES: any[] = [GlobalService,
+const SHARED_SERVICES: any[] = [EventService,
     LocalStorageService, AnimationsService, SnackbarService,
     AuthGuard,// AppErrorHandler,
 ];
@@ -107,13 +107,13 @@ export function HttpLoaderFactory(http: HttpClient) {
 })
 export class CoreModule {
     constructor(@Optional() @SkipSelf() parent: CoreModule, faIconLibrary: FaIconLibrary,
-        private readonly translateService: TranslateService, private readonly globalVarSrv: GlobalService
+        private readonly translateService: TranslateService, private readonly evnService: EventService
     ) {
         if (parent) {
            throw new Error('CoreModule is already loaded. Import only in AppModule');
         }
         
-        this.globalVarSrv.getLanguage().subscribe((language) => {  
+        this.evnService.getLanguage().subscribe((language) => {  
             let slang = language;
 
             if (language['value']) {

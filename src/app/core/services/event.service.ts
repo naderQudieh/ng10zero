@@ -1,16 +1,26 @@
-/// <reference path="../constants.ts" />
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, of, Observable} from 'rxjs'
-import {shareReplay, map} from 'rxjs/operators' 
+import { HttpClient, HttpHeaders, HttpResponse, HttpErrorResponse } from '@angular/common/http';
+import { JwtHelperService } from '@auth0/angular-jwt';
+import { Store, StoreModule, select } from '@ngrx/store';
+import { environment } from '../../../environments/environment';
+import { catchError, delay, tap, map } from 'rxjs/operators';
+import { Observable, throwError, Subscription, Subject, BehaviorSubject, of } from 'rxjs';
+import { AppState } from '../app.state';
+import { cartServiceConstants } from '../constants/api.constants';
 import { AuthService } from './auth.service';
 import { LocalStorageService } from './local-storage.service';
 import { ValueLabel } from '../constants';
-
-
+import { Country, State, Langauge} from '../settings';
+import { count } from 'console';
+import { CartItem, CartSummary, Product } from "src/app/features/products/product.model";
 
 @Injectable({ providedIn: 'root' })
-export class GlobalService  { 
+export class EventService  { 
 
+
+  private statesUrl  = "http://www.appzero.com/api/lookups/states";
+  private countriesUrl = "http://www.appzero.com/api/lookups/countries";
+  private languagesUrl = "http://www.appzero.com/api/lookups/languages";
     themes = [
         { value: 'default-theme', label: 'Blue' },
         { value: 'light-theme', label: 'Light' },
@@ -29,8 +39,8 @@ export class GlobalService  {
     public Userthemes = new BehaviorSubject<ValueLabel>(this.CurrentTheme()); 
     private progressBar  = new BehaviorSubject<boolean>(false);
     private spinnerBar = new BehaviorSubject<boolean>(false);
-
-    constructor(private localStorage: LocalStorageService) {
+  
+  constructor(private http: HttpClient, private localStorage: LocalStorageService ) {
         this.InitilizaeApp();
     }
 
@@ -48,11 +58,9 @@ export class GlobalService  {
         let themes = this.CurrentTheme();
         if (themes == null || themes == undefined) { 
             this.setTheme(this.themes[0]);
-        }
-
+       }
        
-       
-    }
+    }  
      
 
 
@@ -74,14 +82,16 @@ export class GlobalService  {
     getThemeList(): ValueLabel[] {
         return this.themes;
     }
-    private CurrentTheme(): ValueLabel {
+
+  private CurrentTheme(): ValueLabel {
         try {
             return JSON.parse(this.localStorage.getItem('settingstheme') );
         } catch (err) {
             return this.themes[0];
         }
     }
-    setTheme(theme: ValueLabel): void {
+
+   setTheme(theme: ValueLabel): void {
         this.localStorage.setItem('settingstheme', JSON.stringify(theme)) 
         this.Userthemes.next(theme);
     }
@@ -98,7 +108,40 @@ export class GlobalService  {
     getLanguageList(): any[] {
         return this.languages;
     }
-    private CurrentLang(): string {
+
+
+  //private CurrentCartSummary(): CartSummary {
+  //  try {
+  //    return JSON.parse(this.localStorage.getItem('cartinfo')); 
+  //  } catch (err) {
+  //    return {
+  //      cart_qty: 0,
+  //      cart_total: 0,
+  //      total_payable: 0,
+  //      discount: 0,
+  //      cartItems: []
+  //    };
+  //  }
+  //}
+  //setCartSummary(summry: CartSummary): void {
+  //  this.localStorage.setItem('cartinfo', summry)
+  //  console.log(summry);
+  //  this.cartSummary.next(summry);
+  //}
+  //getCartSummary(): Observable<CartSummary> {
+  //  let summary = this.localStorage.getItem('cartinfo');
+  //  if (!summary) {
+  //    this.setCartSummary({
+  //      cart_qty: 0,
+  //      cart_total: 0,
+  //      total_payable: 0,
+  //      discount: 0,
+  //      cartItems: []
+  //    });
+  //  }
+  //  return this.cartSummary.asObservable();
+  //}
+  private CurrentLang(): string {
         try {
             return this.localStorage.getItem('settingslang') || 'en';
         } catch (err) {
@@ -154,10 +197,10 @@ export class GlobalService  {
   }
 
 
-  getCreditCardMonth(startMonth: number): Observable<number[]> {
+  getCreditCardMonths(): Observable<number[]> {
 
     let data: number[] = [];
-    for (let theMonth = startMonth; theMonth <= 12; theMonth++) {
+    for (let theMonth = 1; theMonth <= 12; theMonth++) {
       data.push(theMonth);
     }
 
@@ -176,7 +219,33 @@ export class GlobalService  {
     }
     return of(data);
   }
- 
+  getCountries(): Observable<Country[]> {
+    return this.http.get<any>(this.countriesUrl).pipe(
+      map(response => { 
+            console.log(response);
+        return response['payload']['data'];
+         }
+      )
+    ) 
+  }
+  getStates(): Observable<State[]> {
+    return this.http.get<any>(this.statesUrl).pipe(
+      map(response => { 
+        return    response['payload']['data'];
+      }
+      )
+    )
+  }
+  
+  getLanguages(): Observable<Langauge[]> {
+    return this.http.get<any>(this.languagesUrl).pipe(
+      map(response => {
+        return response['payload']['data'];
+      }
+         
+      )
+    )
+  }
   ngOnDestroy() { 
     this.isAuthenticated.unsubscribe();
     this.UserLanguage.unsubscribe();
@@ -184,3 +253,4 @@ export class GlobalService  {
     this.spinnerBar.unsubscribe(); 
   }
 }
+ 

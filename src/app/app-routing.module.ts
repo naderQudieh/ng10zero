@@ -5,7 +5,7 @@ import { PageNotFoundComponent } from 'src/app/shared/components/page-not-found/
 import { AuthGuard } from './core/services/auth-guard';
 import { catchError, delay, tap, map } from 'rxjs/operators';
 import { of, BehaviorSubject, Observable } from 'rxjs';
-import { GlobalService } from 'src/app/core/services';
+import { EventService } from 'src/app/core/services';
 import { SelectivePreloadingStrategyService } from './selective-preloading-strategy.service';
 import { HomeComponent } from 'src/app/features/home/pages/home.component';
 import { HomeService } from 'src/app/features/home/home.service';
@@ -60,12 +60,12 @@ const routes: Routes = [
 export class AppRoutingModule {
    // private logger: Logger; private router: Router,
     
-    constructor(private router: Router, private gService: GlobalService) {
+    constructor(private router: Router, private evnService: EventService) {
         router.events.subscribe((event) => {
             
             if (event instanceof NavigationStart) {
                 //console.log('NavigationStart '+this.router.url);
-                gService.showBar();
+                evnService.showBar();
             }
             if (event instanceof RouteConfigLoadStart) {
                 
@@ -78,7 +78,7 @@ export class AppRoutingModule {
             if (event instanceof NavigationEnd) {
                 //console.log('NavigationStart ' +this.router.url);
                 of('dummy').pipe(delay(200)).subscribe(val => {
-                    gService.hideBar();
+                    evnService.hideBar();
                 });
                 document.querySelector('meta[property=og\\:url').setAttribute('content', window.location.href);
             }

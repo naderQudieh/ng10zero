@@ -6,7 +6,7 @@ import { LazyElementsModule } from '@angular-extensions/elements';
 import { StoreModule } from '@ngrx/store';
 import { SharedModule } from '../../shared/shared.module';
 import { environment } from '../../../environments/environment';
-import { GlobalService } from '../../core/services';
+import { EventService } from '../../core/services';
 import { MissingTranslationHandler, TranslateLoader, TranslateModule, TranslateService } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader'; 
 import { HttpClientModule } from '@angular/common/http';
@@ -36,7 +36,7 @@ export function HttpLoaderFactory(http: HttpClient) {
      
     StoreModule.forFeature('products', productReducers), 
     StoreModule.forFeature('cart', cartReducers), 
-    StoreModule.forFeature('purchases', checkoutReducers), 
+    //StoreModule.forFeature('purchases', checkoutReducers), 
     //StoreModule.forFeature('featureProducts', featureProductsReducers), 
     EffectsModule.forRoot([CartEffects, ProductEffects]),//, CheckoutEffects
 
@@ -56,8 +56,8 @@ export function HttpLoaderFactory(http: HttpClient) {
  
 export class ProductsModule {
   constructor(private readonly translateService: TranslateService,
-    private readonly globalVarSrv: GlobalService) {
-    this.globalVarSrv.getLanguage().subscribe((language) => {
+    private readonly evnService: EventService) {
+    this.evnService.getLanguage().subscribe((language) => {
       let slang = language;
 
       if (language['value']) {

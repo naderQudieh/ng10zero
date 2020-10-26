@@ -3,7 +3,7 @@ import { Inject, ChangeDetectorRef, OnDestroy, AfterViewInit } from '@angular/co
 import { Store, select } from '@ngrx/store';
 import { ROUTE_ANIMATIONS_ELEMENTS, routeAnimations } from '../../../core/core.module';
 import { Observable } from 'rxjs';
-import { GlobalService } from '../../../core/services';
+import { EventService } from '../../../core/services';
 import { TranslateService } from '@ngx-translate/core';
 import { OverlayContainer } from '@angular/cdk/overlay';
 
@@ -26,15 +26,15 @@ export class SettingContainerComponent implements OnInit, OnDestroy, AfterViewIn
     public selectedCountry: any;
    
 
-    constructor(private cdRef: ChangeDetectorRef,  private translate: TranslateService, private globalService: GlobalService,) {
-        this.languages = this.globalService.getLanguageList() ;
-        this.themes = this.globalService.getThemeList();  
+    constructor(private cdRef: ChangeDetectorRef,  private translate: TranslateService, private eventService: EventService,) {
+        this.languages = this.eventService.getLanguageList() ;
+        this.themes = this.eventService.getThemeList();  
      }
 
     ngOnInit() {
         
         
-        this.globalService.UserLanguage.subscribe(lang => { 
+        this.eventService.UserLanguage.subscribe(lang => { 
             let applang = this.languages.filter(item => { 
                 return item.value  == lang  ;  
             });
@@ -42,7 +42,7 @@ export class SettingContainerComponent implements OnInit, OnDestroy, AfterViewIn
             this.cdRef.detectChanges();
         })
 
-        this.globalService.Userthemes.subscribe(theme => {
+        this.eventService.Userthemes.subscribe(theme => {
             console.log(theme);
             let apptheme = this.themes.filter(item => {
                 return item.value == theme.value;
@@ -54,13 +54,13 @@ export class SettingContainerComponent implements OnInit, OnDestroy, AfterViewIn
 
     onLanguageSelect() {
         this.cdRef.detectChanges();
-        this.globalService.setLanguage(this.selectedLanguage['value']);
+        this.eventService.setLanguage(this.selectedLanguage['value']);
     }
       
    
     onSelectTheme() {
         this.cdRef.detectChanges();
-        this.globalService.setTheme(this.selectedTheme );
+        this.eventService.setTheme(this.selectedTheme );
     } 
     compareFn(x: any, y: any): boolean {
         return x && y ? x.value === y.value : x === y;
@@ -78,6 +78,6 @@ export class SettingContainerComponent implements OnInit, OnDestroy, AfterViewIn
     //    });
     //    this.selectedtheme = apptheme[0];
     //    console.log(apptheme[0].value.toLowerCase());
-    //    this.globalService.setTheme(apptheme[0].value.toLowerCase());
+    //    this.eventService.setTheme(apptheme[0].value.toLowerCase());
     //} 
 }

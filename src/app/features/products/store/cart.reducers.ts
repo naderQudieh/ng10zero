@@ -1,9 +1,9 @@
 import {CartActions, ECartActions} from './cart.actions';
-import { Cart } from '../product.model';
+import { CartItem } from '../product.model';
 
 
 export interface CartState {
-  CartItems: Cart[];
+  CartItems: CartItem[];
 }
 export const initialCartState: CartState = {
   CartItems: null,

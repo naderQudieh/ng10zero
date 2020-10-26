@@ -11,8 +11,8 @@ import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
 import { fromEvent, BehaviorSubject, Subject, Observable, throwError } from 'rxjs';
 import { debounceTime, takeUntil ,startWith, filter, tap, map, throttleTime, mergeMap, scan } from 'rxjs/operators';
 import {AddToCart, GetProducts, ProductsState, CartState, selectProducts } from '../../store';
-import { Product, Cart } from '../../product.model'; 
-import { CartService, CheckoutService, ProductService} from '../../services';
+import { Product, CartItem } from '../../product.model'; 
+import { CartService,   ProductService} from '../../services';
 
 @Component({
   animations: [routeAnimations],
@@ -47,7 +47,7 @@ export class ProductListComponent implements AfterViewInit, OnInit, OnDestroy {
     private scrollDispatcher: ScrollDispatcher,
     private viewPortRuler: ViewportRuler,
     private store: Store<ProductsState>,
-    private cartService: CartService, private checkoutService: CheckoutService, private productService: ProductService) {
+    private cartService: CartService,  private productService: ProductService) {
 
     this.route.params.forEach((params: Params) => {
       if (params['page'] !== undefined) {
@@ -71,16 +71,18 @@ export class ProductListComponent implements AfterViewInit, OnInit, OnDestroy {
       }
     });
   }
-  refresh() {
-    window.location.reload();
+
+  getProducts(_page = 1, limit = 10) {
+    this.store.pipe(select(selectProducts)).subscribe(data => {
+      console.log(data);
+      let _data = data
+      this.products = data['products'];
+      this.currentPage++;
+      this.cdRef.detectChanges();
+    });
   }
-  getScrollPosition(event) {
-    if (event) {
-      return event.getElementRef().nativeElement.scrollTop;
-    } else {
-      return window.scrollY;
-    }
-  }
+
+ 
   ngOnInit() {
   
        // { width, height }
@@ -97,18 +99,7 @@ export class ProductListComponent implements AfterViewInit, OnInit, OnDestroy {
     this.store.dispatch(new GetProducts({ page: 1, limit: 22 }));
     this.getProducts(this.currentPage, 10); 
   }
-  getProducts(_page = 1, limit = 10) {
-     
 
-   
-    this.store.pipe(select(selectProducts)).subscribe(data => {
-      let _data = data  
-      this.products = data['products'] ; 
-      this.currentPage++; 
-      this.cdRef.detectChanges();
-    });
-
-  }
   ngAfterViewInit() {
     this.scrollDispatcher.scrolled().subscribe((scrollable: CdkScrollable) => {
       if (scrollable) {
@@ -116,6 +107,17 @@ export class ProductListComponent implements AfterViewInit, OnInit, OnDestroy {
         // console.log('next page');
       } 
     }); 
+  }
+
+  refresh() {
+    window.location.reload();
+  }
+  getScrollPosition(event) {
+    if (event) {
+      return event.getElementRef().nativeElement.scrollTop;
+    } else {
+      return window.scrollY;
+    }
   }
   ngAfterContentChecked() {
     if (screen.width <= 800) {

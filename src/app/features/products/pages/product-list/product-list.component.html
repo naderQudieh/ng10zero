@@ -1,10 +1,10 @@
-<div  fxFlexFill style="margin-top:10px!important;" >
+<div  fxFlexFill  style="margin-top:10px!important;" >
  
-  <div  fxFlexFill>
+  <div style="max-width:1200px;" fxFlex="90" fxFlex.md="80" fxFlex.sm="98" fxFlex.xs="99.5" >
  
     <div *ngIf="products" class="products_main"
          fxLayout="row wrap" fxLayoutGap="5px grid">
-      <app-product fxFlex="20" fxFlex.md="30" fxFlex.sm="45" fxFlex.xs="98"
+      <app-product fxFlex="20" fxFlex.md="30" fxFlex.sm="45" fxFlex.xs="100"
                    *ngFor="let item  of  products  " [product]="item"></app-product>
     </div>
  

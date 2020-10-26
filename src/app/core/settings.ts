@@ -1,3 +1,23 @@
+
+export class Langauge {
+
+  code: string;
+  value: string;
+
+}
+export class State {
+
+  code: string;
+  value: string;
+
+}
+export class Country {
+
+  id: number;
+  code: string;
+  value: string;
+}
+
 export interface AppSettings {
   navPos?: 'side' | 'top';
   dir?: 'ltr' | 'rtl';

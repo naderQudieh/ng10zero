@@ -24,9 +24,9 @@ import { environment } from '../environments/environment';
 })
  
 export class AppModule {
-    //constructor(private readonly globalVarSrv: GlobalService) {
+    //constructor(private readonly evnService: EventService) {
         
-    //    this.globalVarSrv.getLanguage().subscribe((language) => {
+    //    this.evnService.getLanguage().subscribe((language) => {
     //        this.translateService.use(language)
     //    });
     //    faIconLibrary.addIcons(...faIconscore);

@@ -7,7 +7,7 @@ import { LazyElementsModule } from '@angular-extensions/elements';
 import { StoreModule } from '@ngrx/store';
 import { environment } from '../../../environments/environment';
 import { tap, take, distinctUntilChanged, filter } from 'rxjs/operators';
-import { GlobalService } from '../../core/services';
+import { EventService } from '../../core/services';
 import { MissingTranslationHandler, TranslateLoader, TranslateModule, TranslateService } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
@@ -40,8 +40,8 @@ export function HttpLoaderFactory(http: HttpClient) {
  
 export class SettingModule {
     constructor( private readonly translateService: TranslateService,
-        private readonly globalVarSrv: GlobalService) {
-        this.globalVarSrv.getLanguage().subscribe((language) => {
+        private readonly evnService: EventService) {
+        this.evnService.getLanguage().subscribe((language) => {
             let slang = language;
            
             if (language['value']) {

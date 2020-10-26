@@ -8,9 +8,9 @@ import {
   CleanCart,GetCart,getCartState,
   AddToCart, GetProducts, ProductsState, CartState, selectProducts  
 } from '../store';
-import { Product, Cart } from '../product.model';
+import { Product, CartItem , CartSummary} from '../product.model';
 import { CartService, CheckoutService, ProductService } from '../services';
- 
+import { EventService } from "src/app/core/services";
 
 @Component({
   selector: 'anms-layout',
@@ -25,8 +25,10 @@ export class LayoutComponent implements OnInit {
     private cartService: CartService, private checkoutService: CheckoutService, private productService: ProductService,
      private router: Router ) {  
 
-    cartService.getCartTotalItems().subscribe((totalqts) => {
-      this.totalItems = totalqts; 
+    cartService.getCartTotalItems().subscribe((cartSummary) => {
+      this.totalItems = cartSummary.cart_qty;
+      console.log(this.totalItems);
+     
     });
 
     this.store.select(getCartState).subscribe(cart => {
@@ -38,7 +40,14 @@ export class LayoutComponent implements OnInit {
   ngOnInit(): void {
     
   }
-
+  GoProducts() {
+    if (this.totalItems == 0) {
+      this.router.navigateByUrl('/products');
+    } else {
+      this.router.navigateByUrl('/products/cart');
+    }
+   
+  }
   CleanCart() { 
     this.store.dispatch(new CleanCart());
   }

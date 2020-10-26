@@ -7,7 +7,7 @@ import {
   AddToCart, CleanCart,  AddToCartSuccess,    ECartActions,    GetCart,
     GetCartSuccess,    LoadCartInError, RemoveFromCart, RemoveFromCartSuccess} from './cart.actions';
 import {map, switchMap} from 'rxjs/operators';
-import { Cart } from '../product.model';
+import { CartItem } from '../product.model';
 import { SnackbarService } from 'src/app/core/services/snackbar.service';
 
 import { selectCars } from './';
@@ -18,7 +18,7 @@ export class CartEffects {
     getCart$ = this.actions$.pipe(
         ofType<GetCart>(ECartActions.GetCart),
       switchMap(() => this.cartService.getCart()),
-        switchMap((data: Cart[]) => of(new GetCartSuccess(data)))
+      switchMap((data: CartItem[]) => of(new GetCartSuccess(data)))
     );
     @Effect()
     addToCart$ = this.actions$.pipe(
@@ -39,7 +39,7 @@ export class CartEffects {
         ofType<RemoveFromCart>(ECartActions.RemoveFromCart),
         switchMap((data) => {
             return this.cartService.removeFromCart(data.payload).pipe(
-                map((res: Cart[]) => {
+              map((res: CartItem[]) => {
                     return new RemoveFromCartSuccess(res);
                 })
             );

@@ -84,7 +84,7 @@ export class ProductEffects {
             const product: Product = {
               name: apiRes.payload['data']['name'], 
               description: apiRes.payload['data']['description'],
-              price: apiRes.payload['data']['price'], 
+              unit_price: apiRes.payload['data']['price'], 
               department_id: apiRes.payload['data']['department_id'],
               imge_url: apiRes.payload['data']['imge_url']
             }
