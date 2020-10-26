@@ -10,11 +10,20 @@ export interface apsResponse {
   payload?: any; 
   message?: string; 
 }
- 
+
+export class CreditCard {
+  card_holder_name?: string;
+  card_number?: string;
+  card_exp_mm?: number;
+  card_exp_yy?: number;
+  card_cvv?: string;
+}
+
 export class PaymentDetail {
   transaction_id?: number;
   customer_id?: number;
   card_holder_name?: string;
+  firstName?: string;
   card_number?: string;
   card_exp_mm?: number;
   card_exp_yy?: number;
@@ -23,6 +32,8 @@ export class PaymentDetail {
   payment_date?: Date;
   date_created?: Date;
   date_modified?: Date;
+  totalAmount: number;
+  MERCHANT_API_KEY?: string;
 }
 
 export class Address {

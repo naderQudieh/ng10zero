@@ -1,31 +1,44 @@
 import { Component, OnInit } from '@angular/core';
-import { CheckoutPassService } from '../../services/checkout-pass.service';
-
+import {
+  CleanCart, GetCart, getCartState,
+  AddToCart, GetProducts, ProductsState, CartState, selectProducts
+} from '../../store';
+import { Product, CartItem } from '../../product.model';
+import { CartService, CheckoutService, ProductService } from '../../services';
 
 @Component({
   selector: 'app-checkout-confirmation',
   templateUrl: './checkout-confirmation.component.html',
-  styleUrls: ['./checkout-confirmation.component.css']
+  styleUrls: ['../../products.component.scss'],
 })
 export class CheckoutConfirmationComponent implements OnInit {
 
-  social = false;
+  cartQtyNumber = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+  cartsList: CartItem[];
+  cartQty: number;
+  cartValue: number;
   confirmation = "";
 
   constructor(
-    public checkoutPassService: CheckoutPassService
+    public cartService: CartService
   ) { }
 
-  ngOnInit() {
-    this.getinfos();
-    this.checkoutPassService.setCheckoutConfirmationComponent(this);
+  ngOnInit(): void {
+    this.cartService.getCart().subscribe(cartitems => {
+      this.cartsList = cartitems;
+    })
+
+    this.cartService.CartItemsCount.subscribe(cartsummary => {
+      this.cartValue = cartsummary.cart_total
+      this.cartQty = cartsummary.cart_qty
+    })
   }
 
   getinfos(){
-    this.confirmation = this.checkoutPassService.transaction.transactionConfirmation;
-    if(this.checkoutPassService.getUserSocial()){
-      this.social = true;
-    }
+    //this.confirmation = this.cartService.transaction.transactionConfirmation;
+    //if (this.cartService.getUserSocial()){
+    //  this.social = true;
+    //}
   }
 
 

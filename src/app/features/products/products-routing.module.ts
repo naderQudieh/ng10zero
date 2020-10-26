@@ -5,7 +5,7 @@ import { LayoutComponent } from './layout/layout.component';
 import { PageNotFoundComponent } from 'src/app/shared/components/page-not-found/page-not-found.component';
 import {
   CartComponent, ProductComponent, ProductListComponent,
-  CheckoutComponent, CheckoutCreditComponent
+  CheckoutComponent, CheckoutConfirmationComponent
 } from './pages';
 
 const routes: Routes = [
@@ -24,6 +24,9 @@ const routes: Routes = [
       },
       {
         path: 'checkout', component: CheckoutComponent
+      },
+      {
+        path: 'ckoutConfirmation', component: CheckoutConfirmationComponent
       } 
     ]
   }

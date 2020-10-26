@@ -14,7 +14,9 @@ export class ProductService {
   headers = new HttpHeaders().set('Content-Type', 'application/json');
   userId: string = localStorage.getItem('userId');
   token: string = localStorage.getItem('auth_token');
-  constructor(private http: HttpClient, private router: Router) {}
+
+
+  constructor(private http: HttpClient, private router: Router) { }
  
   updateData(data, entity) {
     const url = `${this.BASE_URL}/${entity}/update/${data.payload.id}`;

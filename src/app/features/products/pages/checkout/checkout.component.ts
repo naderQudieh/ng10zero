@@ -2,9 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { CheckoutService } from '../../services/checkout.service';
 import { NgForm } from '@angular/forms';
+import { catchError, delay, tap, map } from 'rxjs/operators';
+import { Observable, throwError, Subscription, Subject, BehaviorSubject, of } from 'rxjs';
 import { SnackbarService, EventService } from 'src/app/core/services';
 import { TranslateService } from '@ngx-translate/core';
 import { Country, State } from '../../../../core/settings';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-checkout',
@@ -22,8 +25,8 @@ export class CheckoutComponent implements OnInit {
   creditCardMonths: number[] = [];
 
 
-  constructor(private formBuilder: FormBuilder, public service: CheckoutService, private evnService: EventService,
-    private snackbarService: SnackbarService, private fb: FormBuilder, private translate: TranslateService,) {
+  constructor(private router: Router,private formBuilder: FormBuilder, public service: CheckoutService, private evnService: EventService,
+    private snackbarService: SnackbarService,   private fb: FormBuilder, private translate: TranslateService,) {
 
 
   }
@@ -67,16 +70,16 @@ export class CheckoutComponent implements OnInit {
       creditCard: this.formBuilder.group({
         cardType: [''],
         card_holder_name: ['Nahed Kadih', [Validators.required]],
-        card_number: ['1223-3245-6278-8290', [Validators.required, Validators.pattern('[0-9]{16}')]],
+        card_number: ['1223-3245-6278-8290', [Validators.required ]],
         card_cvv: [234, [Validators.required, Validators.pattern('[0-9]{3}')]],
         card_exp_mm: [3, [Validators.required]],
         card_exp_yy: [2021, [Validators.required]]
 
       }),
       billingAddress: this.formBuilder.group({
-        address1: new FormControl('address1', [Validators.required, Validators.minLength(10)]),
+        address1: new FormControl('address1', [Validators.required, Validators.minLength(5)]),
         address2: new FormControl('address2', [Validators.required, Validators.minLength(1)]),
-        zip: new FormControl('22312', [Validators.required, Validators.minLength(5)]),
+        zip: new FormControl(22312, [Validators.required, Validators.minLength(3)]),
         city: new FormControl('Orlando', [Validators.required]),
         state: ['VA', [Validators.required]] 
       }),
@@ -84,28 +87,56 @@ export class CheckoutComponent implements OnInit {
   }
 
   SubmitForm(data: any): void {
+   
     if (this.mainform.invalid) {
       this.mainform.markAllAsTouched();
     }
-    console.log(data);
-    let formdata = {
-      card_holder_name: data.value.creditCard.card_holder_name,
-      card_number: data.value.creditCard.card_number,
-      card_exp_mm: data.value.creditCard.card_exp_mm,
-      card_exp_yy: data.value.creditCard.card_exp_yy,
-      card_cvv: data.value.creditCard.card_cvv,
-
-      address1: data.value.billingAddress.address1,
-      address2: data.value.billingAddress.address2,
-      city: data.value.billingAddress.city,
-      state: data.value.billingAddress.state,
-      zip: data.value.billingAddress.zip
-
+    if (this.mainform.invalid) {
+      return;
     }
-    console.log(formdata);
-    //this.updateRecord(formdata); 
-  }
+  
+    if (this.mainform.valid) {
+     
+      let formdata = {
+        card_holder_name: data.value.creditCard.card_holder_name,
+        card_number: data.value.creditCard.card_number,
+        card_exp_mm: data.value.creditCard.card_exp_mm,
+        card_exp_yy: data.value.creditCard.card_exp_yy,
+        card_cvv: data.value.creditCard.card_cvv,
+
+        address1: data.value.billingAddress.address1,
+        address2: data.value.billingAddress.address2,
+        city: data.value.billingAddress.city,
+        state: data.value.billingAddress.state,
+        zip: data.value.billingAddress.zip 
+      } 
    
+      this.updateRecord(formdata); 
+    }
+    
+  }
+  GoToConfirmation() { 
+    this.router.navigateByUrl('/products/ckoutConfirmation'); 
+  }
+  updateRecord(data: any) {
+      this.evnService.showSpinner();
+      of('dummy').pipe(delay(1550)).subscribe(val => {
+      this.evnService.hideSpinner();
+      this.GoToConfirmation();
+      return;
+    });
+    this.service.putPaymentDetail().subscribe(
+      res => {
+        this.evnService.hideSpinner();
+        this.snackbarService.success('Successfull');
+      },
+      err => {
+        this.evnService.hideSpinner();
+        this.snackbarService.error('An Error Occured');
+        console.log(err);
+      }
+    );
+  }
   chargeCreditCard(formdata) {
     (<any>window).Stripe.card.createToken(
       {
@@ -145,16 +176,5 @@ export class CheckoutComponent implements OnInit {
   }
 
  
-  updateRecord(data: any) {
-    this.service.putPaymentDetail().subscribe(
-      res => { 
-        this.service.refreshList();
-        this.snackbarService.success('Successfull');
-      },
-      err => {
-        this.snackbarService.error('An Error Occured');
-        console.log(err);
-      }
-    );
-  }
+ 
 }
