@@ -9,7 +9,7 @@ import { BigInputComponent } from './components/big-input/big-input/big-input.co
 import { BigInputActionComponent } from './components/big-input/big-input-action/big-input-action.component';
 import { RtlSupportDirective } from './components/rtl-support/rtl-support.directive';
 import { ConfirmModalComponent } from './components/confirm-modal/confirm-modal.component';
-import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
+import { PageNotFoundComponent } from './pages/page-not-found/page-not-found.component';
 import {  NotifyService,   ConfirmModalService } from './services';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 

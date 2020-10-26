@@ -1,7 +1,9 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule, PreloadAllModules } from '@angular/router';
 import { NavigationEnd, NavigationStart,  RouteConfigLoadEnd, RouteConfigLoadStart, Router } from '@angular/router';
-import { PageNotFoundComponent } from 'src/app/shared/components/page-not-found/page-not-found.component';
+import { PageNotFoundComponent } from 'src/app/shared/pages/page-not-found/page-not-found.component';
+import { PrivacyPolicyComponent } from 'src/app/shared/pages/privacy-policy/privacy-policy.component';
+import { ContactUsComponent } from 'src/app/shared/pages/contact-us/contact-us.component';
 import { AuthGuard } from './core/services/auth-guard';
 import { catchError, delay, tap, map } from 'rxjs/operators';
 import { of, BehaviorSubject, Observable } from 'rxjs';
@@ -15,7 +17,10 @@ const routes: Routes = [
     {
         path: '', redirectTo: 'home', pathMatch: 'full'
     }, 
-   
+  {
+    path: 'auth',
+    loadChildren: () => import('./features/account/account.module').then((m) => m.AccountModule)
+  },
   {
     path: 'products',
     loadChildren: () => import('./features/products/products.module').then((m) => m.ProductsModule)
@@ -29,9 +34,20 @@ const routes: Routes = [
     path: 'setting',
     loadChildren: () => import('./features/setting/setting.module').then(m => m.SettingModule)
       .catch(() => location.reload())
+  },
+  {
+    path: 'dashboard',
+    loadChildren: () => import('./features/dashboard/dashboard.module').then(m => m.DashboardModule)
+      .catch(() => location.reload())
   }
-  ,
-    
+  , {
+    path: 'contact',
+    component: ContactUsComponent
+  },
+  {
+    path: 'privacy',
+    component: PrivacyPolicyComponent
+  },
     {
         path: 'notfound',
         component: PageNotFoundComponent

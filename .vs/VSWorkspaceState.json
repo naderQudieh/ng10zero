@@ -3,14 +3,14 @@
     "",
     "\\src",
     "\\src\\app",
-    "\\src\\app\\core",
-    "\\src\\app\\core\\services",
     "\\src\\app\\features",
+    "\\src\\app\\features\\dashboard\\pages",
     "\\src\\app\\features\\products",
-    "\\src\\app\\features\\products\\layout",
     "\\src\\app\\features\\products\\pages",
-    "\\src\\app\\features\\products\\services"
+    "\\src\\app\\features\\products\\pages\\product",
+    "\\src\\app\\features\\products\\pages\\product-list",
+    "\\src\\app\\shared\\pages\\contact-us"
   ],
-  "SelectedNode": "\\src\\app\\features\\products\\pages\\cart\\cart.component.ts",
+  "SelectedNode": "\\src\\app\\features\\products\\products.component.scss",
   "PreviewInSolutionExplorer": false
 }

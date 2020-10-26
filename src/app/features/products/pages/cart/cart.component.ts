@@ -26,7 +26,7 @@ import { CartService, CheckoutService, ProductService } from '../../services';
 @Component({
   selector: 'app-cart',
   templateUrl: './cart.component.html',
-  styleUrls: ['../../products.component.scss'],
+  styleUrls: ['../products.component.scss'],
   animations: [ 
     trigger('fadeOut', [
       state('void', style({ opacity: 0, backgroundColor: 'red' })),

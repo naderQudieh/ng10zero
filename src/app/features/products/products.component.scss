@@ -1,4 +1,4 @@
-@import '../../../styles-variables';
+@import '/src/styles-variables.scss';
 
  
  
@@ -52,27 +52,26 @@ mat-icon, mat-icon-button {
   margin: auto
 }
 
+
+
+
 .mat-card {
+  overflow: hidden;
+  min-width: 200px;
+  max-height: 200px;
   border-top-right-radius: 5px;
   border-top-left-radius: 5px;
   padding: 15px 5px !important;
   text-align: left;
-
-  &:hover {
-    opacity: 0.8;
-  
-    .product-actions {
-      display: flex !important;
-    }
-  }
 }
 
 img.mat-card-image {
-  width: 100%; 
-  margin: 0 0;
+  float: left;
+  min-width: 200px;
+  min-height: 200px;
+  object-fit: cover;
   border-top-right-radius: 5px;
   border-top-left-radius: 5px;
-  object-fit: cover;
 }
 
 .mini-cart {

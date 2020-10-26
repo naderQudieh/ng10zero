@@ -15,7 +15,7 @@ import { EventService } from "src/app/core/services";
 @Component({
   selector: 'anms-layout',
   templateUrl: './layout.component.html',
-  styleUrls: ['../products.component.scss'],
+  styleUrls: ['../pages/products.component.scss'],
   animations: [routeAnimations] 
 })
 export class LayoutComponent implements OnInit {

@@ -9,7 +9,7 @@ import { CartService, CheckoutService, ProductService } from '../../services';
 @Component({
   selector: 'app-checkout-confirmation',
   templateUrl: './checkout-confirmation.component.html',
-  styleUrls: ['../../products.component.scss'],
+  styleUrls: ['../products.component.scss'],
 })
 export class CheckoutConfirmationComponent implements OnInit {
 

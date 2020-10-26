@@ -2,11 +2,8 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { AuthGuard } from '../../core/core.module';
 import { LayoutComponent } from './layout/layout.component';
-import { PageNotFoundComponent } from 'src/app/shared/components/page-not-found/page-not-found.component';
-import {
-  CartComponent, ProductComponent, ProductListComponent,
-  CheckoutComponent, CheckoutConfirmationComponent
-} from './pages';
+import { PageNotFoundComponent } from 'src/app/shared/pages/page-not-found/page-not-found.component';
+import { CartComponent, ProductComponent, ProductListComponent, CheckoutComponent, CheckoutConfirmationComponent} from './pages';
 
 const routes: Routes = [
   {
@@ -27,7 +24,11 @@ const routes: Routes = [
       },
       {
         path: 'ckoutConfirmation', component: CheckoutConfirmationComponent
-      } 
+      },
+      {
+        path: 'notfound',
+        component: PageNotFoundComponent
+      },
     ]
   }
 ];

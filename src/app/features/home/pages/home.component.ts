@@ -59,14 +59,21 @@ export class HomeComponent implements OnInit, OnDestroy {
 
     goToTestsnackbarMessage() {
         let displayMessage = "My test error"
-        this.snackbarService.success(displayMessage );
+        this.snackbarService.success(displayMessage);
+       
     }
     goToBar() {
         
-        this.evnService.showBar();
+      this.evnService.showBar();
+      of('dummy').pipe(delay(4000)).subscribe(val => {
+        this.evnService.hideBar();
+      });
     }
     goToShowSpinner() {
-        this.evnService.showSpinner();
+      this.evnService.showSpinner();
+      of('dummy').pipe(delay(4000)).subscribe(val => {
+        this.evnService.hideSpinner();
+      })
         //this.evnService.getSpinnerValue().subscribe(lang => {
         //    of('dummy').pipe(delay(50)).subscribe(val => {
         //        //alert('dummy');

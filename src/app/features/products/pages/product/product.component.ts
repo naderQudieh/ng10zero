@@ -11,7 +11,7 @@ import {
   animations: [routeAnimations],
   selector: 'app-product',
   templateUrl: './product.component.html',
-  styleUrls: ['../../products.component.scss'],
+  styleUrls: ['../products.component.scss'],
 })
 export class ProductComponent implements OnInit {
   routeAnimationsElements = ROUTE_ANIMATIONS_ELEMENTS;

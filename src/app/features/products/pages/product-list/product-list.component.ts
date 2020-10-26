@@ -18,7 +18,7 @@ import { CartService,   ProductService} from '../../services';
   animations: [routeAnimations],
   selector: 'app-product-list',
   templateUrl: './product-list.component.html',
-  styleUrls: ['../../products.component.scss'],
+  styleUrls: ['../products.component.scss'],
 })
 export class ProductListComponent implements AfterViewInit, OnInit, OnDestroy {
   //@ViewChild(CdkVirtualScrollViewport, { static: false }) private viewport: CdkVirtualScrollViewport;

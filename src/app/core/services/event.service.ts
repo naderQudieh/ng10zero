@@ -10,190 +10,159 @@ import { cartServiceConstants } from '../constants/api.constants';
 import { AuthService } from './auth.service';
 import { LocalStorageService } from './local-storage.service';
 import { ValueLabel } from '../constants';
-import { Country, State, Langauge} from '../settings';
+import { Country, State, Langauge } from '../settings';
 import { count } from 'console';
 import { CartItem, CartSummary, Product } from "src/app/features/products/product.model";
 
 @Injectable({ providedIn: 'root' })
-export class EventService  { 
+export class EventService {
 
 
-  private statesUrl  = "http://www.appzero.com/api/lookups/states";
+  private statesUrl = "http://www.appzero.com/api/lookups/states";
   private countriesUrl = "http://www.appzero.com/api/lookups/countries";
   private languagesUrl = "http://www.appzero.com/api/lookups/languages";
-    themes = [
-        { value: 'default-theme', label: 'Blue' },
-        { value: 'light-theme', label: 'Light' },
-        { value: 'nature-theme', label: 'Nature' },
-        { value: 'black-theme',label:  'Dark' }
-    ];
-    
-    languages = [
-        { value: 'en', label: 'English' },
-        { value: 'fr', label: 'Français' },
-        { value: 'ar', label: 'ArabicA' }
-    ];
+  themes = [
+    { value: 'default-theme', label: 'Blue' },
+    { value: 'light-theme', label: 'Light' },
+    { value: 'nature-theme', label: 'Nature' },
+    { value: 'black-theme', label: 'Dark' }
+  ];
 
-    public isAuthenticated = new BehaviorSubject<boolean>(this.hasToken());   
-    public UserLanguage = new BehaviorSubject<string>(this.CurrentLang()); 
-    public Userthemes = new BehaviorSubject<ValueLabel>(this.CurrentTheme()); 
-    private progressBar  = new BehaviorSubject<boolean>(false);
-    private spinnerBar = new BehaviorSubject<boolean>(false);
-  
-  constructor(private http: HttpClient, private localStorage: LocalStorageService ) {
-        this.InitilizaeApp();
+  languages = [
+    { value: 'en', label: 'English' },
+    { value: 'fr', label: 'Français' },
+    { value: 'ar', label: 'ArabicA' }
+  ];
+
+  public isAuthenticated = new BehaviorSubject<boolean>(this.hasToken());
+  public UserLanguage = new BehaviorSubject<string>(this.CurrentLang());
+  public Userthemes = new BehaviorSubject<ValueLabel>(this.CurrentTheme());
+  private progressBar = new BehaviorSubject<boolean>(false);
+  private spinnerBar = new BehaviorSubject<boolean>(false);
+
+  constructor(private http: HttpClient, private localStorage: LocalStorageService) {
+    this.InitilizaeApp();
+  }
+
+
+
+  InitilizaeApp(): void {
+    this.setAuthenticated(false);
+
+    let lang = this.CurrentLang();
+    if (lang == null || lang == undefined) {
+      lang = "en";
+      this.setLanguage(lang);
     }
 
-  
- 
-    InitilizaeApp(): void {
-        this.setAuthenticated(false);
-
-        let lang = this.CurrentLang();
-        if (lang == null || lang == undefined) {
-            lang = "en";
-            this.setLanguage(lang);
-        }
-
-        let themes = this.CurrentTheme();
-        if (themes == null || themes == undefined) { 
-            this.setTheme(this.themes[0]);
-       }
-       
-    }  
-     
-
-
-    setAuthenticated(isAuthenticated: boolean): void {
-        this.isAuthenticated.next(isAuthenticated);
+    let themes = this.CurrentTheme();
+    if (themes == null || themes == undefined) {
+      this.setTheme(this.themes[0]);
     }
 
-    getIsAuthenticated(): Observable<boolean> {
-        if (this.hasToken()) {
+  }
 
-            this.setAuthenticated(true);
-        } else {
 
-            this.setAuthenticated(false);
-        }
-        return this.isAuthenticated.asObservable();
+
+  setAuthenticated(isAuthenticated: boolean): void {
+    this.isAuthenticated.next(isAuthenticated);
+  }
+
+  getIsAuthenticated(): Observable<boolean> {
+    if (this.hasToken()) {
+
+      this.setAuthenticated(true);
+    } else {
+
+      this.setAuthenticated(false);
     }
+    return this.isAuthenticated.asObservable();
+  }
 
-    getThemeList(): ValueLabel[] {
-        return this.themes;
-    }
+  getThemeList(): ValueLabel[] {
+    return this.themes;
+  }
 
   private CurrentTheme(): ValueLabel {
-        try {
-            return JSON.parse(this.localStorage.getItem('settingstheme') );
-        } catch (err) {
-            return this.themes[0];
-        }
+    try {
+      return JSON.parse(this.localStorage.getItem('settingstheme'));
+    } catch (err) {
+      return this.themes[0];
     }
+  }
 
-   setTheme(theme: ValueLabel): void {
-        this.localStorage.setItem('settingstheme', JSON.stringify(theme)) 
-        this.Userthemes.next(theme);
+  setTheme(theme: ValueLabel): void {
+    this.localStorage.setItem('settingstheme', JSON.stringify(theme))
+    this.Userthemes.next(theme);
+  }
+
+
+  getTheme(): Observable<ValueLabel> {
+    let theme = this.localStorage.getItem('settingstheme');
+    if (!theme) {
+      this.setTheme(this.themes[0]);
     }
+    return this.Userthemes.asObservable();
+  }
 
-
-    getTheme(): Observable<ValueLabel> {
-        let theme = this.localStorage.getItem('settingstheme');
-        if (!theme) { 
-            this.setTheme(this.themes[0]);
-        }
-        return this.Userthemes.asObservable();
-    }
-
-    getLanguageList(): any[] {
-        return this.languages;
-    }
-
-
-  //private CurrentCartSummary(): CartSummary {
-  //  try {
-  //    return JSON.parse(this.localStorage.getItem('cartinfo')); 
-  //  } catch (err) {
-  //    return {
-  //      cart_qty: 0,
-  //      cart_total: 0,
-  //      total_payable: 0,
-  //      discount: 0,
-  //      cartItems: []
-  //    };
-  //  }
-  //}
-  //setCartSummary(summry: CartSummary): void {
-  //  this.localStorage.setItem('cartinfo', summry)
-  //  console.log(summry);
-  //  this.cartSummary.next(summry);
-  //}
-  //getCartSummary(): Observable<CartSummary> {
-  //  let summary = this.localStorage.getItem('cartinfo');
-  //  if (!summary) {
-  //    this.setCartSummary({
-  //      cart_qty: 0,
-  //      cart_total: 0,
-  //      total_payable: 0,
-  //      discount: 0,
-  //      cartItems: []
-  //    });
-  //  }
-  //  return this.cartSummary.asObservable();
-  //}
-  private CurrentLang(): string {
-        try {
-            return this.localStorage.getItem('settingslang') || 'en';
-        } catch (err) {
-            return 'en';
-        }
-    }
-    setLanguage(lang: string): void {
-        this.localStorage.setItem('settingslang', lang)
-        console.log(lang);
-        this.UserLanguage.next(lang);
-    }
-
-
-    getLanguage(): Observable<string> {
-        let lang = this.localStorage.getItem('settingslang');
-        if (!lang) {
-            lang = "en";
-            this.setLanguage(lang);
-        }
-        return this.UserLanguage.asObservable();
-    }
-    
- 
-  
-  
-    private hasToken(): boolean {
-        return !!this.localStorage.getUserAuthToken();
-    } 
+  getLanguageList(): any[] {
+    return this.languages;
+  }
    
-
-    showBar(): void {
-        this.progressBar.next(true);
+  
+  private CurrentLang(): string {
+    try {
+      return this.localStorage.getItem('settingslang') || 'en';
+    } catch (err) {
+      return 'en';
     }
+  }
+  setLanguage(lang: string): void {
+    this.localStorage.setItem('settingslang', lang)
+    console.log(lang);
+    this.UserLanguage.next(lang);
+  }
 
-    hideBar(): void {
-        this.progressBar.next(false);
+
+  getLanguage(): Observable<string> {
+    let lang = this.localStorage.getItem('settingslang');
+    if (!lang) {
+      lang = "en";
+      this.setLanguage(lang);
     }
+    return this.UserLanguage.asObservable();
+  }
 
-    getBarValue(): Observable<boolean> {
-        return this.progressBar.asObservable();
-    }
 
-    showSpinner(): void {
-        this.spinnerBar.next(true);
-    }
 
-    hideSpinner(): void {
-        this.spinnerBar.next(false);
-    }
 
-    getSpinnerValue(): Observable<boolean> {
-        return this.spinnerBar.asObservable();
+  private hasToken(): boolean {
+    return !!this.localStorage.getUserAuthToken();
+  }
+
+
+  showBar(): void {
+    this.progressBar.next(true);
+  }
+
+  hideBar(): void {
+    this.progressBar.next(false);
+  }
+
+  getBarValue(): Observable<boolean> {
+    return this.progressBar.asObservable();
+  }
+
+  showSpinner(): void {
+    this.spinnerBar.next(true);
+  }
+
+  hideSpinner(): void {
+    this.spinnerBar.next(false);
+  }
+
+  getSpinnerValue(): Observable<boolean> {
+    return this.spinnerBar.asObservable();
   }
 
 
@@ -221,36 +190,36 @@ export class EventService  {
   }
   getCountries(): Observable<Country[]> {
     return this.http.get<any>(this.countriesUrl).pipe(
-      map(response => { 
-            console.log(response);
+      map(response => {
+        console.log(response);
         return response['payload']['data'];
-         }
-      )
-    ) 
-  }
-  getStates(): Observable<State[]> {
-    return this.http.get<any>(this.statesUrl).pipe(
-      map(response => { 
-        return    response['payload']['data'];
       }
       )
     )
   }
-  
+  getStates(): Observable<State[]> {
+    return this.http.get<any>(this.statesUrl).pipe(
+      map(response => {
+        return response['payload']['data'];
+      }
+      )
+    )
+  }
+
   getLanguages(): Observable<Langauge[]> {
     return this.http.get<any>(this.languagesUrl).pipe(
       map(response => {
         return response['payload']['data'];
       }
-         
+
       )
     )
   }
-  ngOnDestroy() { 
+  ngOnDestroy() {
     this.isAuthenticated.unsubscribe();
     this.UserLanguage.unsubscribe();
     this.progressBar.unsubscribe();
-    this.spinnerBar.unsubscribe(); 
+    this.spinnerBar.unsubscribe();
   }
 }
- 
+

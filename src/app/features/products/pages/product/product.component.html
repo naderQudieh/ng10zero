@@ -1,6 +1,5 @@
-<div  fxFlex="100"   > 
-  <mat-card  > 
-  
+<div fxFlex="100"   > 
+  <mat-card  >  
     <img mat-card-image routerLink="/product-detail" [alt]="product.name" [src]="product.imge_url">
     <mat-card-content>
       <div class="product-details">
@@ -18,8 +17,6 @@
       <button style="margin-left:10px"  matTooltip="add to cart"  class="circle"  mat-icon-button color="primary" (click)="addToCart(product)">
         <mat-icon  >add_shopping_cart</mat-icon>
       </button>
-    </div>
-   
-
+    </div> 
   </mat-card>
 </div>

@@ -41,7 +41,9 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
         { link: 'dashboard', label: 'main.menu.dashboard', icon:"dashboard" },
         { link: 'products', label: 'main.menu.products', icon: "star"}, 
         { link: 'admin', label: 'admin', icon: "star" },
-        { link: 'setting', label: 'main.menu.setting', icon: "settings" }
+        { link: 'setting', label: 'main.menu.setting', icon: "settings" },
+      { link: 'privacy', label: 'privacy', icon: "privacy_tip" },
+      { link: 'contact', label: 'contact', icon: "contact_page" }
     ];
   
     isLoggedIn: boolean;
@@ -147,7 +149,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
 
     onLogoutClick() {
          this.eventService.setAuthenticated(false);
-         //this.store.dispatch(new fromActions.LogOut());
+      this.router.navigate(['/home']);
     }
 
   

@@ -12,7 +12,7 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-checkout',
   templateUrl: './checkout.component.html',
-  styleUrls: ['../../products.component.scss'],
+  styleUrls: ['../products.component.scss'],
 })
 export class CheckoutComponent implements OnInit {
   selectedYY: number;

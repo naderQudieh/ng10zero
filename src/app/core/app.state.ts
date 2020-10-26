@@ -2,29 +2,29 @@ import { Action, ActionReducerMap, ActionReducer, MetaReducer, createFeatureSele
 import { routerReducer, RouterReducerState } from '@ngrx/router-store';
 import { environment } from '../../environments/environment';
 import { createReducer, createSelector, Selector } from '@ngrx/store';
-//import { authReducer, initialState } from '../../features/account/store/auth.reducer';
-//import { AuthActions } from '../../features/account/store';
-//import { AuthState } from '../../features/account/store/auth.model';
+import { authReducer, initialState } from '../features/account/store/auth.reducer';
+import { AuthActions } from '../features/account/store';
+import { AuthState } from '../features/account/store/auth.model';
 import { RouterState } from './router.state';
 import { storeLogger } from 'ngrx-store-logger';
 import { featureProductsReducers } from 'src/app/features/products/store';
 import { InjectionToken } from '@angular/core';
 
 export interface AppState {
- // auth: AuthState;
+   auth: AuthState;
   router: RouterReducerState<RouterState>;
 }
 
-export const reducers: ActionReducerMap<AppState> = {
-  //  auth: authReducer,
-  router: routerReducer
+export const appReducers: ActionReducerMap<AppState> = {
+    auth: authReducer,
+    router: routerReducer
 }; 
 
-export const appReducers: ActionReducerMap<AppState> = {
- // auth: fromAuth.reducer,
-  router: routerReducer,
- // featureProducts: featureProductsReducers,
-};
+//export const appReducers: ActionReducerMap<AppState> = {
+//   auth: fromAuth.reducer,
+//   router: routerReducer,
+//   //featureProducts: featureProductsReducers,
+//};
 
 export const metaReducers: MetaReducer<AppState>[] = !environment.production
   ? []

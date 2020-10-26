@@ -1,0 +1,12 @@
+ 
+<div [@routeAnimations]="o.isActivated && o.activatedRoute.routeConfig.path">
+    <div>
+        <mat-toolbar>
+            <button (click)="OpenProfileDialog()">
+                Open Profile Dialog
+            </button>
+            
+        </mat-toolbar>
+    </div>
+    <router-outlet #o="outlet"></router-outlet>
+</div>
