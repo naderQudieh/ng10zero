@@ -2,10 +2,9 @@ import { CommonModule } from '@angular/common';
 import { NgModule, Optional, SkipSelf, ErrorHandler, APP_INITIALIZER } from '@angular/core';
 import {  HttpClientModule,  HttpClient,  HTTP_INTERCEPTORS} from '@angular/common/http';
 import { StoreRouterConnectingModule, RouterStateSerializer } from '@ngrx/router-store';
-import { CustomRouterSerializer } from './router.state';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule } from '@angular/forms';
-import { StoreModule, Store } from '@ngrx/store';
+import { INITIAL_STATE, ActionReducer, ActionReducerMap, MetaReducer, StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools'; 
 import { MissingTranslationHandler, TranslateModule, TranslateLoader, TranslateService, TranslateCompiler } from '@ngx-translate/core';
@@ -24,11 +23,13 @@ import { NotificationComponent } from './components/widgets/notification.compone
 import { FooterComponent } from '../shared/components/footer/footer.component'; 
 import { SidebarNoticeComponent } from './components/sidebar-notice/sidebar-notice.component';
 import { UserComponent } from './components/widgets/user.component';
-import { AppState } from 'src/app/core/app.state';
-import { appReducers, reducerProvider, REDUCERS_TOKEN } from 'src/app/core/app.state';
-
+import { AppState  } from 'src/app/core/app.state';
+import { NavigationActionTiming, routerReducer  } from '@ngrx/router-store';
+import {  initialAppState } from './app.state';
+import { CustomSerializer, RouterStateProvider } from './router.state';
+//import { CustomRouterSerializer } from './router.state';
 import {
-    AuthService, SnackbarService, EventService, //AppErrorHandler,
+    SnackbarService, EventService, //AppErrorHandler,
     LocalStorageService, AnimationsService, AuthGuard  } from './services';
  
 const SHARED_SERVICES: any[] = [EventService,
@@ -43,9 +44,9 @@ const SHARED_DECLARATIONS: any[] = [FooterComponent, NotificationComponent,
 export {
     LocalStorageService, AnimationsService, SnackbarService,
     AuthGuard, routeAnimations, ROUTE_ANIMATIONS_ELEMENTS, //AppErrorHandler,
-   // AppState,  selectRouterState     
+    AppState//,  selectRouterState     
 };
-
+   
 
 export function tokenGetter() { 
     try { 
@@ -60,6 +61,7 @@ export function tokenGetter() {
  
 
 export function HttpLoaderFactory(http: HttpClient) {
+ 
   return new TranslateHttpLoader(
     http,`${environment.i18nPrefix}/assets/i18n/`,'.json'
   );
@@ -67,48 +69,37 @@ export function HttpLoaderFactory(http: HttpClient) {
 
 @NgModule({
   imports: [
-    // angular
-    CommonModule,
-    HttpClientModule,
-        FormsModule, //RecaptchaModule.forRoot(),
-    // material
-        MATERIAL_MODULES_CORE, 
-        JwtModule.forRoot({
-            config: {
-                tokenGetter: tokenGetter 
-            },
-        }),
-    // ngrx
-    //StoreModule.forRoot(reducers, { metaReducers }),
-    StoreModule.forRoot(REDUCERS_TOKEN),
-    StoreRouterConnectingModule.forRoot(), 
-    StoreDevtoolsModule.instrument({ logOnly: environment.production }),
-    // 3rd party
-    FontAwesomeModule,
-        TranslateModule.forRoot({
-            defaultLanguage: 'en',
-              loader: {
-                provide: TranslateLoader,
-                useFactory: HttpLoaderFactory,
-                deps: [HttpClient]
-              }
+    // //RecaptchaModule.forRoot(),
+    CommonModule, MATERIAL_MODULES_CORE, HttpClientModule, FormsModule, FontAwesomeModule,
+     JwtModule.forRoot({  config: { tokenGetter: tokenGetter },}), 
+     JwtModule.forRoot({  config: { tokenGetter: tokenGetter },}), 
+     StoreModule.forRoot({ router: routerReducer }, { initialState: initialAppState }),
+     StoreDevtoolsModule.instrument({ logOnly: environment.production }),
+     StoreRouterConnectingModule.forRoot({
+      serializer: CustomSerializer,
+      navigationActionTiming: NavigationActionTiming.PostActivation
+     }),
+     TranslateModule.forRoot({
+      defaultLanguage: 'en',
+      loader: {
+        provide: TranslateLoader, useFactory: HttpLoaderFactory, deps: [HttpClient]
+      }
     })
-  ],
+     ],
     declarations: [...SHARED_DECLARATIONS],
-  providers: [...SHARED_SERVICES, Configuration, httpInterceptorProviders,
-    { provide: REDUCERS_TOKEN, useValue: appReducers },
+  providers: [...SHARED_SERVICES, RouterStateProvider, Configuration, httpInterceptorProviders, 
        // { provide: ErrorHandler, useClass: AppErrorHandler },
-        //{ provide: HTTP_INTERCEPTORS, useClass: JtwInterceptor, multi: true },
-      { provide: RouterStateSerializer, useClass: CustomRouterSerializer },
-       // {        provide: APP_INITIALIZER, useFactory: initStore, deps: [Store], multi: true  }
+        //{ provide: HTTP_INTERCEPTORS, useClass: JtwInterceptor, multi: true }, 
+       // {   provide: APP_INITIALIZER, useFactory: initStore, deps: [Store], multi: true  }
   ],
     exports: [...SHARED_DECLARATIONS,FormsModule,  MATERIAL_MODULES_CORE,  // RecaptchaModule,
              FontAwesomeModule, TranslateModule]
 })
 export class CoreModule {
     constructor(@Optional() @SkipSelf() parent: CoreModule, faIconLibrary: FaIconLibrary,
-        private readonly translateService: TranslateService, private readonly evnService: EventService
+        private readonly translateService: TranslateService, private readonly evnService: EventService,
     ) {
+     
         if (parent) {
            throw new Error('CoreModule is already loaded. Import only in AppModule');
         }

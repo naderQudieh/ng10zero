@@ -51,12 +51,36 @@ mat-icon, mat-icon-button {
 }
 
 
+.productCard {
+  cursor: pointer;
+
+  .product-actions {
+    display: none !important;
+    border-radius: 5px !important;
+    width: 90px !important;
+    height: 40px !important;
+    z-index: 9999;
+    position: absolute;
+    top: 20px;
+    right: 10px;
+  }
+
+  &:hover {
+    opacity: 0.9.5;
+
+    .product-actions {
+      background-color: white;
+      display: flex !important;
+    }
+  }
+}
+
 
 
 .mat-card {
   overflow: hidden;
-  min-width: 200px;
-  max-height: 200px;
+  /*  min-width: 200px;*/
+  max-height:400px;
   border-top-right-radius: 5px;
   border-top-left-radius: 5px;
   padding: 15px 5px !important;
@@ -64,6 +88,7 @@ mat-icon, mat-icon-button {
 }
 
 img.mat-card-image {
+  margin: 0 0;
   float: left;
   min-width: 200px;
   min-height: 200px;
@@ -72,141 +97,140 @@ img.mat-card-image {
   border-top-left-radius: 5px;
 }
 
-.mini-cart {
-  mat-card {
-    margin: 4px;
-    height: 150px;
-    box-shadow: none;
-    border: 1px solid #FFFFFF;
-  }
+  .mini-cart {
+    mat-card {
+      margin: 4px;
+      height: 150px;
+      box-shadow: none;
+      border: 1px solid #FFFFFF;
+    }
 
-  .view-cart-btn {
-    border: 1px solid #ccc;
-  }
+    .view-cart-btn {
+      border: 1px solid #ccc;
+    }
 
-  .card-desc {
-    height: 100%;
+    .card-desc {
+      height: 100%;
 
-    div, select {
-      margin: 6px;
+      div, select {
+        margin: 6px;
+      }
+    }
+
+    .image-mage {
+      max-width: 150px;
+      max-height: 130px;
+      margin: 0 0;
+      border-top-right-radius: 5px;
+      border-top-left-radius: 5px;
+      object-fit: cover;
+    }
+
+    .empty-cart-title {
+      color: var(--subtitle);
+      width: 100%;
+      text-align: center;
+      margin-top: 24px;
+    }
+
+    .cart-button {
+      width: 97%;
+      margin: 0 auto;
+    }
+
+
+
+    .mini-cart-amount {
+      text-align: end;
+      width: 100%;
+      margin: 10px;
+    }
+
+    .mini-cart-amount-title {
+      margin: 10px;
+    }
+
+    .delete-cart {
+      color: red;
     }
   }
 
-  .image-mage {
-    max-width: 150px;
-    max-height:130px;
-    margin: 0 0;
-    border-top-right-radius: 5px;
-    border-top-left-radius: 5px;
-    object-fit: cover;
-  }
+  .pagetoolbar {
+    margin-top: 20px;
 
-
-
-  .empty-cart-title {
-    color: var(--subtitle);
-    width: 100%;
-    text-align: center;
-    margin-top: 24px;
-  }
-
-  .cart-button {
-    width: 97%;
-    margin: 0 auto;
-  }
-
- 
-
-  .mini-cart-amount {
-    text-align: end;
-    width: 100%;
-    margin: 10px;
-  }
-
-  .mini-cart-amount-title {
-    margin: 10px;
-  }
-
-  .delete-cart {
-    color: red;
-  }
-}
-.pagetoolbar {
-  margin-top: 20px; 
-  .mat-tab-link {
-    min-width: 120px;
-    padding: 0 15px;
-  }
-
-
-  .vertical-form {
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          align-items: center;
-      }
-
-      .vertical-form > h1 {
-          margin-top: 16px;
-      }
-       
-
-      .price-quantity {
-          display: flex;
-          justify-content: space-around;
-          align-items: center;
-      }
-
-      .order-review-table th, td {
-          padding-right: 20px;
-      }
-
-      tr.mat-footer-row {
-          font-weight: bold;
-      }
-
-      .title {
-          display: flex;
-          justify-content: space-between;
-          align-items: flex-start;
-      }
-
-      .title button {
-          width: unset;
-      }
-
-      .input-group {
-          display: flex;
-          align-items: center;
-      }
-
-      .input-group > button {
-          width: unset;
-      }
-
-      .input-group .material-icons {
-          font-size: 21px;
-      }
-
-      /* Hide Up Down Buttons on Number Input */
-      /* Chrome, Safari, Edge, Opera */
-      input::-webkit-outer-spin-button,
-      input::-webkit-inner-spin-button {
-          -webkit-appearance: none;
-          margin: 0;
-      }
-
-      /* Firefox */
-      input[type=number] {
-          -moz-appearance: textfield;
-      }
-
-      .cursor-pointer {
-          cursor: pointer;
-      }
-  @media (max-width: map-get($grid-breakpoints, md)) {
     .mat-tab-link {
-      min-width: 0;
+      min-width: 120px;
+      padding: 0 15px;
+    }
+
+
+    .vertical-form {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .vertical-form > h1 {
+      margin-top: 16px;
+    }
+
+
+    .price-quantity {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+    }
+
+    .order-review-table th, td {
+      padding-right: 20px;
+    }
+
+    tr.mat-footer-row {
+      font-weight: bold;
+    }
+
+    .title {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+
+    .title button {
+      width: unset;
+    }
+
+    .input-group {
+      display: flex;
+      align-items: center;
+    }
+
+    .input-group > button {
+      width: unset;
+    }
+
+    .input-group .material-icons {
+      font-size: 21px;
+    }
+    /* Hide Up Down Buttons on Number Input */
+    /* Chrome, Safari, Edge, Opera */
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+    /* Firefox */
+    input[type=number] {
+      -moz-appearance: textfield;
+    }
+
+    .cursor-pointer {
+      cursor: pointer;
+    }
+
+    @media (max-width: map-get($grid-breakpoints, md)) {
+      .mat-tab-link {
+        min-width: 0;
+      }
     }
   }
-}

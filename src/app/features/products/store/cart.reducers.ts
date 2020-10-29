@@ -11,10 +11,7 @@ export const initialCartState: CartState = {
 
 
 
-export const cartReducers = (
-    state = initialCartState,
-    action: CartActions
-): CartState => {
+export const cartReducers = ( state = initialCartState, action: CartActions): CartState => {
     switch (action.type) {
         case ECartActions.GetCartSuccess: {
             return {

@@ -1,6 +1,6 @@
 import { Action } from '@ngrx/store';
 import { createAction, props } from '@ngrx/store';
-import { UserModel } from './auth.model';
+import { UserModel } from "src/app/core/core.model";
 
 export enum AuthActionTypes {
     LOGIN = '[Auth] Login',
@@ -9,8 +9,26 @@ export enum AuthActionTypes {
     SIGNUP = '[Auth] Signup',
     SIGNUP_SUCCESS = '[Auth] Signup Success',
     SIGNUP_ERROR = '[Auth] Signup Failure',
-    LOGOUT = '[Auth] Logout' 
+    LOGOUT = '[Auth] Logout',
+    INIT_APP= '[App] Start app initializer',
+    INIT_APP_FAIL= '[App] Start app initializer fail',
 }
+
+export class AuthStateLoad implements Action {
+  readonly type = AuthActionTypes.INIT_APP;
+  constructor(public payload: any) {
+    console.log('Action AuthStateLoad');
+  }
+}
+export class AuthStateLoadError implements Action {
+  readonly type = AuthActionTypes.INIT_APP_FAIL;
+  constructor(public payload: any) {
+    console.log('Action AuthStateLoadError');
+  }
+}
+
+ 
+
 
 export class LogIn implements Action {
     readonly type = AuthActionTypes.LOGIN;
@@ -61,7 +79,7 @@ export class LogOut implements Action {
 
  
 
-export type All =
+export type AuthActions = AuthStateLoad | AuthStateLoadError
     | LogIn  
     | LogInSuccess
     | LogInError

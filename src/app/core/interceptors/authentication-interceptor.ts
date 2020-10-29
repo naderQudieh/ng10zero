@@ -2,10 +2,10 @@ import { Injectable } from '@angular/core';
 import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError, BehaviorSubject } from 'rxjs';
 import { catchError, switchMap, take } from 'rxjs/operators';
-import { UserInfo, AuthToken, UserClaims, AuthState } from '../auth.model';
+import { UserInfo, AuthToken, UserClaims  } from '../core.model';
 import { AuthService } from "../services/auth.service";
 
-@Injectable()
+ 
 export class AuthenticationInterceptor implements HttpInterceptor {
   private isRefreshing;
     private refreshTokenSubject: BehaviorSubject<AuthToken>;

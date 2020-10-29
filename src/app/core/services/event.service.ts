@@ -7,7 +7,6 @@ import { catchError, delay, tap, map } from 'rxjs/operators';
 import { Observable, throwError, Subscription, Subject, BehaviorSubject, of } from 'rxjs';
 import { AppState } from '../app.state';
 import { cartServiceConstants } from '../constants/api.constants';
-import { AuthService } from './auth.service';
 import { LocalStorageService } from './local-storage.service';
 import { ValueLabel } from '../constants';
 import { Country, State, Langauge } from '../settings';

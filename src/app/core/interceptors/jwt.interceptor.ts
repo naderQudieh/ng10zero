@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Injector} from '@angular/core';
 import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
@@ -7,8 +7,9 @@ import {JwtHelperService} from '@auth0/angular-jwt';
  
 //@Injectable()
 export class JwtRefreshInterceptor implements HttpInterceptor {
-
-    constructor(private authService: AuthService, private jwtHelper: JwtHelperService) {
+  private authService: AuthService;
+  constructor(private injector: Injector, private jwtHelper: JwtHelperService) {
+    this.authService = this.injector.get(AuthService); 
   }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {

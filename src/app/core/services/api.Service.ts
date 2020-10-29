@@ -1,9 +1,11 @@
+/// <reference path="../core.model.ts" />
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpHeaders,  HttpParams,  HttpResponse,} from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
-import { catchError, map, retry, timeout } from 'rxjs/operators'; 
+import { catchError, tap, map, retry, timeout } from 'rxjs/operators'; 
 import { environment } from '../../../environments/environment';
-
+import { ResponseModel } from "../core.model"; 
+ 
 /**
  * Http wrapper service
  */
@@ -20,15 +22,11 @@ export class ApiService {
   getHeaders(): HttpHeaders {
     return this.header
       .append('Accept', 'application/json')
-      .append('Content-Type', 'application/json');
+      .append('Content-Type', 'application/json')
+      .append('Timeout', '900000'); 
   }
 
-  getHeadersProcess(): HttpHeaders {
-    return this.header
-      .append('Accept', 'application/json')
-      .append('Content-Type', 'application/json')
-      .append('Timeout', '900000');
-  }
+  
 
   /**
    * Get HTTP Header for Form Data
@@ -75,9 +73,34 @@ export class ApiService {
         catchError(this.handleError)
       );
   }
+
+  get2(uri: string, params?: HttpParams): Observable<ResponseModel> {
+    return this.httpClient.get<ResponseModel>(environment.baseUrl + uri, { headers: this.getHeaders(), params })
+      .pipe(
+        tap(data => { console.log(data) },
+          error => { console.log(error) }
+        ));
+  }
+
+  post2(uri: string,  body: Object = {}): Observable<ResponseModel> {
+    return this.httpClient.post<ResponseModel>(environment.baseUrl + uri,
+      body, { headers: this.getHeaders() }).pipe(
+        tap(data => { console.log(data) },
+          error => { console.log(error) }
+        ));
+  }
+
+  delete2(uri: string, params?: HttpParams): Observable<ResponseModel> {
+    return this.httpClient.delete<ResponseModel>(environment.baseUrl + uri, { headers: this.getHeaders(), params }).pipe(
+      tap(data => { console.log(data) },
+        error => { console.log(error) }
+      ));
+  }
+
   getSocket(): string {
     return environment.baseUrl + 'socket'
   }
+
   getSeacrh(uri: string, param?: HttpParams, body?: HttpParams): Observable<any> {
     return this.httpClient
       .get<any>(environment.baseUrl + uri, {

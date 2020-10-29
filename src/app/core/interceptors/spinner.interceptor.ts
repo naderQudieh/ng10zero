@@ -16,17 +16,17 @@ export class SpinnerInterceptor implements HttpInterceptor {
 
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
-        this.evnService.showSpinner();
+        //this.evnService.showSpinner();
 
         return next
             .handle(req)
             .pipe(
                 tap((event: HttpEvent<any>) => {
                     if (event instanceof HttpResponse) {
-                        this.evnService.hideSpinner();
+                       // this.evnService.hideSpinner();
                     }
                 }, (error) => {
-                        this.evnService.hideSpinner();
+                       // this.evnService.hideSpinner();
                 })
             );
     }
