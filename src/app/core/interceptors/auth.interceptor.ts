@@ -5,7 +5,7 @@ import { exhaustMap, catchError, filter, first, map, mergeMap, take, switchMap }
 import { Store, select } from '@ngrx/store';
 import { AuthService } from '../services/auth.service';
 import { Router, ActivatedRoute } from '@angular/router';
-import { UserInfo, AuthToken, UserClaims, AuthState } from '../auth.model';
+import { UserInfo, AuthToken, UserClaims, AuthModel } from '../core.model';
  
 
  
@@ -19,7 +19,7 @@ export class AuthInterceptor implements HttpInterceptor {
 	];
 
 	constructor( private router: Router, private injector: Injector) {
-		//this.store.select("auth").subscribe((authState: AuthState) => {
+		//this.store.select("feature_auth").subscribe((authState: AuthState) => {
 		//	console.log("*****************");
 		//	console.log(authState.authToken);
 		//	console.log("*****************");
@@ -110,7 +110,7 @@ export class AuthInterceptor implements HttpInterceptor {
 		if (req.url.indexOf('refresh') !== -1 || req.url.indexOf('register') !== -1 || req.url.indexOf('login') !== -1) {
 			return next.handle(req);
 		}
-		//const authState = this.store.select('auth');
+		//const authState = this.store.select('feature_auth');
 		const authState = this.store.select(getAuth);
 		return this.ignoredUrls.includes(req.url) ? next.handle(req) : authState.pipe(
 			first()

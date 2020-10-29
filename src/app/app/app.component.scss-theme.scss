@@ -1,74 +1,89 @@
 @import '~@angular/material/theming';
 
 @mixin anms-app-component-theme($theme) {
-    $primary: map-get($theme, primary);
-    $accent: map-get($theme, accent);
-    $warn: map-get($theme, warn);
+  $primary: map-get($theme, primary);
+  $accent: map-get($theme, accent);
+  $warn: map-get($theme, warn);
 
-    mat-drawer-container {
-        mat-toolbar {
-            button {
-               
-                &.active {
-                    color: mat-color($accent, default-contrast);
-                    background-color: mat-color($accent);
-                }
-            }
 
-            .link {
-                color: mat-color($primary, default-contrast);
-            }
+
+  mat-drawer-container {
+
+    .mat-menu-item {
+      line-height: 50px;
+
+      &:hover {
+        border-bottom-style: solid;
+        border-bottom-width: 1px;
+        border-bottom-color: mat-color($accent) !important;
+         
+      }
+    }
+
+
+    mat-toolbar {
+      button {
+
+        &.active {
+          color: mat-color($accent, default-contrast);
+          background-color: mat-color($accent);
         }
+      }
 
-        mat-drawer {
-            .mat-list-item {
-                line-height: 50px;
+      .link {
+        color: mat-color($primary, default-contrast);
+      }
+    }
 
-                &.active {
-                    color: mat-color($accent, default-contrast);
-                    background-color: mat-color($accent) !important;
+    mat-drawer {
+      .mat-list-item {
+        line-height: 50px;
 
-                    &:hover {
-                        background-color: mat-color($accent, darker) !important;
-                    }
-                }
-            }
+        &.active {
+          color: mat-color($accent, default-contrast);
+          background-color: mat-color($accent) !important;
+
+          &:hover {
+            background-color: mat-color($accent, darker) !important;
+          }
         }
+      }
+    }
 
-        .footer {
-            color: mat-color($primary, lighter);
-            background-color: mat-color($primary, darker);
+    .footer {
+      color: mat-color($primary, lighter);
+      background-color: mat-color($primary, darker);
 
-            .links,
-            .signature {
-                a {
-                    color: mat-color($primary, lighter);
+      .links,
+      .signature {
+        a {
+          color: mat-color($primary, lighter);
 
-                    &:hover {
-                        color: mat-color($accent);
-                    }
-                }
-            }
+          &:hover {
+            color: mat-color($accent);
+          }
         }
+      }
     }
+  }
 
-    .error-notification-overlay {
-        color: mat-color($warn, default-contrast);
-        background-color: mat-color($warn);
-    }
+  .error-notification-overlay {
+    color: mat-color($warn, default-contrast);
+    background-color: mat-color($warn);
+  }
 
-    .info-notification-overlay {
-        color: mat-color($accent, default-contrast);
-        background-color: mat-color($accent);
-    }
+  .info-notification-overlay {
+    color: mat-color($accent, default-contrast);
+    background-color: mat-color($accent);
+  }
 
-    .success-notification-overlay {
-        color: mat-color($success-colors, default-contrast);
-        background-color: mat-color($success-colors);
-    }
+  .success-notification-overlay {
+    color: mat-color($success-colors, default-contrast);
+    background-color: mat-color($success-colors);
+  }
 
-    .warning-notification-overlay {
-        color: mat-color($warning-colors, default-contrast);
-        background-color: mat-color($warning-colors);
-    }
+  .warning-notification-overlay {
+    color: mat-color($warning-colors, default-contrast);
+    background-color: mat-color($warning-colors);
+  }
 }

@@ -57,7 +57,7 @@ export class CheckoutComponent implements OnInit {
 
     this.evnService.getStates().subscribe(
       data => {
-        console.log(data);
+        //console.log(data);
         this.billingAddressStates = data;
       }
     )

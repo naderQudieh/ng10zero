@@ -4,8 +4,7 @@ import { MediaMatcher } from '@angular/cdk/layout';
 import { Subscription } from 'rxjs';
 
 import { environment } from '../../../../environments/environment';
-import { AuthService } from '../../services/auth.service';
-import { EventService } from '.../../services/EventService;
+import { EventService } from '../../services/event.service';
 import { AuthGuard } from 'src/app/core/services/auth-guard';
 
 @Component({
@@ -25,8 +24,7 @@ export class LayoutComponent implements OnInit, OnDestroy, AfterViewInit {
 
     constructor(private changeDetectorRef: ChangeDetectorRef,
         private media: MediaMatcher,
-        public eventService: EventService,
-        private authService: AuthService,
+        public eventService: EventService, 
         private authGuard: AuthGuard) {
 
         this.mobileQuery = this.media.matchMedia('(max-width: 1000px)');

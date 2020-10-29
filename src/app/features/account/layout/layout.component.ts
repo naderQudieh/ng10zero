@@ -3,8 +3,7 @@ import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ProfileComponent } from '../profile/profile.component';
 import { routeAnimations  } from '../../../core/core.module';
-import { State } from '../account.state';
-
+import { AuthReducer } from '../../account/store/index'; 
 import { DialogService } from '../../../shared/services';
 
 @Component({
@@ -18,7 +17,7 @@ export class LayoutComponent implements OnInit {
   isAuthenticated$: Observable<boolean>;
 
  
-    constructor(private dialogService : DialogService,  private store: Store<State>) {}
+  constructor(private dialogService: DialogService, private store: Store<AuthReducer.AuthState>) {}
 
     ngOnInit(): void {
       //this.isAuthenticated$ = this.store.pipe(select(selectIsAuthenticated));

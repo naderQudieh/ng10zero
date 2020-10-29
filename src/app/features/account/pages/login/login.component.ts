@@ -6,7 +6,7 @@ import { filter, debounceTime, map, take } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ROUTE_ANIMATIONS_ELEMENTS } from '../../../../core/core.module';
-import { AuthActions, AuthState, getAuth, getAuthError } from '../../store';
+import { AuthActions,  selectAuthError, selectAuth  } from '../../store';
 
 @Component({
     selector: 'auth-login',
@@ -15,7 +15,7 @@ import { AuthActions, AuthState, getAuth, getAuthError } from '../../store';
 })
 export class LoginComponent implements OnInit {
     isLoading = false;
-    public error$: Observable<string>;
+    public error$: Observable<any>;
     hide = true;
     redirectUrl: string="";
     private loadingSub: Subscription;
@@ -67,7 +67,7 @@ export class LoginComponent implements OnInit {
     ngOnInit() {
         this.isLoading = false; 
         this.createForm();
-        this.error$ = this.store.pipe(select(getAuthError)); 
+      this.error$ = this.store.pipe(select(selectAuthError)); 
         this.route.params.subscribe((params) => {
             console.log(params); 
             if (params.redirectUrl) {
@@ -97,7 +97,7 @@ export class LoginComponent implements OnInit {
         } 
         if (data.value) {
             console.log(this.redirectUrl); 
-            this.store.dispatch(new AuthActions.LogIn(formdata ));
+            this.store.dispatch(new AuthActions.LogIn(formdata));
             // this.store.dispatch(AuthActions.SignIn({ payload: me }));
         }
     }

@@ -1,22 +1,24 @@
-<div fxFlex="100"   > 
-  <mat-card  >  
-    <img mat-card-image routerLink="/product-detail" [alt]="product.name" [src]="product.imge_url">
-    <mat-card-content>
-      <div class="product-details">
-        <span class="name">{{product.name}}</span>
-        <span class="price">${{product.unit_price }}</span>
+<div class="product-card" > 
+    <mat-card fxFlex="100">
+      <div class="product-image" >
+        <img mat-card-image routerLink="/product-detail" [alt]="product.name" [src]="product.imge_url">
+      </div> 
+      <mat-card-content>
+        <div class="product-details">
+          <span class="name">{{product.name}}</span>
+          <span class="price">${{product.unit_price }}</span>
+        </div>
+        <div class="product-description">
+          <p>{{ product.description }}</p>
+        </div>
+      </mat-card-content>
+      <div class="product-actions" >
+        <button matTooltip="save" class="circle" mat-icon-button color="primary" (click)="addToCart(product)">
+          <mat-icon>library_add_check</mat-icon>
+        </button>
+        <button style="margin-left:10px" matTooltip="add to cart" class="circle" mat-icon-button color="primary" (click)="addToCart(product)">
+          <mat-icon>add_shopping_cart</mat-icon>
+        </button>
       </div>
-      <div class="product-description">
-        <p>{{ product.description }}</p>
-      </div>
-    </mat-card-content>
-    <div class="product-actions" style="display:none; position:absolute;top:10px;right:10px" >
-      <button matTooltip="save" class="circle" mat-icon-button color="primary" (click)="addToCart(product)">
-        <mat-icon  >library_add_check</mat-icon>
-      </button>
-      <button style="margin-left:10px"  matTooltip="add to cart"  class="circle"  mat-icon-button color="primary" (click)="addToCart(product)">
-        <mat-icon  >add_shopping_cart</mat-icon>
-      </button>
-    </div> 
-  </mat-card>
-</div>
+    </mat-card>
+  </div>

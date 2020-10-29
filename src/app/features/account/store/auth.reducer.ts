@@ -1,21 +1,28 @@
-import { UserInfo, AuthToken, AuthState, UserClaims } from './auth.model';
-import { AuthActionTypes, All } from './auth.actions';
+import { UserInfo, AuthToken, AuthModel, UserClaims } from "src/app/core/core.model";
+import { AuthActionTypes, AuthActions  } from './auth.actions';
 import { log } from 'console';
-import { AuthService } from '../../../core/services/auth.service';
 import { JwtHelperService } from '@auth0/angular-jwt';
 
 
+export interface AuthState extends AuthModel {
+   
+} 
 
-export const initialState: AuthState = {
-    authToken: getToken(),
-    userclaims: getUserClaims(),
-    isAuthenticated: getIsAuthenticated(),
-    isTokenExpired: false, 
-    isLoading: false,
-    error: null,
+export const initialAuthState: AuthState = {
+  authToken: getToken(),
+  userclaims: getUserClaims(),
+  isAuthenticated: getIsAuthenticated(),
+  isTokenExpired: getIsTokenExpired(),
+  isLoading: false,
+  error: null,
 };
-export function authReducer(state = initialState, action: any): AuthState {
-     
+
+ 
+
+export const authReducer = (state = initialAuthState, action: AuthActions): AuthState => { 
+  if (state.authToken) {
+    const date = new Date(state.authToken['exp']); 
+  } 
 
     switch (action.type) {
         case AuthActionTypes.LOGIN: {
@@ -27,12 +34,13 @@ export function authReducer(state = initialState, action: any): AuthState {
                 error: null,
             };
         }
-        case AuthActionTypes.LOGIN_SUCCESS: {
-            console.log('AuthActionTypes.LOGIN_SUCCESS'); 
-            saveToken(action.payload);
+        case AuthActionTypes.LOGIN_SUCCESS: { 
+        const authToken =  action.payload;
+       
+        saveToken(authToken);
             return {
                 ...state,
-                ...getAuthentication(action.payload),
+              ...getAuthentication(authToken),
                 isLoading: false,
                 isAuthenticated: true,
                 authToken: action.payload, 
@@ -63,7 +71,38 @@ export function authReducer(state = initialState, action: any): AuthState {
                 userclaims: null,
             };
         }
-       
+      case AuthActionTypes.INIT_APP: {
+        let _state = {
+          authToken: getToken(),
+          userclaims: getUserClaims(),
+          isAuthenticated: getIsAuthenticated(),
+          isTokenExpired: false,
+          isLoading: false,
+          error: null,
+        }
+        return {
+          ...state,
+          isAuthenticated: _state.isAuthenticated,
+          authToken: _state.authToken,
+          userclaims: _state.userclaims, 
+          isLoading: false,
+          error: null, 
+        };
+      }
+      case AuthActionTypes.INIT_APP_FAIL: {
+        return {
+          ...state,
+          isAuthenticated: false,
+          authToken: null,
+          error: null,
+          userclaims: null,
+        };
+      }
+
+      default: { 
+        return state;
+      }
+        
     } 
     
 }
@@ -89,10 +128,9 @@ function getAuthentication(token: AuthToken): AuthState {
     }
 }
 
-function isTokenExpired(token) {
+function isTokenExpired2(token) {
     const jwtHelper = new JwtHelperService(); 
-    const claims = jwtHelper.decodeToken(token);
-
+    const claims = jwtHelper.decodeToken(token); 
     if (claims.exp < new Date().getTime() / 1000) {
         destroyToken();
         return true;
@@ -100,47 +138,78 @@ function isTokenExpired(token) {
         return false;
     }
 }
-
+function isTokenExpired(token) {
+  const jwtHelper = new JwtHelperService();
+  let isExpired = jwtHelper.isTokenExpired(token);
+  return isExpired; 
+}
+function getTokenExpirationDate(token: string): Date {
+  const jwtHelper = new JwtHelperService(); 
+  const decodedToken = jwtHelper.decodeToken(token); 
+  if (decodedToken.exp === undefined) { return null; }  
+  const date = new Date(0);
+  date.setUTCSeconds(decodedToken.exp);
+  return date;
+}
 function destroyToken() {
     localStorage.removeItem('user_token');
 }
-export function getToken(): AuthToken {
-    let token = localStorage.getItem("user_token");
-    try {
-        return JSON.parse(token)
-    } catch (err) {
-        return null;
-    }
-}
-export function getUserClaims(): UserInfo {
-    let token = localStorage.getItem("user_claims");
-    try {
-        return JSON.parse(token)
-    } catch (err) {
-        return null;
-    }
-}
 
-export const getAuthTokenClaims = (state: AuthState) => {
-    const jwtHelper = new JwtHelperService();
-    return jwtHelper.decodeToken(state.authToken.access_token) as UserClaims
-};
-export const getAuthToken = (state: AuthState) => state.authToken;
-
+ 
+ 
+export const getAuthClaims = (state: AuthState) => state.userclaims;
+export const getAuthToken = (state: AuthState) => state.authToken; 
 export const getAccessToken = (state: AuthState) => state.authToken.access_token;
 
-export function isAuthTokenExpired() : boolean {
-    const jwtHelper = new JwtHelperService();
-    return jwtHelper.isTokenExpired(getToken().access_token)
-};
 
 
-export function getIsAuthenticated(): boolean { 
-    const jwtHelper = new JwtHelperService();
-    let token = getToken(); 
-    if (token) { 
-        return !jwtHelper.isTokenExpired(getToken().access_token)
-    }
-    return false;
+
+function getIsTokenExpired(): boolean {
+  const jwtHelper = new JwtHelperService();
+  let token = getToken();
+  if (token) {
+    return !jwtHelper.isTokenExpired(getToken().access_token);
+  }
+  return false;
 }
+
+
+function getIsAuthenticated(): boolean { 
+  const jwtHelper = new JwtHelperService();
+  let token = getToken(); 
+  if (token) { 
+    return !jwtHelper.isTokenExpired(getToken().access_token);
+    }
+   return false;
+}
+
+function getToken(): AuthToken {
+  let token = localStorage.getItem("user_token");
+  try {
+    return JSON.parse(token)
+  } catch (err) {
+    return null;
+  }
+}
+
  
+function getUserClaims(): UserInfo {
+  let _claims = null;
+  let userclaims = localStorage.getItem("user_claims");
+  try {
+    _claims = JSON.parse(userclaims);
+
+  }
+  catch (err) {
+    try {
+      let token = getToken();
+      if (token) {
+        const jwtHelper = new JwtHelperService();
+        _claims = jwtHelper.decodeToken(token.access_token) as UserClaims;
+      }
+    } catch (err) {
+      _claims = null;
+    }
+  }
+  return _claims;
+}

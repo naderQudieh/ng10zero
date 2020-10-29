@@ -1,89 +1,37 @@
-import { createSelector, createFeatureSelector } from '@ngrx/store';
-import { AccountState, selectAccount } from '../account.state';
-import { AuthState } from './auth.model';
+import { createSelector, createFeatureSelector, ActionReducerMap } from "@ngrx/store";
 import * as fromAuth from './auth.reducer';
+import * as fromRoot from "src/app/core/app.state"
+ 
+ 
 
-export const selectAuthState = createFeatureSelector("auth");
+ 
+export interface AuthState {
+  auth: fromAuth.AuthState;
+}
 
-export const getAuth = createSelector(
-    selectAuthState,
-    (state: AuthState) => {
-        //console.log(state);
-        return state
-      }
-);
-
-export const getAuthError = createSelector(
-    getAuth,
-    (authState: AuthState) => {
-        if (authState) {
-            return authState.error;
-        } else {
-            return null;
-        }
-    }
-);
-export const  getAuthRole = createSelector(
-    getAuth,
-    (authState: AuthState) => {
-        if (authState) {
-            return authState.role;
-        } else {
-            return null;
-        }
-    }
-);
-export const getAuthIsAuthenticated  = createSelector(
-    getAuth,
-    (authState: AuthState) => {
-        if (authState) {
-            return authState.isAuthenticated;
-        } else {
-            return null;
-        }
-    }
-);
-
-export const getAuthToken2  = createSelector(
-    getAuth,
-    (authState: AuthState) => {
-        if (authState) {
-            return authState.authToken;
-        } else {
-            return null;
-        }
-    }
-);
-
-export const getAuthCurrentUser = createSelector(
-    getAuth,
-    (authState: AuthState) => {
-        if (authState) {
-            return authState.userInfo ;
-        } else {
-            return null;
-        }
-    }
-);
-export const getAuthToken = createSelector(
-    getAuth,
-    fromAuth.getAuthToken
-);
-export const isAuthTokenExpired = createSelector(
-    getAuth,
-    fromAuth.isAuthTokenExpired
-);
-
+export const authReducers: ActionReducerMap<AuthState> = {
+  auth: fromAuth.authReducer,
+};
+  
+ 
+export const getAuthState = createFeatureSelector<AuthState>('feature_auth');  
+export const selectAuth  = createSelector(getAuthState, state => state.auth); 
+export const selectAuthUserInfo = createSelector(getAuthState, state => state.auth.userInfo);
+export const selectAuthError = createSelector(getAuthState, state => state.auth.error);
+export const selectAuthIsAuthenticated = createSelector(getAuthState, state => state.auth.isAuthenticated);
+export const selectIsAuthTokenExpired = createSelector(getAuthState, state => state.auth.isTokenExpired);
+ 
+ 
 export const getAuthTokenClaims = createSelector(
-    getAuth,
-    fromAuth.getAuthTokenClaims
+  selectAuth,
+  fromAuth.getAuthClaims
 );
 export const getValidToken  = createSelector(
-    getAuth,
+  getAuthState,
     (authState: AuthState) => {
         if (authState) {
-            if (!authState.isTokenExpired && authState.authToken) {
-                return authState.authToken;
+            if (!authState.auth.isTokenExpired && authState.auth.authToken) {
+                return authState.auth.authToken;
             }  
         }   
         return null;

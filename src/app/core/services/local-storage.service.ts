@@ -1,6 +1,6 @@
 import { Inject, Injectable, InjectionToken } from '@angular/core';
 import { JwtHelperService } from '@auth0/angular-jwt';
-import { UserInfo, AuthToken, UserClaims, AuthState } from '../auth.model';
+import { UserInfo, AuthToken, UserClaims, AuthModel } from '../core.model';
 import { Observable, of } from 'rxjs';
 
 export const TOKEN_INFO = 'user_token';
@@ -36,21 +36,19 @@ export class LocalStorageService {
     public removeItem(key: string)  { 
          localStorage.removeItem(key);  
     }
+   
 
-     
-
-
-    setUserToken(token: AuthToken) {
-        if (token) {
-            let _authTokenInfo = this.jwtHelper.decodeToken(token.access_token);
+  setUserToken(token: AuthToken) { 
+    if (token) { 
+            let _authTokenInfo = this.jwtHelper.decodeToken(token.access_token);  
             const storage = sessionStorage;
-            localStorage.setItem(USER_INFO, JSON.stringify(_authTokenInfo.access_token));
-            localStorage.setItem(TOKEN_INFO, JSON.stringify(_authTokenInfo)); 
+            localStorage.setItem(USER_INFO, JSON.stringify(_authTokenInfo));
+            localStorage.setItem(TOKEN_INFO, JSON.stringify(token)); 
         } else {
             sessionStorage.removeItem(TOKEN_INFO);
             localStorage.removeItem(TOKEN_INFO);
-            sessionStorage.removeItem(TOKEN_INFO);
-            localStorage.removeItem(TOKEN_INFO);
+            sessionStorage.removeItem(USER_INFO);
+            localStorage.removeItem(USER_INFO);
         } 
     }
 
@@ -81,23 +79,11 @@ export class LocalStorageService {
         return token ? token.access_token : null;
     }
 
-    clearToken() { 
+  clearToken() { 
         localStorage.removeItem(TOKEN_INFO);
         localStorage.removeItem(USER_INFO);
     }
-   
-    isTokenExpired() {
-
-        try {
-            let accessToken = this.getAccessToken();
-            console.log(this.jwtHelper.decodeToken(accessToken));
-            console.log(this.jwtHelper.getTokenExpirationDate(accessToken));
-            return this.jwtHelper.isTokenExpired(accessToken);
-        } catch (err) {
-            return false;
-        }
-    }
-
+    
     clear() {
         this.storage.clear();
     }

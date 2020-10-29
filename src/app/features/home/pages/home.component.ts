@@ -13,7 +13,7 @@ import { HomeService } from '../home.service';
     templateUrl: './home.component.html',
     styleUrls: ['./home.component.scss']
 })
-export class HomeComponent implements OnInit, OnDestroy {
+export class HomeComponent implements OnInit {
     
     webDevice = false;
     topSelection: any; 
@@ -69,19 +69,11 @@ export class HomeComponent implements OnInit, OnDestroy {
         this.evnService.hideBar();
       });
     }
-    goToShowSpinner() {
-      this.evnService.showSpinner();
-      of('dummy').pipe(delay(4000)).subscribe(val => {
-        this.evnService.hideSpinner();
-      })
-        //this.evnService.getSpinnerValue().subscribe(lang => {
-        //    of('dummy').pipe(delay(50)).subscribe(val => {
-        //        //alert('dummy');
-        //       // this.evnService.hideBar();
-        //    });
-        //}) 
-    }
-    ngOnDestroy() {
-        
-    }
+  goToShowSpinner() {
+    this.evnService.showSpinner();
+    of('dummy').pipe(delay(4000)).subscribe(val => {
+      this.evnService.hideSpinner();
+    })
+
+  }
 }

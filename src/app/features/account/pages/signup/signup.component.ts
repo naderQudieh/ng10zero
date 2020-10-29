@@ -6,7 +6,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 //import { RecaptchaComponent } from 'ng-recaptcha';
 import { ROUTE_ANIMATIONS_ELEMENTS  } from '../../../../core/core.module';
-import { AuthActions, AuthState, getAuth, getAuthError } from '../../store';
+import { AuthActions,  selectAuthError, selectAuth  } from '../../store';
  
 
 @Component({

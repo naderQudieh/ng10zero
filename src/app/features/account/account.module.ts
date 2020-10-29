@@ -10,7 +10,7 @@ import { environment } from '../../../environments/environment';
 import { EventService } from '../../core/services';
 import { AccountRoutingModule } from './account-routing.module'; 
 import { AuthEffects } from './store/auth.effects';
-import { FEATURE_NAME, account_reducers } from './account.state'; 
+import {  authReducer } from './store/auth.reducer';
 import { LayoutComponent } from './layout/layout.component';
 import { LoginComponent } from './pages/login/login.component';
 import { SignupComponent } from './pages/signup/signup.component';
@@ -33,7 +33,9 @@ export function HttpLoaderFactory(http: HttpClient) {
     LazyElementsModule,
     SharedModule,
     AccountRoutingModule,
-    StoreModule.forFeature(FEATURE_NAME, account_reducers),
+    EffectsModule.forRoot([AuthEffects]),
+    StoreModule.forFeature("feature_auth", authReducer),
+   
     TranslateModule.forChild({
       loader: {
         provide: TranslateLoader,
@@ -41,10 +43,7 @@ export function HttpLoaderFactory(http: HttpClient) {
         deps: [HttpClient]
       },
       isolate: false
-    }),
-    EffectsModule.forRoot([
-         AuthEffects
-    ])
+    }) 
   ],
   declarations: [
        LayoutComponent, LoginComponent, ChangePasswordComponent, SignupComponent, ResetPasswordComponent

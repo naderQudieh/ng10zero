@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Injector } from '@angular/core';
 import { Action } from '@ngrx/store';
 import { Router } from '@angular/router';
 import { Actions, Effect, createEffect, ofType } from '@ngrx/effects';
@@ -9,21 +9,21 @@ import { catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { LocalStorageService } from '../../../core/services/local-storage.service';
 import { AuthService } from '../../../core/services/auth.service';
-import { AuthActionTypes, LogIn, LogInSuccess, LogInError, SignUp, SignUpSuccess, SignUpError, LogOut } from './auth.actions';
-import { AuthToken, UserInfo } from './auth.model';
-import { selectQueryParam, selectUrl } from '../../../core/router.state';
+import { AuthStateLoad, AuthStateLoadError, AuthActionTypes, LogIn, LogInSuccess, LogInError, SignUp, SignUpSuccess, SignUpError, LogOut } from './auth.actions';
+import { AuthToken, UserInfo } from "src/app/core/core.model";
+import { JwtHelperService } from '@auth0/angular-jwt';
 
 @Injectable()
 export class AuthEffects {
 
+  private authService: AuthService;
 
-
-    constructor(private store: Store,
+  constructor(private store: Store, private   jwtHelper :JwtHelperService,
         private actions: Actions, protected storageService: LocalStorageService,
-        private authService: AuthService,
+    private injector: Injector, 
         private router: Router
     ) {
-
+    this.authService = this.injector.get(AuthService); 
     }
 
     @Effect()
@@ -107,11 +107,29 @@ export class AuthEffects {
 
     @Effect({ dispatch: false })
     LogOut: Observable<any> = this.actions.pipe(ofType(AuthActionTypes.LOGOUT),
-        map((action: any) => {
+      map((action: any) => { 
             this.authService.logout();
             return this.router.navigateByUrl('/auth/login');
         })
     );
+
+ 
+
+  @Effect({ dispatch: false })
+  StartApp = this.actions.pipe(ofType(AuthActionTypes.INIT_APP),
+    map((action: any) => action.payload),
+    switchMap(() => {
+     // const token = this.storageService.getItem("user_token");
+     // const payload = this.jwtHelper.decodeToken(token); 
+     // return of(new AuthStateLoad( payload ));
+      return of(true);
+
+    }),
+    catchError((error) => {
+      this.storageService.clear();
+      return of(new AuthStateLoadError({ error }));
+    })
+  );
 
 
     private _delete(obj, prop) {

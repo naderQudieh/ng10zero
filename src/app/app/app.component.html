@@ -8,8 +8,7 @@
                 </button>
             </mat-toolbar>
             <mat-nav-list>
-                <a mat-menu-item *ngFor="let item of navigations" (click)="drawer.close()" [routerLink]="[item.link]"
-                   routerLinkActive="active">
+                <a mat-menu-item *ngFor="let item of navigations" (click)="drawer.close()" [routerLink]="[item.link]" >
                     <mat-icon> {{item.icon}}</mat-icon> {{item.label | translate}}
                 </a>
                 <mat-divider></mat-divider> 
@@ -48,14 +47,14 @@
                 <a mat-menu-item routerLink="/products">
                   <mat-icon>start</mat-icon>
                 </a>
-                <span mat-icon-button class="matero-toolbar-button" style="min-width:80px!important" matTooltip="language"
+                <span mat-menu-item    style="min-width:80px!important" matTooltip="language"
                       *ngIf="selectedLanguage">
                   <mat-select [(ngModel)]="selectedLanguage" (selectionChange)="onLanguageSelect()">
                     <mat-option *ngFor="let language of languages" [value]="language">{{language.label}}</mat-option>
                   </mat-select>
                 </span>
 
-                <span mat-icon-button class="matero-toolbar-button" style="min-width:80px!important" matTooltip="theme"
+                <span mat-menu-item   style="min-width:80px!important" matTooltip="theme"
                       *ngIf="selectedTheme">
                   <mat-select [(ngModel)]="selectedTheme" (selectionChange)="onSelectTheme()">
                     <mat-option *ngFor="let theme of themes" [value]="theme">
@@ -66,7 +65,8 @@
 
 
                 <app-notification matTooltip="Notifications"></app-notification>
-                <a class="matero-toolbar-button" matTooltip="{{ 'main.menu.logout' | translate }}" mat-icon-button *ngIf="!(isAuthenticated$ | async)" (click)="onLoginClick()">
+
+                <a mat-menu-item    matTooltip="{{ 'main.menu.logout' | translate }}"  *ngIf="!(isAuthenticated$ | async)" (click)="onLoginClick()">
                   {{ 'main.menu.login' | translate }}
                 </a>
 
