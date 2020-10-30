@@ -8,7 +8,8 @@ export enum ECartActions {
     AddToCartSuccess = '[Cart] Add to cart success',
     RemoveFromCart = '[Cart] Remove from cart',
     RemoveFromCartSuccess = '[Cart] Remove from cart success',
-    CleanCart = '[Cart] Clean Cart',
+  CleanCart = '[Cart] Clean Cart',
+  CleanCartSuccess = '[Cart] Clean Cart',
     LoadInCartError = '[Cart] Load in cart error',
 }
 
@@ -35,15 +36,21 @@ export class RemoveFromCart implements Action {
     public readonly type = ECartActions.RemoveFromCart;
     constructor(public payload: number) {}
 }
-export class CleanCart implements Action {
-  public readonly type = ECartActions.CleanCart;
-   
-}
+
 export class RemoveFromCartSuccess implements Action {
     public readonly type = ECartActions.RemoveFromCartSuccess;
-    constructor(public payload: any[]) {}
+    constructor(public payload: number) {}
 }
+export class CleanCart implements Action {
+  public readonly type = ECartActions.CleanCart;
+  constructor() { }
 
+}
+export class CleanCartSuccess implements Action {
+  public readonly type = ECartActions.CleanCartSuccess;
+  constructor(public payload: boolean) { }
+
+}
 export class LoadCartInError implements Action {
     public readonly type = ECartActions.LoadInCartError;
     constructor(public payload: any) {}

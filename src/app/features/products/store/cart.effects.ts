@@ -4,7 +4,7 @@ import { of } from 'rxjs';
 import { select, Store } from '@ngrx/store';
 import {CartService} from '../services/cart.service';
 import { AddToCart, CleanCart,  AddToCartSuccess,    ECartActions,    GetCart,
-    GetCartSuccess,    LoadCartInError, RemoveFromCart, RemoveFromCartSuccess} from './cart.actions';
+  GetCartSuccess, LoadCartInError, RemoveFromCart, CleanCartSuccess, RemoveFromCartSuccess} from './cart.actions';
 import {map, switchMap} from 'rxjs/operators';
 import { CartItem } from '../product.model';
 import { SnackbarService } from 'src/app/core/services/snackbar.service';
@@ -25,10 +25,9 @@ export class CartEffects {
       switchMap(data => {
         console.log(data);
             return this.cartService.addToCart(data.payload).pipe(
-              map((cart) => {
-                console.log(cart);
+              map((cart) => { 
                   this.notify.success('AddToCartSuccess');
-                    return new AddToCartSuccess(cart);
+                   return new AddToCartSuccess(cart);
                 }),
             );
         })
@@ -38,7 +37,7 @@ export class CartEffects {
         ofType<RemoveFromCart>(ECartActions.RemoveFromCart),
         switchMap((data) => {
             return this.cartService.removeFromCart(data.payload).pipe(
-              map((res: CartItem[]) => {
+              map((res: number) => {
                     return new RemoveFromCartSuccess(res);
                 })
             );
@@ -46,19 +45,33 @@ export class CartEffects {
     );
   
    
+  //@Effect()
+  //CleanCart$ = this.actions$.pipe(
+  //  ofType<CleanCart>(ECartActions.CleanCart),
+  //  switchMap((data) => {
+  //    console.log(data);
+  //    return this.cartService.cleanCart().pipe(
+  //      map((res: boolean) => {
+  //        return new CleanCartSuccess(res);
+  //      })
+  //    );
+  //  }),
+  //);
 
   @Effect({ dispatch: false })
   CleanCart$ = this.actions$.pipe(ofType(ECartActions.CleanCart),
     map((action: any) => {
-      return  this.cartService.cleanCart();
-      //return of(true);
+      this.cartService.cleanCart();
+      this.notify.success('CleanCartSuccess');
+      return new CleanCartSuccess(true);
+
     })
   );
 
     constructor(
         private actions$: Actions,
         private cartService: CartService,
-      private notify: SnackbarService 
+        private notify: SnackbarService 
     ) {
     }
 }

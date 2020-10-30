@@ -66,7 +66,7 @@ export class CartSummary {
   discount?: number | 0;
   total_payable?: number | 0;
   date_modified?: Date;
-  cartItems?: CartItem[] | [];
+  cartItems: CartItem[] | any[];
 }
 export class CartItem{ 
   product?: Product;

@@ -62,16 +62,17 @@ export class CartService {
     return of(localitems);
   }
 
-  cleanCart() { 
-    this.setCartTotalCount([]); 
+  cleanCart(): Observable<boolean> {
+    this.setCartTotalCount([]);
+    return of(true);
   }
  
 
-  removeFromCart(id: number): Observable<CartItem[]> {
+  removeFromCart(id: number): Observable<number> {
     let cart: CartItem[] = this.getCartItems();
     const newCart = cart.splice(id, 1);
     this.setCartTotalCount(cart);
-    return of(newCart);
+    return of(id);
   }
 
   removeItem(id: number): void {
