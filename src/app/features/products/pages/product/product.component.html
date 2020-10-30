@@ -1,14 +1,14 @@
 <div class="product-card" > 
     <mat-card fxFlex="100">
-      <div class="product-image" >
+      <div class="product-image-wrapper" >
         <img mat-card-image routerLink="/product-detail" [alt]="product.name" [src]="product.imge_url">
       </div> 
-      <mat-card-content>
+      <mat-card-content >
         <div class="product-details">
-          <span class="name">{{product.name}}</span>
-          <span class="price">${{product.unit_price }}</span>
+          <span class="pname">{{product.name}}</span>
+          <span class="pprice">${{product.unit_price }}</span>
         </div>
-        <div class="product-description">
+        <div class="pdescription">
           <p>{{ product.description }}</p>
         </div>
       </mat-card-content>

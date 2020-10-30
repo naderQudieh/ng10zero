@@ -73,8 +73,7 @@ export class ProductListComponent implements AfterViewInit, OnInit, OnDestroy {
   }
 
   getProducts(_page = 1, limit = 10) {
-    this.store.pipe(select(selectProducts)).subscribe(data => {
-      console.log(data);
+    this.store.pipe(select(selectProducts)).subscribe(data => { 
       let _data = data
       this.products = data['products'];
       this.currentPage++;

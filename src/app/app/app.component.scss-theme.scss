@@ -9,46 +9,47 @@
 
   mat-drawer-container {
 
-    .mat-menu-item {
-      line-height: 50px;
+    .mat-nav-list {
 
-      &:hover {
-        border-bottom-style: solid;
-        border-bottom-width: 1px;
-        border-bottom-color: mat-color($accent) !important;
-         
-      }
-    }
-
-
-    mat-toolbar {
-      button {
-
-        &.active {
-          color: mat-color($accent, default-contrast);
-          background-color: mat-color($accent);
-        }
-      }
-
-      .link {
-        color: mat-color($primary, default-contrast);
-      }
-    }
-
-    mat-drawer {
-      .mat-list-item {
+      .mat-menu-item {
         line-height: 50px;
 
         &.active {
           color: mat-color($accent, default-contrast);
           background-color: mat-color($accent) !important;
+        }
 
-          &:hover {
-            background-color: mat-color($accent, darker) !important;
-          }
+        &:hover {
+          border-bottom-style: solid;
+          border-bottom-width: 1px;
+          border-bottom-color: mat-color($accent) !important;
+          color: mat-color($accent, default-contrast) !important;
+          background-color: mat-color($accent)!important ;
         }
       }
     }
+
+    .mat-toolbar {
+      .mat-menu-item {
+        line-height: 50px;
+
+        &.active {
+          color: mat-color($accent, default-contrast);
+          background-color: mat-color($accent) !important;
+        }
+
+        &:hover {
+          border-bottom-style: solid;
+          border-bottom-width: 1px;
+          border-bottom-color: mat-color($accent) !important;
+          color: mat-color($accent, default-contrast) !important;
+          background-color: mat-color($accent) !important;
+        }
+      }
+    }
+
+
+
 
     .footer {
       color: mat-color($primary, lighter);

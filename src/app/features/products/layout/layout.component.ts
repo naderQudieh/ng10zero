@@ -25,7 +25,7 @@ export class LayoutComponent implements OnInit {
     private cartService: CartService, private checkoutService: CheckoutService, private productService: ProductService,
      private router: Router ) {  
 
-    cartService.getCartTotalItems().subscribe((cartSummary) => {
+    cartService.getCartSummary().subscribe((cartSummary) => {
       this.totalItems = cartSummary.cart_qty;
       console.log(this.totalItems); 
     });

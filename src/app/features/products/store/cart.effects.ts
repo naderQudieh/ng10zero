@@ -3,8 +3,7 @@ import { Actions, Effect, ofType } from '@ngrx/effects';
 import { of } from 'rxjs';
 import { select, Store } from '@ngrx/store';
 import {CartService} from '../services/cart.service';
-import {
-  AddToCart, CleanCart,  AddToCartSuccess,    ECartActions,    GetCart,
+import { AddToCart, CleanCart,  AddToCartSuccess,    ECartActions,    GetCart,
     GetCartSuccess,    LoadCartInError, RemoveFromCart, RemoveFromCartSuccess} from './cart.actions';
 import {map, switchMap} from 'rxjs/operators';
 import { CartItem } from '../product.model';

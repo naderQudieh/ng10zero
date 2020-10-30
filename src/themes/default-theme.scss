@@ -2,3 +2,13 @@ $anms-primary: mat-palette($mat-indigo);
 $anms-accent: mat-palette($mat-light-blue);
 $anms-warn: mat-palette($mat-pink, 600);
 $anms-theme: mat-light-theme($anms-primary, $anms-accent, $anms-warn);
+
+
+.default-theme .mat-toolbar .mat-menu-item .mat-icon {
+  color: #ffffff !important;
+}
+
+
+.default-theme .mat-toolbar .mat-menu-item   {
+  color: #ffffff !important;
+}

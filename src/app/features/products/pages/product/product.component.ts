@@ -20,7 +20,7 @@ export class ProductComponent implements OnInit {
 
   }
   ngOnInit() {
-    console.log(this.product);
+    
   }
 
 

@@ -49,7 +49,7 @@ export class CartComponent implements OnInit, OnDestroy {
       this.cartsList = cartitems;  
     })
     
-    this.cartService.CartItemsCount.subscribe(cartsummary => { 
+    this.cartService.CartSummary.subscribe(cartsummary => { 
       this.cartValue = cartsummary.cart_total
       this.cartQty = cartsummary.cart_qty 
     })

@@ -21,7 +21,7 @@ export class CartService {
     cartItems: []
   }
 
-  public CartItemsCount = new BehaviorSubject<CartSummary>(this.CurrentCartSummary()); 
+  public CartSummary = new BehaviorSubject<CartSummary>(this.CurrentCartSummary()); 
   
   constructor( private http: HttpClient,) { 
    
@@ -146,12 +146,12 @@ export class CartService {
     this.cartSummary.cart_total = cart_total;
     this.cartSummary.cart_qty = cart_qty;
    
-    this.CartItemsCount.next(this.cartSummary);
+    this.CartSummary.next(this.cartSummary);
   }
 
 
-  getCartTotalItems(): Observable<CartSummary> { 
-    return this.CartItemsCount.asObservable();
+  getCartSummary(): Observable<CartSummary> { 
+    return this.CartSummary.asObservable();
   }
 
   increaseQuatity(productid) {
@@ -193,6 +193,6 @@ export class CartService {
     return cart;
   }
   ngOnDestroy() {
-    this.CartItemsCount.unsubscribe();
+    this.CartSummary.unsubscribe();
   }
 }

@@ -60,13 +60,13 @@ export interface Product {
 }
 
 export class CartSummary { 
-  customer_id?: number;
-  cart_total?: number;
-  cart_qty?: number;
-  discount?: number;
-  total_payable?: number;
+  customer_id?: number | 0;
+  cart_total?: number | 0;
+  cart_qty?: number | 0;
+  discount?: number | 0;
+  total_payable?: number | 0;
   date_modified?: Date;
-  cartItems?: CartItem[];
+  cartItems?: CartItem[] | [];
 }
 export class CartItem{ 
   product?: Product;

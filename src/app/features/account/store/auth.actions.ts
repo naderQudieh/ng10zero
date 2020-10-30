@@ -23,7 +23,7 @@ export class AuthStateLoad implements Action {
 export class AuthStateLoadError implements Action {
   readonly type = AuthActionTypes.INIT_APP_FAIL;
   constructor(public payload: any) {
-    console.log('Action AuthStateLoadError');
+   // console.log('Action AuthStateLoadError');
   }
 }
 
@@ -33,21 +33,21 @@ export class AuthStateLoadError implements Action {
 export class LogIn implements Action {
     readonly type = AuthActionTypes.LOGIN;
     constructor(public payload: UserModel ) {
-        console.log('Action LogIn'); 
+       // console.log('Action LogIn'); 
     }
 }
  
 export class LogInSuccess implements Action {
     readonly type = AuthActionTypes.LOGIN_SUCCESS;
     constructor(public payload: any ) {
-        console.log('Action LogInSuccess');
+       // console.log('Action LogInSuccess');
     }
 }
 
 export class LogInError implements Action {
     readonly type = AuthActionTypes.LOGIN_ERROR;
     constructor(public payload: any) {
-        console.log('Action LogInError');
+       // console.log('Action LogInError');
     }
 }
 
@@ -66,14 +66,14 @@ export class SignUpSuccess implements Action {
 export class SignUpError implements Action {
     readonly type = AuthActionTypes.SIGNUP_ERROR;
     constructor(public payload: any) {
-        console.log('Action SignUpError');
+       // console.log('Action SignUpError');
     }
 }
 
 export class LogOut implements Action {
     readonly type = AuthActionTypes.LOGOUT;
     constructor() {
-        console.log('Action LogOut');
+        //console.log('Action LogOut');
     }
 }
 
