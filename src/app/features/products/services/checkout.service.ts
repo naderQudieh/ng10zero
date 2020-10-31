@@ -51,9 +51,9 @@ export class CheckoutService {
     return this.http.post(`${this.checkoutUrl}payment/PaymentDetail`, this.formData);
   }
 
-  putPaymentDetail() {
-
-    return this.http.put(this.checkoutUrl + 'api/PaymentDetail/' + this.formData.transaction_id , this.formData);
+  putPaymentDetail(formData): Observable<any> {  
+   // return this.http.put(this.checkoutUrl + 'api/PaymentDetail/', this.formData); 
+    return of(true);
   }
    
   

@@ -1,4 +1,3 @@
-/// <reference path="../../../core/constants/api.constants.ts" />
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { JwtHelperService } from '@auth0/angular-jwt';
@@ -20,8 +19,7 @@ export class CartService {
     discount: 0,
     cartItems: []
   }
-
-  public CartSummary = new BehaviorSubject<CartSummary>(this.CurrentCartSummary()); 
+   
   
   constructor( private http: HttpClient,) { 
    
@@ -53,7 +51,7 @@ export class CartService {
     } else { 
       _itemsfound[0].count++
     }  
-    this.setCartTotalCount(localitems);
+    this.updateCartSummary(localitems);
     return of(item);
   }
 
@@ -63,56 +61,25 @@ export class CartService {
   }
 
   cleanCart(): Observable<boolean> {
-    this.setCartTotalCount([]);
+    this.updateCartSummary([]);
     return of(true);
   }
  
 
-  removeFromCart(id: number): Observable<number> {
-    let cart: CartItem[] = this.getCartItems();
-    const newCart = cart.splice(id, 1);
-    this.setCartTotalCount(cart);
-    return of(id);
-  }
-
-  removeItem(id: number): void {
-    let cart: CartItem[] = this.getCartItems();
-    for (let i = 0; i < cart.length; i++) {
-      let item: CartItem =  cart[i] ;
-      if (item.product.product_Id   === id) {
-        cart.splice(i, 1);
+  removeFromCart(productid: number): Observable<number> {  
+    let cartitems: CartItem[] = this.getCartItems(); 
+    for (let i = 0; i < cartitems.length; i++) {
+      let item: CartItem = cartitems[i] ;
+      if (item.product.product_Id === productid) {
+        cartitems.splice(i, 1);
         break;
       }
     } 
-    this.setCartTotalCount(cart);
+    this.updateCartSummary(cartitems);
+    return of(productid);
   }
 
-  private CurrentCartSummary(): CartSummary {
-    let cartitems: CartItem[] = this.getCartItems();
-    let cart_qty: number = 0;
-    let cart_total: number = 0;
-    let _count = 0, _price = 0;
-    cartitems.forEach(a => {
-      if (typeof (a.count) === 'string') {
-        _count = parseInt(a.count);
-      } else {
-        _count = a.count
-      }
-
-      if (typeof (a.product.unit_price) === 'string') {
-        _price = parseInt(a.product.unit_price);
-      } else {
-        _price = a.product.unit_price
-      }
-
-      cart_total += _price;
-      cart_qty += _count;
-    });
-    this.cartSummary.cartItems = cartitems;
-    this.cartSummary.cart_total = cart_total;
-    this.cartSummary.cart_qty = cart_qty;
-    return this.cartSummary;
-  }
+ 
 
   private getCartItems(): CartItem[] {
     try {
@@ -122,7 +89,7 @@ export class CartService {
       return [];
     }
   }
-  setCartTotalCount(cartitems: CartItem[]): void { 
+  updateCartSummary(cartitems: CartItem[]): void { 
     localStorage.setItem('cart', JSON.stringify(cartitems)); 
     let cart_qty: number = 0;
     let cart_total: number = 0;
@@ -140,21 +107,28 @@ export class CartService {
         _price = a.product.unit_price
       }
 
-      cart_total += _price;
+      cart_total += (_count* _price);
       cart_qty += _count;
     });
     this.cartSummary.cartItems = cartitems;
     this.cartSummary.cart_total = cart_total;
-    this.cartSummary.cart_qty = cart_qty;
+    this.cartSummary.cart_qty = cart_qty; 
+  }
+
+  updateCart(productid, qty): Observable<boolean> {
    
-    this.CartSummary.next(this.cartSummary);
+    let cart: CartItem[] = this.getCartItems();
+
+    let position = cart.findIndex(x => x.product.product_Id == productid);
+ 
+    if (position != -1) {
+      cart[position].count = qty;
+    }
+
+    this.updateCartSummary(cart);
+    return of(true);
   }
-
-
-  getCartSummary(): Observable<CartSummary> { 
-    return this.CartSummary.asObservable();
-  }
-
+  
   increaseQuatity(productid) {
     let cart: CartItem[] = this.getCartItems();
     let position = cart.findIndex(x => x.product.product_Id == productid);
@@ -162,38 +136,25 @@ export class CartService {
       cart[position].count++;
 
     }
-    this.setCartTotalCount(cart); 
+    this.updateCartSummary(cart); 
     return cart;
   }
 
-  updateCart(productid, qty): Observable<boolean> { 
-    let cart: CartItem[] = this.getCartItems();
-  
-    let position = cart.findIndex(x => x.product.product_Id == productid);
-    if (position != -1) {
-       
-      cart[position].count = qty;
-      
-    }
-     
-    this.setCartTotalCount(cart);
-    return of(true);
-  }
+ 
+
   decreaseQuantity(productid) {
     let cart: CartItem[] = this.getCartItems();
-    let position = cart.findIndex(x => x.product.product_Id == productid);
-
-    if (position != -1) {
-      cart[position].count--;
-      if (cart[position].count-- < 1) {
-         this.removeItem(productid);
-      }
-
-    }
-    this.setCartTotalCount(cart);
-    return cart;
+    let position = cart.findIndex(x => x.product.product_Id == productid); 
+    if (position > -1) {
+      this.updateCart(productid, cart[position].count - 1).subscribe(isUpdated => {
+        if (isUpdated) {
+          this.updateCartSummary(cart);
+          return cart;
+        }
+      }); 
+    } 
   }
   ngOnDestroy() {
-    this.CartSummary.unsubscribe();
+    //this.CartSummary.unsubscribe();
   }
 }

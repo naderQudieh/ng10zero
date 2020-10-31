@@ -1,39 +1,40 @@
 <div class="mini-cart" style="margin-top:10px!important;" fxLayout="row" fxLayoutAlign="center center">
-  <div    *ngIf="cartsList && cartsList.length > 0">
-    <mat-card @fadeOut   class="mini-product-card" fxLayout="row" fxLayoutGap="16px" *ngFor="let cart of cartsList">
-      <div   >
-        <img class="image-mage" alt="" [src]="cart.product.imge_url">
+  <div *ngIf="cartSummary && cartSummary.cartItems.length > 0">
+    <mat-card @fadeOut class="mini-product-card" fxLayout="row" fxLayoutGap="16px" *ngFor="let cartitem of cartSummary.cartItems">
+      <div>
+        <img class="image-mage" alt="" [src]="cartitem.product.imge_url">
       </div>
       <div fxFlex="65" fxLayout="column">
-        <div style="font-weight:bold" fxFlex="100">{{cart.product.name}}</div>
-        <div style="font-size:small"  fxFlex="100">{{cart.product.description}}</div>
-        <div fxFlex="100"> 
-          <select style="margin-right:20px" id="cars" (ngModelChange)="updateCart($event,cart)" [(ngModel)]="cart.count">
+        <div style="font-weight:bold" fxFlex="100">{{cartitem.product.name}}</div>
+        <div style="font-size:small" fxFlex="100">{{cartitem.product.description}}</div>
+        <div fxFlex="100">
+          <select #mySelect style="margin-right:20px" id="cars"
+                  (change)='updateCart( mySelect.value, cartitem)' [(ngModel)]="cartitem.count">
             <option *ngFor="let opt of cartQtyNumber" [value]="opt">{{opt}}</option>
-          </select> 
-          <span style="margin-right:10px">$ {{cart.product.unit_price}}</span>
-          <a style="margin-right:20px" mat-icon-button (click)="removeFromCart($event, cart)" color="warn">
+          </select>
+          <span style="margin-right:10px">$ {{cartitem.product.unit_price}}</span>
+          <a style="margin-right:20px" mat-icon-button (click)="removeFromCart($event, cartitem)" color="warn">
             Delete
           </a>
-          <a mat-icon-button (click)="updateCart($event,cart)" color="warn">
+          <a mat-icon-button (click)="updateCart($event,cartitem)" color="warn">
             Save for later
           </a>
         </div>
-       
+
       </div>
       <div fxFlex="10">
-        <div style="font-weight:bolder">$ {{cart.count * cart.product.unit_price}}</div>
+        <div style="font-weight:bolder">$ {{cartitem.total_value}}</div>
       </div>
     </mat-card>
     <div fxLayout="row">
-      <h3 fxFlex="70" class="mini-cart-amount-title">Sub Total: </h3> 
-      <h3 class="mini-cart-amount">${{cartValue}}</h3>
+      <h3 fxFlex="70" class="mini-cart-amount-title">Sub Total: </h3>
+      <h3 class="mini-cart-amount">${{cartSummary.cart_total}}</h3>
     </div>
-    <div fxLayout="column" class="cart-button" fxLayoutGap="6px"> 
-      <button [routerLink]="['/products/checkout']" mat-flat-button color="primary" fxFlex>Checkout</button>
+    <div fxLayout="column" class="cart-button" fxLayoutGap="6px">
+      <button (click)="GoCheckOut()" mat-flat-button color="primary" fxFlex>Checkout</button>
     </div>
   </div>
-  <div *ngIf="cartsList.length == 0" class="empty-cart-title">
-    You have no items in your cart.
+  <div *ngIf="cartSummary?.cartItems.length == 0" class="empty-cart-title">
+    You have no items in your cartitem.
   </div>
 </div>

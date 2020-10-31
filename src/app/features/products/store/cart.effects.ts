@@ -3,27 +3,25 @@ import { Actions, Effect, ofType } from '@ngrx/effects';
 import { of } from 'rxjs';
 import { select, Store } from '@ngrx/store';
 import {CartService} from '../services/cart.service';
-import { AddToCart, CleanCart,  AddToCartSuccess,    ECartActions,    GetCart,
+import {
+  AddToCart, CleanCart, AddToCartSuccess, UpdateCartQty , UpdateCartQtySuccess  , ECartActions,    GetCart,
   GetCartSuccess, LoadCartInError, RemoveFromCart, CleanCartSuccess, RemoveFromCartSuccess} from './cart.actions';
 import {map, switchMap} from 'rxjs/operators';
 import { CartItem } from '../product.model';
 import { SnackbarService } from 'src/app/core/services/snackbar.service';
-
-import { selectCars } from './';
+ 
 
 @Injectable()
 export class CartEffects {
     @Effect()
-    getCart$ = this.actions$.pipe(
-        ofType<GetCart>(ECartActions.GetCart),
+    getCart$ = this.actions$.pipe(ofType<GetCart>(ECartActions.GetCart),
       switchMap(() => this.cartService.getCart()),
       switchMap((data: CartItem[]) => of(new GetCartSuccess(data)))
-    );
+  );
+
     @Effect()
-    addToCart$ = this.actions$.pipe(
-        ofType<AddToCart>(ECartActions.AddToCart),
+    addToCart$ = this.actions$.pipe(ofType<AddToCart>(ECartActions.AddToCart),
       switchMap(data => {
-        console.log(data);
             return this.cartService.addToCart(data.payload).pipe(
               map((cart) => { 
                   this.notify.success('AddToCartSuccess');
@@ -33,30 +31,27 @@ export class CartEffects {
         })
     );
     @Effect()
-    removeFromCart$ = this.actions$.pipe(
-        ofType<RemoveFromCart>(ECartActions.RemoveFromCart),
-        switchMap((data) => {
+    removeFromCart$ = this.actions$.pipe( ofType<RemoveFromCart>(ECartActions.RemoveFromCart),
+      switchMap((data) => { 
             return this.cartService.removeFromCart(data.payload).pipe(
-              map((res: number) => {
+              map((res: number) => { 
                     return new RemoveFromCartSuccess(res);
                 })
             );
         }),
     );
-  
-   
-  //@Effect()
-  //CleanCart$ = this.actions$.pipe(
-  //  ofType<CleanCart>(ECartActions.CleanCart),
-  //  switchMap((data) => {
-  //    console.log(data);
-  //    return this.cartService.cleanCart().pipe(
-  //      map((res: boolean) => {
-  //        return new CleanCartSuccess(res);
-  //      })
-  //    );
-  //  }),
-  //);
+
+  @Effect()
+  UpdateCartQty = this.actions$.pipe(ofType<UpdateCartQty>(ECartActions.UpdateCartQty),
+    switchMap((data) => { 
+      return this.cartService.updateCart(data.payload.id, data.payload.qty ).pipe(
+        map((res: boolean) => { 
+          return new UpdateCartQtySuccess(res);
+        })
+      );
+    }),
+  );
+
 
   @Effect({ dispatch: false })
   CleanCart$ = this.actions$.pipe(ofType(ECartActions.CleanCart),

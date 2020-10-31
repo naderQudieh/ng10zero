@@ -71,9 +71,16 @@ export function HttpLoaderFactory(http: HttpClient) {
   imports: [
     // //RecaptchaModule.forRoot(),
     CommonModule, MATERIAL_MODULES_CORE, HttpClientModule, FormsModule, FontAwesomeModule,
-     JwtModule.forRoot({  config: { tokenGetter: tokenGetter },}), 
-     JwtModule.forRoot({  config: { tokenGetter: tokenGetter },}), 
-     StoreModule.forRoot({ router: routerReducer }, { initialState: initialAppState }),
+     JwtModule.forRoot({  config: { tokenGetter: tokenGetter },}),  
+    //StoreModule.forRoot({ router: routerReducer }, { initialState: initialAppState } ),
+    StoreModule.forRoot(routerReducer, { 
+      runtimeChecks: {
+        strictStateImmutability: false,
+        strictActionImmutability: false,
+        strictStateSerializability: false,
+        strictActionSerializability: false,
+      }
+    }),
      StoreDevtoolsModule.instrument({ logOnly: environment.production }),
      StoreRouterConnectingModule.forRoot({
       serializer: CustomSerializer,

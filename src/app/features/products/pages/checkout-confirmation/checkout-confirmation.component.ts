@@ -28,10 +28,7 @@ export class CheckoutConfirmationComponent implements OnInit {
       this.cartsList = cartitems;
     })
 
-    this.cartService.CartSummary.subscribe(cartsummary => {
-      this.cartValue = cartsummary.cart_total
-      this.cartQty = cartsummary.cart_qty
-    })
+    
   }
 
   getinfos(){

@@ -101,9 +101,10 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
   ngOnInit(): void {
-    console.log('ngOnInit');
+   
     this.store.pipe(select(selectAppState))
       .subscribe((_state) => {
+        console.log('ngOnInit');
         console.log(_state);
       });
     this.eventService.getIsAuthenticated().subscribe(auth => {
@@ -198,5 +199,6 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
   ngOnDestroy() {
     this.mobileQuery.removeListener(this._mobileQueryListener);
     this._dirChangeSubscription.unsubscribe();
+
   }
 }

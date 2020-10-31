@@ -11,9 +11,7 @@ export class AuthModel {
     error?: any | null;
     returnUrl?: string | "";
   constructor() {
-    this.error = "xxxxxxxxxxxxxxxx";
-    alert('constructor');
-        console.log('********************'); 
+    this.error = "errorerrorerror"; 
         try {
             let userclaims = localStorage.getItem("user_claims");
             this.userclaims = JSON.parse(userclaims) || null;

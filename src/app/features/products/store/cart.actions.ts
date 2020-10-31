@@ -5,11 +5,15 @@ export enum ECartActions {
     GetCart = '[Cart] Get cart',
     GetCartSuccess = '[Cart] Get cart success',
     AddToCart = '[Cart] Add to cart',
-    AddToCartSuccess = '[Cart] Add to cart success',
+  AddToCartSuccess = '[Cart] Add to cart success',
+
+  UpdateCartQty = '[Cart] UpdateCartQty',
+  UpdateCartQtySuccess = '[Cart] UpdateCartQty success',
+
     RemoveFromCart = '[Cart] Remove from cart',
     RemoveFromCartSuccess = '[Cart] Remove from cart success',
-  CleanCart = '[Cart] Clean Cart',
-  CleanCartSuccess = '[Cart] Clean Cart',
+    CleanCart = '[Cart] Clean Cart',
+     CleanCartSuccess = '[Cart] Clean Cart',
     LoadInCartError = '[Cart] Load in cart error',
 }
 
@@ -31,6 +35,17 @@ export class AddToCartSuccess implements Action {
     public readonly type = ECartActions.AddToCartSuccess;
     constructor(public payload: any) {}
 }
+
+export class UpdateCartQty implements Action {
+  public readonly type = ECartActions.UpdateCartQty;
+  constructor(public payload: any) { }
+}
+
+export class UpdateCartQtySuccess implements Action {
+  public readonly type = ECartActions.UpdateCartQtySuccess ;
+  constructor(public payload: any) { }
+}
+
 
 export class RemoveFromCart implements Action {
     public readonly type = ECartActions.RemoveFromCart;

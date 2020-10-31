@@ -19,23 +19,18 @@ import { SnackbarService } from 'src/app/core/services/snackbar.service';
 export class LayoutComponent implements OnInit {
   routeAnimationsElements = ROUTE_ANIMATIONS_ELEMENTS;
   totalItems: number = 0;
+  cartSummary: CartSummary;
   constructor(private cdRef: ChangeDetectorRef, private store: Store<CartState>,
      private notify: SnackbarService ,private cartService: CartService, private checkoutService: CheckoutService, private productService: ProductService,
      private router: Router ) {  
-
-    cartService.getCartSummary().subscribe((cartSummary) => {
-      this.totalItems = cartSummary.cart_qty;
-      console.log(this.totalItems); 
-    });
-
-    this.store.select(getCartState).subscribe(cart => {
-      console.log(cart)
-    });
-
+      this.store.pipe(select(getCartState)).subscribe(data => {
+        this.cartSummary = data['cart'];
+        this.totalItems = this.cartSummary.cart_qty;
+      }); 
   }
 
   ngOnInit(): void {
-    
+  
   }
   GoProducts() {
     if (this.totalItems == 0) {
@@ -48,6 +43,7 @@ export class LayoutComponent implements OnInit {
   }
   CleanCart() { 
     this.store.dispatch(new CleanCart());
+    this.router.navigateByUrl('products');
   }
 
   
